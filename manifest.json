@@ -1,17 +1,17 @@
 {
-  "name": "生活辦事英文",
-  "short_name": "生活辦事",
-  "start_url": "./index.html",
-  "display": "standalone",
-  "background_color": "#fff7ed",
-  "theme_color": "#ea580c",
-  "lang": "zh-Hant",
-  "icons": [
-    {
-      "src": "icon.svg",
-      "sizes": "any",
-      "type": "image/svg+xml",
-      "purpose": "any maskable"
-    }
-  ]
+ "name": "生活辦事英文",
+ "short_name": "生活辦事",
+ "start_url": "./index.html",
+ "display": "standalone",
+ "background_color": "#fff7ed",
+ "theme_color": "#ea580c",
+ "lang": "zh-Hant",
+ "icons": [
+  {
+   "src": "icon.svg",
+   "sizes": "any",
+   "type": "image/svg+xml",
+   "purpose": "any maskable"
+  }
+ ]
 }

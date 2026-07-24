@@ -1,0 +1,1571 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#E9F3E0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="生活辦事英文">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<title>生活辦事英文</title>
+<link rel="stylesheet" href="ridgeline-ui.css">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+
+<style>
+:root{
+  /* 稜線識別 · theme-grass（草綠）— 主色改草綠，紙背＋岩藍墨；狀態色（綠/紅/琥珀）保留語意 */
+  --sky:#4C9A3F; --sky2:#4C9A3F; --sky3:#DCEBCF; --deep:#2C4A20;
+  --bg:#F7F3EC; --card:#FFFFFF; --ink:#141E2B; --sub:#6E8BA3; --line:#E4DDCE;
+  --good:#10b981; --bad:#ef4444; --gold:#f59e0b; --sos:#e11d48; --shadow:0 0 0 1px var(--line);
+  --r:18px; --fs:1;
+}
+html[data-theme=dark]{
+  --bg:#141E2B; --card:#1B2838; --ink:#EEF3F6; --sub:#8b96a8; --line:#2A3A4E;
+  --sky:#6FBF5F; --sky2:#6FBF5F; --deep:#9ED18C; --shadow:0 0 0 1px var(--line);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%}
+body{
+  font-family:-apple-system,"Segoe UI",Roboto,"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
+  background:var(--bg); color:var(--ink);
+  padding-bottom:calc(76px + env(safe-area-inset-bottom));
+  overscroll-behavior-y:contain; font-size:calc(16px * var(--fs));
+}
+body.big{--fs:1.22}
+h1,h2,h3,p{margin:0}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+.hidden{display:none!important}
+
+/* 稜線識別：頁首 masthead（取代原漸層 topbar，扁平草綠） */
+.topbar{position:sticky;top:0;z-index:40;background:var(--hdr);color:var(--on);padding:env(safe-area-inset-top) 0 0}
+.topbar .rl-appbar{max-width:640px;margin:0 auto;background:transparent;color:var(--on);padding:12px 14px 6px;gap:12px}
+.topbar .rl-appbar .rl-glyph .ridge{stroke:var(--on)}
+.topbar .stats{max-width:640px;width:100%;margin:0 auto;padding:0 14px 12px;box-sizing:border-box;display:flex;gap:8px;flex-wrap:wrap}
+.chip{background:color-mix(in srgb,var(--on) 12%,transparent);color:var(--on);border-radius:999px;padding:5px 11px;font-size:.82rem;font-weight:700;display:flex;align-items:center;gap:5px}
+.iconbtn{width:38px;height:38px;border-radius:12px;background:color-mix(in srgb,var(--on) 12%,transparent);color:var(--on);display:grid;place-items:center;font-size:18px;flex:none}
+.stats .chip{background:color-mix(in srgb,var(--on) 10%,transparent)}
+.rl-signature{padding-bottom:calc(32px + env(safe-area-inset-bottom) + 76px)}
+
+.wrap{max-width:640px;margin:0 auto;padding:14px}
+.section-title{font-size:.88rem;font-weight:800;color:var(--sub);margin:18px 4px 10px;letter-spacing:.5px}
+
+.banner{background:#fff7ed;border-radius:var(--r);padding:15px 16px;
+  display:flex;align-items:center;gap:14px;box-shadow:var(--shadow);margin-bottom:8px;border:1px solid #fde3c4}
+html[data-theme=dark] .banner{background:#3a2a12;border-color:#4a3618}
+.banner .big{font-size:30px}
+.banner .t{flex:1}
+.banner .t b{font-size:1rem}
+.banner .t small{color:var(--sub);font-size:.78rem}
+.banner .go{background:var(--gold);color:#fff;font-weight:800;padding:9px 15px;border-radius:12px;font-size:.88rem;white-space:nowrap}
+.banner.rev{background:#eff6ff;border-color:#bfdbfe}
+html[data-theme=dark] .banner.rev{background:#122036;border-color:#1e3a5f}
+.banner.rev .go{background:var(--sky)}
+.banner.sos{background:#fff1f2;border-color:#fecdd3}
+html[data-theme=dark] .banner.sos{background:#3a1220;border-color:#5a1a2a}
+.banner.sos .go{background:var(--sos)}
+
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.scard{background:var(--card);border-radius:var(--r);padding:14px;box-shadow:var(--shadow);position:relative;overflow:hidden;text-align:left;transition:transform .1s}
+.scard:active{transform:scale(.97)}
+.scard .ico{font-size:30px;line-height:1}
+.scard .nm{font-weight:800;font-size:.95rem;margin-top:8px}
+.scard .en{font-size:.68rem;color:var(--sub);margin-top:1px}
+.scard .desc{font-size:.72rem;color:var(--sub);margin-top:6px;line-height:1.35;min-height:31px}
+.pbar{height:6px;border-radius:99px;background:var(--line);margin-top:10px;overflow:hidden}
+.pbar>i{display:block;height:100%;background:var(--sky);border-radius:99px;transition:width .4s}
+.scard .pct{position:absolute;top:12px;right:12px;font-size:.68rem;font-weight:800;color:var(--sky)}
+.scard .done-badge{position:absolute;top:10px;right:10px;font-size:18px}
+
+.back{display:flex;align-items:center;gap:6px;font-weight:700;color:var(--sky);font-size:.95rem;padding:4px 0}
+.detail-head{background:var(--card);border-radius:var(--r);padding:16px;box-shadow:var(--shadow);margin:8px 0 4px;text-align:center}
+.detail-head .ico{font-size:44px}
+.detail-head h2{font-size:1.25rem;font-weight:800;margin-top:4px}
+.detail-head .en{color:var(--sub);font-size:.82rem}
+.modes{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:14px 0}
+.mode{background:var(--card);border-radius:14px;padding:11px 4px;box-shadow:var(--shadow);text-align:center;transition:transform .1s}
+.mode:active{transform:scale(.95)}
+.mode .mi{font-size:21px}
+.mode .ml{font-size:.68rem;font-weight:700;margin-top:4px;line-height:1.2}
+
+.pitem{background:var(--card);border-radius:14px;padding:12px 14px;box-shadow:var(--shadow);margin-bottom:9px;display:flex;gap:11px;align-items:flex-start}
+.pitem.sos-item{border-left:4px solid var(--sos)}
+.pitem .body{flex:1;min-width:0}
+.pitem .en{font-weight:700;font-size:.97rem;line-height:1.35}
+.pitem .zh{color:var(--sub);font-size:.85rem;margin-top:3px}
+.pitem .homo{color:var(--sos);font-size:.8rem;margin-top:2px;font-weight:600}
+.pitem .tip{color:var(--sky);font-size:.75rem;margin-top:4px;background:rgba(76,154,63,.08);padding:3px 8px;border-radius:8px;display:inline-block}
+.pitem .metarow{display:flex;gap:6px;align-items:center;margin-top:5px;flex-wrap:wrap}
+.lv{font-size:.62rem;font-weight:800;padding:2px 6px;border-radius:6px;color:#fff}
+.lv1{background:#22c55e}.lv2{background:#f59e0b}.lv3{background:#ef4444}
+.stars{font-size:.68rem;letter-spacing:1px;color:var(--gold)}
+.pitem .acts{display:flex;flex-direction:column;gap:8px}
+.rbtn{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;font-size:17px;background:var(--bg);border:1px solid var(--line)}
+.rbtn.fav.on{color:var(--gold);background:rgba(245,158,11,.12);border-color:transparent}
+.shadowline{font-size:1.35rem;font-weight:800;line-height:1.55;margin:10px 0;text-align:center}
+.wok{color:var(--good)}
+.wmiss{color:var(--bad);text-decoration:underline;text-decoration-style:wavy;text-underline-offset:3px}
+.misschip{background:rgba(239,68,68,.1);color:var(--bad);border:1px solid var(--bad);border-radius:9px;padding:3px 9px;margin:3px 3px 0;font-size:.8rem;font-weight:700;display:inline-block}
+.fbnote{font-size:.72rem;opacity:.68;margin-top:7px;line-height:1.4}
+.keyok{color:var(--good);font-weight:700}
+.primcta{display:flex;gap:10px;margin:12px 0 4px}
+.primbtn{flex:1;background:var(--sky);color:#fff;font-weight:800;font-size:1.05rem;padding:15px 10px;border-radius:16px;box-shadow:var(--shadow)}
+.primbtn.ghost2{background:var(--card);color:var(--sky);border:1.5px solid var(--sky)}
+.modehint{font-size:.76rem;color:var(--sub);margin:10px 4px 4px;line-height:1.4}
+.bigshow{flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:20px;gap:18px}
+.bigshow .ben{font-size:2.1rem;font-weight:800;line-height:1.35}
+.bigshow .bzh{font-size:1.15rem;color:var(--sub)}
+.bigshow .bhomo{font-size:1.05rem;color:var(--sos);font-weight:700}
+.bigshow .tello{font-size:.8rem;color:var(--sub);background:rgba(76,154,63,.1);padding:6px 12px;border-radius:10px}
+.banner.trip{background:#eef2ff;border-color:#c7d2fe}
+html[data-theme=dark] .banner.trip{background:#1a1f3a;border-color:#2a3160}
+.banner.trip .go{background:var(--sky)}
+.wzq{font-weight:800;font-size:.98rem;margin:16px 4px 8px}.wzq small{font-weight:400;color:var(--sub);font-size:.8rem}
+.wzin{width:100%;padding:13px 14px;border-radius:12px;border:1.5px solid var(--line);background:var(--card);color:var(--ink);font-size:1rem;font-family:inherit}
+.wzchips{display:flex;flex-wrap:wrap;gap:8px}
+.wzchip{padding:10px 13px;border-radius:12px;border:1.5px solid var(--line);background:var(--card);color:var(--ink);font-size:.9rem;font-weight:700}
+.wzchip.on{background:var(--sky);color:#fff;border-color:transparent}
+.cheatsc{font-weight:800;font-size:.9rem;color:var(--sky);margin:16px 4px 8px;border-bottom:2px solid var(--line);padding-bottom:5px}
+.cheatrow{display:flex;align-items:center;gap:10px;background:var(--card);border-radius:12px;padding:11px 13px;margin-bottom:7px;box-shadow:var(--shadow)}
+.cheatrow .cen{font-weight:700;font-size:.98rem;line-height:1.35}
+.cheatrow .czh{color:var(--sub);font-size:.82rem;margin-top:2px}
+.primbtn.kid{background:#f472b6}
+.kggrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px}
+.kgopt{background:var(--card);border-radius:18px;padding:18px 8px;box-shadow:var(--shadow);border:2px solid transparent;transition:transform .1s}
+.kgopt:active{transform:scale(.95)}
+.kgico{font-size:52px;line-height:1}
+.kgzh{font-size:.9rem;font-weight:700;margin-top:8px;color:var(--sub)}
+.kgopt.kgok{border-color:var(--good);background:rgba(16,185,129,.12)}
+.kgopt.kgbad{border-color:var(--bad);animation:shake .3s}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}
+.stickerbook{display:grid;grid-template-columns:repeat(auto-fill,minmax(64px,1fr));gap:10px;margin-top:6px}
+.stik{background:var(--card);border-radius:14px;box-shadow:var(--shadow);aspect-ratio:1;display:grid;place-items:center;font-size:34px}
+.lostcard{flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:24px;gap:16px}
+.lostcard .lem{font-size:56px}
+.lostcard .len{font-size:1.7rem;font-weight:800;line-height:1.4}
+.lostcard .lzh{font-size:1.05rem;color:var(--sub)}
+.lostcard .lphone{font-size:1.5rem;font-weight:800;color:var(--sos);letter-spacing:1px}
+
+.tagbar{display:flex;gap:7px;overflow-x:auto;padding:4px 2px 10px;-webkit-overflow-scrolling:touch}
+.tagbar::-webkit-scrollbar{display:none}
+.tg{white-space:nowrap;font-size:.82rem;font-weight:700;padding:6px 13px;border-radius:99px;background:var(--card);border:1px solid var(--line);color:var(--sub)}
+.tg.on{background:var(--sky);color:#fff;border-color:transparent}
+
+.nav{position:fixed;left:0;right:0;bottom:0;z-index:45;background:var(--card);border-top:1px solid var(--line);display:flex;padding:6px 4px calc(6px + env(safe-area-inset-bottom))}
+.nav button{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:.68rem;color:var(--sub);padding:5px 0;font-weight:700}
+.nav button .ni{font-size:20px}
+.nav button.on{color:var(--sky)}
+.nav button.sosnav.on{color:var(--sos)}
+
+.overlay{position:fixed;inset:0;z-index:60;background:var(--bg);display:flex;flex-direction:column;animation:slideup .25s}
+@keyframes slideup{from{transform:translateY(30px);opacity:0}to{transform:none;opacity:1}}
+.ovhead{display:flex;align-items:center;gap:12px;padding:calc(env(safe-area-inset-top) + 12px) 16px 10px}
+.ovhead .x{font-size:24px;width:34px}
+.ovprog{flex:1;height:8px;border-radius:99px;background:var(--line);overflow:hidden}
+.ovprog>i{display:block;height:100%;background:var(--sky);width:0;transition:width .3s}
+.ovhead .cnt{font-weight:800;font-size:.85rem;color:var(--sub)}
+.ovbody{flex:1;overflow-y:auto;padding:10px 18px 20px;display:flex;flex-direction:column}
+.ovfoot{padding:12px 18px calc(16px + env(safe-area-inset-bottom));display:flex;gap:10px}
+.overlay>.ovhead,.overlay>.ovbody,.overlay>.ovfoot{max-width:680px;width:100%;margin-left:auto;margin-right:auto;box-sizing:border-box}
+.pbtn{flex:1;padding:15px;border-radius:15px;font-weight:800;font-size:1rem;background:var(--sky);color:#fff;box-shadow:var(--shadow)}
+.pbtn.ghost{background:var(--card);color:var(--ink);border:1px solid var(--line)}
+.pbtn.good{background:var(--good)}.pbtn.bad{background:var(--bad)}
+.pbtn:disabled{opacity:.4}
+
+.flash{flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;gap:14px}
+.flash .card3d{background:var(--card);border-radius:24px;box-shadow:var(--shadow);padding:32px 24px;width:100%;min-height:220px;display:flex;flex-direction:column;justify-content:center;gap:14px}
+.flash .big-en{font-size:1.6rem;font-weight:800;line-height:1.35}
+.flash .big-zh{font-size:1.2rem;color:var(--sub)}
+.flash .homo2{font-size:1rem;color:var(--sos);font-weight:700}
+.flash .tip2{font-size:.85rem;color:var(--sky);background:rgba(76,154,63,.08);padding:7px 12px;border-radius:10px}
+.flash .wico{font-size:56px}
+.speak{background:var(--sky);color:#fff;border-radius:99px;padding:12px 22px;font-weight:800;font-size:.95rem;display:inline-flex;gap:8px;align-items:center;box-shadow:var(--shadow)}
+.tapkuce{color:var(--sub);font-size:.82rem}
+
+.qword{font-size:1.5rem;font-weight:800;text-align:center;margin:12px 0 4px;line-height:1.4}
+.qsub{text-align:center;color:var(--sub);margin-bottom:16px;font-size:.88rem}
+.opt{background:var(--card);border:2px solid var(--line);border-radius:14px;padding:15px;margin-bottom:11px;font-size:1rem;font-weight:600;text-align:left;transition:.15s;width:100%}
+.opt:active{transform:scale(.98)}
+.opt.ok{border-color:var(--good);background:rgba(16,185,129,.1);color:var(--good);font-weight:800}
+.opt.no{border-color:var(--bad);background:rgba(239,68,68,.1);color:var(--bad)}
+
+.teach{background:var(--card);border-radius:16px;box-shadow:var(--shadow);padding:16px;margin-top:6px;border-left:4px solid var(--sky);animation:pop .2s}
+.teach .r{margin:5px 0;font-size:.95rem}
+.teach .r.wrong{color:var(--bad)}.teach .r.right{color:var(--good);font-weight:800}
+.teach .tipbox{background:rgba(76,154,63,.08);color:var(--sky);border-radius:10px;padding:9px 12px;margin-top:8px;font-size:.85rem}
+
+.scz-target{min-height:60px;background:var(--card);border:2px dashed var(--line);border-radius:14px;padding:12px;display:flex;flex-wrap:wrap;gap:8px;align-content:flex-start;margin-bottom:6px}
+.scz-target.err{border-color:var(--bad);animation:shake .35s}
+.scz-target.ok{border-color:var(--good)}
+@keyframes shake{0%,100%{transform:none}25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}
+.scz-pool{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:14px}
+.tok{background:var(--sky);color:#fff;border-radius:11px;padding:9px 14px;font-size:1rem;font-weight:700;box-shadow:var(--shadow)}
+.tok.inpool{background:var(--card);color:var(--ink);border:1px solid var(--line);box-shadow:none}
+
+.mic-wrap{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;text-align:center}
+.mic{width:92px;height:92px;border-radius:50%;background:var(--sky);color:#fff;font-size:38px;display:grid;place-items:center;transition:transform .15s}
+.mic.rec{animation:pulse 1s infinite;background:var(--bad)}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+.heard{font-size:.9rem;color:var(--sub);min-height:22px}
+.scorebig{font-size:3.1rem;font-weight:900}
+.w-good{color:var(--good)}.w-mid{color:var(--gold)}.w-bad{color:var(--bad)}
+
+.chat{flex:1;display:flex;flex-direction:column;gap:10px;padding:6px 0}
+.bubble{max-width:82%;padding:11px 14px;border-radius:16px;font-size:.97rem;line-height:1.4;box-shadow:var(--shadow);animation:pop .2s}
+@keyframes pop{from{transform:scale(.9);opacity:0}to{transform:none;opacity:1}}
+.bubble .z{font-size:.78rem;opacity:.75;margin-top:3px}
+.bubble.npc{background:var(--card);align-self:flex-start;border-bottom-left-radius:5px}
+.bubble.you{background:var(--sky);color:#fff;align-self:flex-end;border-bottom-right-radius:5px}
+.roleask{text-align:center;color:var(--sub);font-size:.82rem;margin:6px 0}
+
+.patcard{background:var(--card);border-radius:18px;box-shadow:var(--shadow);padding:22px;text-align:center}
+.patcard .frame{font-size:1.4rem;font-weight:800;line-height:1.5;margin-bottom:6px}
+.patcard .slot{color:var(--sky);border-bottom:2px dashed var(--sky)}
+.slotbtns{display:flex;flex-wrap:wrap;gap:9px;justify-content:center;margin-top:14px}
+.slotbtn{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:10px 15px;font-weight:700;font-size:.95rem}
+.slotbtn.on{background:var(--sky);color:#fff;border-color:transparent}
+
+.toast{position:fixed;left:50%;top:22%;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:12px 20px;border-radius:14px;font-weight:800;z-index:100;box-shadow:var(--shadow);animation:pop .2s;max-width:86vw;text-align:center}
+.pop-heart{position:fixed;font-size:30px;z-index:120;pointer-events:none;animation:floatUp 1s ease-out forwards}
+@keyframes floatUp{to{transform:translateY(-90px) scale(1.6);opacity:0}}
+
+.searchbox{width:100%;padding:13px 16px;border-radius:14px;border:1px solid var(--line);background:var(--card);color:var(--ink);font-size:1rem;box-shadow:var(--shadow)}
+.searchbox:focus{outline:2px solid var(--sky)}
+
+.prof{display:flex;gap:10px;flex-wrap:wrap;margin:8px 0}
+.pill{background:var(--card);border:2px solid var(--line);border-radius:14px;padding:11px 16px;font-weight:800;font-size:.95rem;display:flex;align-items:center;gap:8px}
+.pill.on{border-color:var(--sky);color:var(--sky);background:rgba(76,154,63,.08)}
+.bandsel{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:8px 0}
+.bandopt{background:var(--card);border:2px solid var(--line);border-radius:14px;padding:12px;text-align:left;box-shadow:var(--shadow)}
+.bandopt.on{border-color:var(--sky);background:rgba(76,154,63,.06)}
+.bandopt b{font-size:.95rem}.bandopt small{display:block;color:var(--sub);font-size:.72rem;margin-top:3px;line-height:1.3}
+.setrow{background:var(--card);border-radius:14px;padding:14px 16px;box-shadow:var(--shadow);margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.setrow .lab b{font-size:.95rem}.setrow .lab small{color:var(--sub);font-size:.78rem;display:block;margin-top:2px}
+.switch{width:52px;height:30px;border-radius:99px;background:var(--line);position:relative;transition:.2s;flex:none}
+.switch.on{background:var(--sky)}
+.switch>i{position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;background:#fff;transition:.2s}
+.switch.on>i{left:25px}
+.stepper{display:flex;align-items:center;gap:12px}
+.stepper button{width:34px;height:34px;border-radius:10px;background:var(--bg);border:1px solid var(--line);font-size:20px;font-weight:800}
+.emptybox{text-align:center;color:var(--sub);padding:40px 20px;font-size:.88rem}
+.emptybox .e{font-size:40px}
+
+.badges{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:8px 0}
+.badge{background:var(--card);border-radius:14px;box-shadow:var(--shadow);padding:12px 4px;text-align:center;opacity:.35;filter:grayscale(1)}
+.badge.got{opacity:1;filter:none}
+.badge .bi{font-size:26px}
+.badge .bn{font-size:.62rem;font-weight:700;margin-top:4px;color:var(--sub)}
+
+.refcard{background:var(--card);border-radius:16px;box-shadow:var(--shadow);padding:14px 16px;margin-bottom:11px}
+.refcard h3{font-size:1rem;font-weight:800;display:flex;align-items:center;gap:8px}
+.refrow{display:flex;gap:10px;padding:9px 0;border-bottom:1px solid var(--line);font-size:.85rem;align-items:baseline}
+.refrow:last-child{border:none}
+.refrow .flag{font-size:1.1rem;flex:none}
+.refrow .rc{font-weight:800;flex:none;min-width:64px}
+.refrow .rt{color:var(--sub);font-size:.8rem}
+#installBar:empty{display:none}
+#installBar{margin:12px 0}
+#installBar .ib{display:block;width:100%;border:0;border-radius:14px;padding:13px 15px;font-size:15px;font-weight:800;cursor:pointer;background:var(--sky);color:#fff}
+#installBar .ib.sec{background:var(--sky3);color:var(--deep)}
+#installBar .tip{background:#fff7e6;border:1px solid #ffe0a3;border-radius:14px;padding:13px;font-size:13px;line-height:1.85;color:#5a4a1a}
+#installBar .x{display:inline-block;margin-top:6px;color:var(--sky);font-weight:800;cursor:pointer}
+</style>
+
+<body class="theme-grass">
+
+<div class="topbar">
+  <header class="rl-appbar">
+    <span class="rl-mark"><svg class="rl-glyph" viewBox="0 0 64 64" width="30" height="30" fill="none"><path d="M0 54 L8 48 L14 51 L22 38 L26 42 L36 14 L46 34 L61 44" fill="none" stroke="currentColor" stroke-width="4.4" stroke-linejoin="round" stroke-linecap="round"/><path d="M31.3 27.2 L36 14 L38.7 19.4" fill="none" stroke="#DE9A45" stroke-width="4.4" stroke-linejoin="round" stroke-linecap="round"/></svg></span>
+    <div>
+      <div class="rl-title">🏦 生活辦事英文</div>
+      <div class="rl-sub">生活辦事會話</div>
+    </div>
+    <span class="rl-spacer"></span>
+    <div class="iconbtn" onclick="go('profile')" role="button" aria-label="個人資料">👤</div>
+    <div class="chip" id="profChip" onclick="go('profile')">👤 —</div>
+  </header>
+  <div class="stats">
+    <div class="chip">🔥 <span id="stStreak">0</span> 天</div>
+    <div class="chip">⭐ <span id="stStars">0</span></div>
+    <div class="chip">🎯 <span id="stToday">0</span>/<span id="stGoal">20</span></div>
+    <div class="chip">🔁 待複習 <span id="stDue">0</span></div>
+  </div>
+</div>
+
+<div id="view-home" class="wrap">
+  <div id="dailyBanner"></div>
+  <div id="installBar"></div>
+  <div class="section-title" id="gridTitle">🗺️ 情境關卡</div>
+  <div class="grid" id="grid"></div>
+</div>
+
+<div id="view-detail" class="wrap hidden"></div>
+
+<div id="view-sos" class="wrap hidden"></div>
+
+<div id="view-search" class="wrap hidden">
+  <div class="section-title">🔎 全句庫搜尋（隨查隨用）</div>
+  <input class="searchbox" id="searchInput" placeholder="輸入中文或英文，例：退稅、window seat" oninput="doSearch(this.value)">
+  <div id="searchRes" style="margin-top:12px"></div>
+</div>
+
+<div id="view-fav" class="wrap hidden">
+  <div class="section-title">⭐ 我的收藏</div>
+  <div id="favList"></div>
+</div>
+
+<div id="view-profile" class="wrap hidden">
+  <div class="section-title">👨‍👩‍👧‍👦 家庭成員</div>
+  <div class="prof" id="profList"></div>
+  <button class="pbtn ghost" style="margin-top:4px" onclick="addProfile()">＋ 新增成員</button>
+
+  <div class="section-title">🎚️ 使用模式（依成員程度）</div>
+  <div class="bandsel" id="bandSel"></div>
+
+  <div class="section-title">🏅 成就徽章</div>
+  <div class="badges" id="badges"></div>
+
+  <div class="section-title">⚙️ 設定</div>
+  <div class="setrow"><div class="lab"><b>每日目標</b><small>每天要練幾張卡</small></div>
+    <div class="stepper"><button onclick="setGoal(-5)">−</button><b id="goalView">20</b><button onclick="setGoal(5)">＋</button></div></div>
+  <div class="setrow"><div class="lab"><b>發音速度</b><small>語音朗讀語速</small></div>
+    <div class="stepper"><button onclick="setRate(-.1)">−</button><b id="rateView">1.0×</b><button onclick="setRate(.1)">＋</button></div></div>
+  <div class="setrow"><div class="lab"><b>大字模式</b><small>字體放大，長輩好讀</small></div>
+    <div class="switch" id="swBig" onclick="toggleBig()"><i></i></div></div>
+  <div class="setrow"><div class="lab"><b>深色模式</b><small>夜間護眼</small></div>
+    <div class="switch" id="swDark" onclick="toggleDark()"><i></i></div></div>
+  <div class="setrow"><div class="lab"><b>顯示中文</b><small>學習卡是否顯示中文</small></div>
+    <div class="switch on" id="swZh" onclick="toggleZh()"><i></i></div></div>
+
+  <div class="section-title">📊 這位成員的進度</div>
+  <div id="progSummary"></div>
+  <button class="pbtn ghost" style="margin-top:14px;color:var(--bad)" onclick="resetProgress()">🗑️ 重設此成員進度</button>
+  <p style="text-align:center;color:var(--sub);font-size:.72rem;margin-top:18px">離線可用 · 資料存在本機 · 全家共用一支手機也各自記錄</p>
+</div>
+
+<div class="nav">
+  <button id="nav-home" class="on" onclick="go('home')"><span class="ni">🏠</span>首頁</button>
+  <button id="nav-review" onclick="startReview()"><span class="ni">🔁</span>複習</button>
+  <button id="nav-sos" class="sosnav" onclick="go('sos')"><span class="ni">🆘</span>救命</button>
+  <button id="nav-search" onclick="go('search')"><span class="ni">🔎</span>搜尋</button>
+  <button id="nav-profile" onclick="go('profile')"><span class="ni">👤</span>我的</button>
+</div>
+
+<div id="overlayMount"></div>
+
+<script id="REF">
+window.__REF__ = {"emergency":[],"tipping":[]};
+window.__SCENARIOS__ = [{"id": "bank", "icon": "🏦", "title": "銀行辦事", "titleEn": "At the Bank", "desc": "開戶、存提款、匯款、換錢、ATM 問題", "country": "US", "words": [{"en": "account", "zh": "帳戶", "ico": "🏦"}, {"en": "deposit", "zh": "存款", "ico": "💰"}, {"en": "withdraw", "zh": "提款", "ico": "💵"}, {"en": "exchange rate", "zh": "匯率", "ico": "💱"}, {"en": "wire transfer", "zh": "電匯/匯款", "ico": "📤"}, {"en": "ATM", "zh": "自動櫃員機", "ico": "🏧"}, {"en": "passport", "zh": "護照", "ico": "🛂"}, {"en": "PIN", "zh": "密碼", "ico": "🔢"}], "patterns": [{"en": "I'd like to ___.", "zh": "我想要___。", "slots": ["open an account", "deposit some money", "exchange some currency"]}, {"en": "Could you help me ___?", "zh": "可以幫我___嗎？", "slots": ["wire this money", "check my balance", "reset my PIN"]}, {"en": "What's the ___ today?", "zh": "今天的___是多少？", "slots": ["exchange rate", "transfer fee", "minimum balance"]}], "phrases": [{"en": "Excuse me, is this the right line for account services?", "zh": "不好意思，這是辦理帳戶服務的隊伍嗎？", "tag": "開場", "level": 1, "survival": true, "homophone": "依克斯Q密 意斯 帝斯 德 瑞特 賴恩 佛 阿看特 社維西斯"}, {"en": "I'd like to open a checking account, please.", "zh": "我想開一個支票（活期）帳戶。", "tag": "開戶", "level": 1, "survival": true, "homophone": "愛的 賴克 兔 歐盆 阿 切金 阿看特 普利斯"}, {"en": "I'd like to deposit this money into my account.", "zh": "我想把這筆錢存進我的帳戶。", "tag": "存款", "level": 1, "survival": true, "homophone": "愛的 賴克 兔 低撲西特 帝斯 曼尼 引兔 麥 阿看特"}, {"en": "I'd like to withdraw two hundred dollars, please.", "zh": "我想提兩百元，謝謝。", "tag": "提款", "level": 1, "survival": true, "homophone": "愛的 賴克 兔 位斯抓 兔 哈準 大樂斯 普利斯"}, {"en": "Can I get this in smaller bills, please?", "zh": "可以幫我換成小面額鈔票嗎？", "tag": "換鈔", "level": 2, "survival": false, "homophone": "肯愛 給特 帝斯 引 斯摸樂兒 逼爾斯 普利斯"}, {"en": "What documents do I need to open an account?", "zh": "開戶需要什麼證件？", "tag": "證件", "level": 2, "survival": false, "homophone": "華特 達Q悶特斯 賭 愛 尼的 兔 歐盆 恩 阿看特"}, {"en": "Here's my passport and my ID card.", "zh": "這是我的護照和身分證。", "tag": "證件", "level": 1, "survival": true, "homophone": "希爾斯 麥 帕斯波特 恩的 麥 愛低 卡的"}, {"en": "I'd like to exchange US dollars for local currency.", "zh": "我想把美金換成當地貨幣。", "tag": "換錢", "level": 2, "survival": false, "tip": "currency 指「貨幣」，local currency 就是當地錢幣", "homophone": "愛的 賴克 兔 一克斯勸居 尤艾斯 大樂斯 佛 樓摳 卡潤西"}, {"en": "What's today's exchange rate for the US dollar?", "zh": "今天美金的匯率是多少？", "tag": "匯率", "level": 2, "survival": false, "homophone": "華資 特爹斯 一克斯勸居 瑞特 佛 則 尤艾斯 大樂"}, {"en": "Is there a fee for exchanging currency here?", "zh": "在這裡換錢需要手續費嗎？", "tag": "手續費", "level": 2, "survival": false, "homophone": "意斯 賽兒 阿 費 佛 一克斯勸金 卡潤西 希爾"}, {"en": "I need to wire money to my family overseas.", "zh": "我需要匯款給海外的家人。", "tag": "匯款", "level": 3, "survival": false}, {"en": "How long will the wire transfer take to arrive?", "zh": "這筆匯款大概多久會到？", "tag": "匯款", "level": 3, "survival": false}, {"en": "The ATM swallowed my card. Can you help me?", "zh": "自動櫃員機吞了我的卡，可以幫我處理嗎？", "tag": "ATM問題", "level": 2, "survival": true, "tip": "swallow 在這裡指機器「吞卡」", "homophone": "則 誒踢誒姆 私窩得 麥 卡的 肯尤 黑爾普 密"}, {"en": "My card isn't working. Could you check what's wrong?", "zh": "我的卡不能用，可以幫我看一下是哪裡出問題嗎？", "tag": "ATM問題", "level": 2, "survival": true, "homophone": "麥 卡的 意任特 沃金 苦揪 切克 華資 弄"}, {"en": "I forgot my PIN. What should I do?", "zh": "我忘記密碼了，該怎麼辦？", "tag": "密碼", "level": 1, "survival": true, "homophone": "愛 佛嘎特 麥 拼 華特 秀的 愛 賭"}, {"en": "Thank you so much for your help, have a good day.", "zh": "非常謝謝你的幫忙，祝你有美好的一天。", "tag": "收尾", "level": 1, "survival": false, "homophone": "山Q 蘇 罵取 佛 幽兒 黑爾普 黑夫 阿 古的 爹"}], "dialogue": {"title": "在銀行開戶與換錢", "youRole": "顧客", "npcRole": "銀行行員", "lines": [{"who": "you", "en": "Excuse me, I'd like to open a checking account.", "zh": "不好意思，我想開一個活期帳戶。"}, {"who": "npc", "en": "Sure, do you have your passport and proof of address?", "zh": "好的，請問您有護照和地址證明嗎？"}, {"who": "you", "en": "Yes, here's my passport. I don't have a utility bill though.", "zh": "有的，這是我的護照。不過我沒有帶帳單。"}, {"who": "npc", "en": "That's okay, your lease agreement will work too.", "zh": "沒關係，租賃合約也可以。"}, {"who": "you", "en": "Great. I'd also like to deposit five hundred dollars into the new account.", "zh": "太好了。我還想在新帳戶裡存五百元。"}, {"who": "npc", "en": "No problem. Would you like a debit card with that?", "zh": "沒問題。您需要一張附加的金融卡嗎？"}, {"who": "you", "en": "Yes, please. Also, what's today's exchange rate for the euro?", "zh": "好的，麻煩了。另外，今天歐元的匯率是多少？"}, {"who": "npc", "en": "It's 1.08 dollars per euro, with a small service fee.", "zh": "一歐元兌1.08美元，另外有一點手續費。"}, {"who": "you", "en": "That's fine. Could you also help me set up online banking?", "zh": "沒問題。可以再幫我設定網路銀行嗎？"}, {"who": "npc", "en": "Of course, I'll walk you through it right now.", "zh": "當然，我現在就帶您操作一遍。"}, {"who": "you", "en": "Perfect, thank you so much for your help.", "zh": "太好了，非常謝謝你的幫忙。"}, {"who": "npc", "en": "You're welcome! Here's your account information and debit card.", "zh": "不客氣！這是您的帳戶資料和金融卡。"}]}}, {"id": "post-office", "icon": "📮", "title": "郵局寄領", "titleEn": "Post Office", "desc": "寄信寄包裹、掛號、領件、退件", "country": "US", "words": [{"en": "package", "zh": "包裹", "ico": "📦"}, {"en": "stamp", "zh": "郵票", "ico": "📮"}, {"en": "registered mail", "zh": "掛號信", "ico": "📝"}, {"en": "envelope", "zh": "信封", "ico": "✉️"}, {"en": "tracking number", "zh": "追蹤編號", "ico": "🔢"}, {"en": "return to sender", "zh": "退回寄件人", "ico": "↩️"}, {"en": "pick up (a parcel)", "zh": "領取(包裹)", "ico": "🙋"}, {"en": "customs form", "zh": "海關申報單", "ico": "📋"}], "patterns": [{"en": "I'd like to send this ___.", "zh": "我想要寄這個___。", "slots": ["package", "letter", "by registered mail"]}, {"en": "How much does it cost to mail this to ___?", "zh": "寄這個到___要多少錢？", "slots": ["Taiwan", "the U.S.", "this address"]}, {"en": "I'm here to pick up a ___.", "zh": "我是來領取___的。", "slots": ["package", "registered letter", "parcel with this slip"]}], "phrases": [{"en": "Excuse me, where's the post office?", "zh": "請問郵局在哪裡？", "tag": "開場問路", "level": 1, "survival": true, "homophone": "依克斯Q密 灰兒斯 德 波斯特 歐匪斯"}, {"en": "I'd like to send this package to Taiwan.", "zh": "我想要把這個包裹寄到台灣。", "tag": "寄包裹", "level": 1, "survival": true, "homophone": "愛的 賴克 兔 森的 帝斯 派幾之 兔 台灣"}, {"en": "I'd like to mail this letter, please.", "zh": "我想要寄這封信。", "tag": "寄信", "level": 1, "survival": false, "homophone": "愛的 賴克 兔 妹爾 帝斯 累特兒 普利斯"}, {"en": "How much does it cost to send this?", "zh": "寄這個要多少錢？", "tag": "詢問費用", "level": 1, "survival": true, "homophone": "好 罵取 得斯 一特 卡斯特 兔 森的 帝斯"}, {"en": "I need to send this by registered mail.", "zh": "我需要用掛號寄這個。", "tag": "掛號", "level": 2, "survival": true, "tip": "registered mail 掛號可追蹤、需簽收，比普通郵件貴但較安全。", "homophone": "愛 尼的 兔 森的 帝斯 拜 瑞舉斯特兒得 妹爾"}, {"en": "How long will it take to arrive?", "zh": "大概多久會到？", "tag": "詢問時間", "level": 2, "survival": false, "homophone": "好 龍 我 一特 貼克 兔 阿萊夫"}, {"en": "Can I get a tracking number for this?", "zh": "可以給我這個的追蹤編號嗎？", "tag": "要追蹤號", "level": 2, "survival": true, "homophone": "肯愛 給特 阿 除瑞金 難伯 佛 帝斯"}, {"en": "I'm here to pick up a package.", "zh": "我是來領取包裹的。", "tag": "領件", "level": 1, "survival": true, "homophone": "愛姆 希爾 兔 匹克阿普 阿 派幾之"}, {"en": "Here's the pickup notice / slip.", "zh": "這是領件通知單。", "tag": "領件單", "level": 2, "survival": true, "homophone": "希爾斯 則 匹克阿普 弄提斯／私利普"}, {"en": "Do you need my ID for this?", "zh": "需要看我的證件嗎？", "tag": "出示證件", "level": 2, "survival": false, "homophone": "賭 尤 尼的 麥 愛低 佛 帝斯"}, {"en": "I think this package was returned to sender. Can you tell me why?", "zh": "我這個包裹好像被退回了，可以告訴我原因嗎？", "tag": "詢問退件", "level": 3, "survival": false}, {"en": "Do I need to fill out a customs form?", "zh": "我需要填海關申報單嗎？", "tag": "海關單", "level": 2, "survival": false, "tip": "寄國際包裹常需填 customs declaration form，內容物與價值要誠實填寫。", "homophone": ""}, {"en": "Is this fragile? Do I need extra padding?", "zh": "這個易碎嗎？需要額外的緩衝包材嗎？", "tag": "易碎品", "level": 3, "survival": false}, {"en": "Which is faster, airmail or surface mail?", "zh": "空運跟海運哪個比較快？", "tag": "比較運送方式", "level": 3, "survival": false}, {"en": "Do you sell boxes and tape here?", "zh": "這裡有賣紙箱和膠帶嗎？", "tag": "買包材", "level": 2, "survival": false, "homophone": "賭 尤 塞爾 巴克西斯 恩 貼普 希爾"}, {"en": "Thank you, have a nice day!", "zh": "謝謝，祝你有美好的一天！", "tag": "結尾道謝", "level": 1, "survival": false, "homophone": "三Q 黑夫 阿 耐斯 爹"}], "dialogue": {"title": "在郵局寄掛號包裹", "youRole": "顧客", "npcRole": "郵局櫃檯人員", "lines": [{"who": "you", "en": "Hi, I'd like to send this package to Taiwan.", "zh": "你好，我想把這個包裹寄到台灣。"}, {"who": "npc", "en": "Sure. Would you like regular mail or registered mail?", "zh": "好的，您要寄普通郵件還是掛號？"}, {"who": "you", "en": "Registered mail, please. I need it to be trackable.", "zh": "請幫我用掛號，我需要可以追蹤的。"}, {"who": "npc", "en": "No problem. Could you fill out this customs form? Please list the contents and value.", "zh": "沒問題。請填一下這張海關申報單，寫上內容物和價值。"}, {"who": "you", "en": "Sure. It's just some clothes and snacks, about 30 dollars.", "zh": "好的，裡面是一些衣服跟零食，大概值30美元。"}, {"who": "npc", "en": "Great, that'll be $18.50, and it should arrive in about 7 to 10 days.", "zh": "好的，這樣是18.5美元，大概7到10天會到。"}, {"who": "you", "en": "Can I get a tracking number for this?", "zh": "可以給我追蹤編號嗎？"}, {"who": "npc", "en": "Of course, here's your receipt with the tracking number on it.", "zh": "當然，這是您的收據，上面有追蹤編號。"}, {"who": "you", "en": "Perfect. Oh, one more thing—I'm also here to pick up a package. Here's the notice.", "zh": "太好了。喔對了，我還要來領一個包裹，這是通知單。"}, {"who": "npc", "en": "Let me check... yes, I have it here. Can I see your ID, please?", "zh": "我查一下…有的，在這裡。可以看一下您的證件嗎？"}, {"who": "you", "en": "Here you go.", "zh": "給您。"}, {"who": "npc", "en": "Thanks, everything checks out. Here's your package. Have a nice day!", "zh": "謝謝，都沒問題。這是您的包裹，祝您有美好的一天！"}]}}, {"id": "clinic", "icon": "🏥", "title": "看醫生", "titleEn": "Seeing a Doctor", "desc": "掛號、描述症狀、看診、拿處方", "country": "US", "words": [{"en": "appointment", "zh": "預約", "ico": "📅"}, {"en": "symptom", "zh": "症狀", "ico": "🤒"}, {"en": "prescription", "zh": "處方箋", "ico": "💊"}, {"en": "insurance card", "zh": "健保卡", "ico": "🪪"}, {"en": "fever", "zh": "發燒", "ico": "🌡️"}, {"en": "receptionist", "zh": "櫃檯人員", "ico": "🧑‍💼"}, {"en": "pharmacy", "zh": "藥局", "ico": "🏥"}, {"en": "allergy", "zh": "過敏", "ico": "🤧"}], "patterns": [{"en": "I have a ___.", "zh": "我有___(症狀)。", "slots": ["fever", "sore throat", "headache", "stomachache"]}, {"en": "Can I make an appointment for ___?", "zh": "我可以預約___的看診嗎？", "slots": ["today", "tomorrow morning", "this afternoon"]}, {"en": "I'm allergic to ___.", "zh": "我對___過敏。", "slots": ["penicillin", "aspirin", "peanuts"]}], "phrases": [{"en": "Excuse me, I'd like to make an appointment.", "zh": "不好意思，我想要預約看診。", "tag": "開場", "level": 1, "survival": true, "homophone": "依克斯Q密 愛的 賴克 兔 妹克 恩 阿破因特門特"}, {"en": "I don't feel well.", "zh": "我不太舒服。", "tag": "開場", "level": 1, "survival": true, "homophone": "愛 動特 費爾 威爾"}, {"en": "Do you have an opening today?", "zh": "今天還有空檔嗎？", "tag": "預約", "level": 2, "survival": false, "homophone": "賭 尤 黑夫 恩 歐匹寧 特爹"}, {"en": "Is this your first time here?", "zh": "這是您第一次來嗎？(醫護常問)", "tag": "預約", "level": 2, "survival": false, "homophone": "意斯 帝斯 幽兒 福斯特 太姆 希爾"}, {"en": "Here's my insurance card.", "zh": "這是我的健保卡。", "tag": "櫃檯", "level": 1, "survival": true, "homophone": "希爾斯 麥 印秀潤斯 卡的"}, {"en": "I have a fever and a sore throat.", "zh": "我發燒又喉嚨痛。", "tag": "症狀", "level": 1, "survival": true, "homophone": "愛 黑夫 阿 飛佛 恩 阿 索兒 史若特"}, {"en": "I've had a headache since yesterday.", "zh": "我從昨天開始頭痛。", "tag": "症狀", "level": 2, "survival": false, "homophone": "愛福 黑的 阿 黑得誒克 辛斯 耶斯特得"}, {"en": "It hurts here.", "zh": "這裡痛。", "tag": "症狀", "level": 1, "survival": true, "homophone": "一特 哈茲 希爾", "tip": "看診時可直接手指痛點配合這句"}, {"en": "I feel dizzy and nauseous.", "zh": "我覺得頭暈想吐。", "tag": "症狀", "level": 2, "survival": false, "homophone": "愛 費爾 底日 恩 諾休斯"}, {"en": "How long have you had these symptoms?", "zh": "這些症狀多久了？(醫生常問)", "tag": "問診", "level": 2, "survival": false, "homophone": "好 龍 黑夫 尤 黑的 低斯 新普透姆斯"}, {"en": "Do you have any allergies?", "zh": "你有任何過敏嗎？(醫生常問)", "tag": "問診", "level": 2, "survival": false, "homophone": "賭 尤 黑夫 安尼 阿樂吉斯"}, {"en": "I'm allergic to penicillin.", "zh": "我對盤尼西林過敏。", "tag": "過敏", "level": 2, "survival": true, "tip": "務必主動告知，避免用藥風險", "homophone": "愛姆 阿樂吉客 兔 噴你西林"}, {"en": "Take one pill three times a day after meals.", "zh": "每天三次，飯後服用一顆。(醫生交代)", "tag": "用藥", "level": 3, "survival": false}, {"en": "Where can I pick up my prescription?", "zh": "我要去哪裡拿藥？", "tag": "領藥", "level": 1, "survival": true, "homophone": "灰兒 肯 愛 匹克阿普 麥 普利斯Q力訓"}, {"en": "How much do I need to pay?", "zh": "我要付多少錢？", "tag": "付款", "level": 1, "survival": false, "homophone": "好 罵取 賭 愛 尼的 兔 配"}, {"en": "Thank you, doctor. Have a good day.", "zh": "謝謝醫生，祝您有美好的一天。", "tag": "收尾", "level": 1, "survival": false, "homophone": "山Q 達克特兒 黑夫 阿 古的 爹"}], "dialogue": {"title": "診所掛號與看診", "youRole": "病人", "npcRole": "櫃檯／醫生", "lines": [{"who": "you", "en": "Excuse me, I'd like to make an appointment. I don't feel well.", "zh": "不好意思，我想要預約看診，我不太舒服。"}, {"who": "npc", "en": "Sure. Is this your first time here? May I have your insurance card, please?", "zh": "好的。這是您第一次來嗎？可以給我您的健保卡嗎？"}, {"who": "you", "en": "Yes, first time. Here's my insurance card.", "zh": "是的，第一次。這是我的健保卡。"}, {"who": "npc", "en": "Great, please have a seat. The doctor will call you shortly.", "zh": "好的，請先坐著等候，醫生很快會叫您。"}, {"who": "npc", "en": "So, what brings you in today?", "zh": "今天是哪裡不舒服呢？"}, {"who": "you", "en": "I have a fever and a sore throat since yesterday.", "zh": "我從昨天開始發燒又喉嚨痛。"}, {"who": "npc", "en": "I see. Do you have any allergies?", "zh": "了解。你有任何過敏嗎？"}, {"who": "you", "en": "Yes, I'm allergic to penicillin.", "zh": "有，我對盤尼西林過敏。"}, {"who": "npc", "en": "Noted. It looks like a mild throat infection. I'll write you a prescription.", "zh": "我記下了。看起來是輕微的喉嚨發炎，我會開處方箋給您。"}, {"who": "you", "en": "Where can I pick up my prescription?", "zh": "我要去哪裡拿藥？"}, {"who": "npc", "en": "The pharmacy is right next door. Take the medicine three times a day after meals.", "zh": "藥局就在隔壁。藥請每天三次、飯後服用。"}, {"who": "you", "en": "Thank you, doctor. Have a good day.", "zh": "謝謝醫生，祝您有美好的一天。"}]}}, {"id": "pharmacy", "icon": "💊", "title": "藥局買藥", "titleEn": "Pharmacy", "desc": "買成藥、領處方藥、問用法用量", "country": "US", "words": [{"en": "pharmacy", "zh": "藥局", "ico": "💊"}, {"en": "prescription", "zh": "處方箋", "ico": "📄"}, {"en": "over-the-counter (OTC)", "zh": "成藥／非處方藥", "ico": "🧴"}, {"en": "pharmacist", "zh": "藥師", "ico": "🥼"}, {"en": "dosage", "zh": "劑量", "ico": "⚖️"}, {"en": "side effect", "zh": "副作用", "ico": "⚠️"}, {"en": "painkiller", "zh": "止痛藥", "ico": "🩹"}, {"en": "allergic", "zh": "過敏的", "ico": "🤧"}], "patterns": [{"en": "Do you have something for ___?", "zh": "你們有治療___的藥嗎？", "slots": ["a headache", "a cough", "an upset stomach"]}, {"en": "How many times a day should I take ___?", "zh": "___一天要吃幾次？", "slots": ["this", "these pills", "this medicine"]}, {"en": "I'm allergic to ___.", "zh": "我對___過敏。", "slots": ["penicillin", "aspirin", "sulfa drugs"]}], "phrases": [{"en": "Excuse me, do you have something for a headache?", "zh": "不好意思，你們有治頭痛的藥嗎？", "tag": "開場需求", "level": 1, "survival": true, "homophone": "依克斯Q密 賭 尤 黑夫 山姆施硬 佛 阿 黑得誒克"}, {"en": "I'd like to fill this prescription, please.", "zh": "我要領這張處方箋的藥。", "tag": "領處方藥", "level": 1, "survival": true, "homophone": "愛的 賴克 兔 費爾 帝斯 普利斯Q力訓 普利斯"}, {"en": "How much is this?", "zh": "這個多少錢？", "tag": "問價錢", "level": 1, "survival": false, "homophone": "好 罵取 意斯 帝斯"}, {"en": "Can I pay with my insurance card?", "zh": "我可以用健保卡付費嗎？", "tag": "健保", "level": 2, "survival": false, "homophone": "肯愛 配 位斯 麥 印秀潤斯 卡的"}, {"en": "How many times a day should I take this?", "zh": "這個一天要吃幾次？", "tag": "用法用量", "level": 1, "survival": true, "homophone": "好 沒你 太姆斯 阿 爹 秀的 愛 貼克 帝斯"}, {"en": "Should I take it before or after meals?", "zh": "要飯前還是飯後吃？", "tag": "用法用量", "level": 2, "survival": true, "homophone": "秀的 愛 貼克 一特 逼佛 歐兒 阿夫特 密爾斯"}, {"en": "How many pills should I take at a time?", "zh": "一次要吃幾顆？", "tag": "劑量", "level": 2, "survival": false, "homophone": "好 沒你 批爾斯 秀的 愛 貼克 誒特 阿 太姆"}, {"en": "Are there any side effects I should know about?", "zh": "有什麼我該注意的副作用嗎？", "tag": "副作用", "level": 2, "survival": false, "tip": "藥師常會主動提醒，你也可以主動問", "homophone": "阿 賽兒 安尼 賽得一費克特斯 愛 秀的 諾 阿保特"}, {"en": "I'm allergic to penicillin.", "zh": "我對盤尼西林過敏。", "tag": "過敏告知", "level": 1, "survival": true, "homophone": "愛姆 阿樂吉客 兔 噴你西林", "tip": "看醫生或領藥時務必主動告知過敏史"}, {"en": "Is this safe to take with other medications?", "zh": "這個跟其他藥一起吃安全嗎？", "tag": "藥物交互", "level": 3, "survival": false}, {"en": "Can you recommend something for a sore throat?", "zh": "可以推薦治喉嚨痛的藥嗎？", "tag": "推薦用藥", "level": 2, "survival": false, "homophone": "肯尤 瑞卡曼得 山姆施硬 佛 阿 索兒 史若特"}, {"en": "Do you have this in a lower dose?", "zh": "有比較低劑量的嗎？", "tag": "劑量", "level": 3, "survival": false}, {"en": "Is a doctor's note required for this medicine?", "zh": "這個藥需要醫生的證明嗎？", "tag": "處方規定", "level": 3, "survival": false}, {"en": "Where can I find the cough syrup?", "zh": "咳嗽糖漿放在哪裡？", "tag": "找商品", "level": 2, "survival": false, "homophone": "灰兒 肯 愛 煩得 則 咖夫 蘇入普"}, {"en": "Can I get a refill on this prescription?", "zh": "這個處方箋可以續領嗎？", "tag": "續領", "level": 2, "survival": false, "homophone": "肯愛 給特 阿 瑞費爾 忘 帝斯 普利斯Q力訓"}, {"en": "Thank you, that's all I need.", "zh": "謝謝，我需要的就這些。", "tag": "收尾道謝", "level": 1, "survival": true, "homophone": "山Q 賽茲 歐 愛 尼的"}], "dialogue": {"title": "在美式藥局買藥", "youRole": "顧客", "npcRole": "藥師", "lines": [{"who": "you", "en": "Excuse me, do you have something for a bad cough?", "zh": "不好意思，你們有治嚴重咳嗽的藥嗎？"}, {"who": "npc", "en": "Sure, is it a dry cough or a wet cough?", "zh": "當然，是乾咳還是有痰的咳嗽？"}, {"who": "you", "en": "It's a dry cough, and my throat is sore too.", "zh": "是乾咳，喉嚨也會痛。"}, {"who": "npc", "en": "This cough syrup should help with both. Are you allergic to any medications?", "zh": "這款咳嗽糖漿對兩者都有幫助。你對任何藥物過敏嗎？"}, {"who": "you", "en": "I'm allergic to penicillin, but that's it.", "zh": "我對盤尼西林過敏，其他就沒有了。"}, {"who": "npc", "en": "Good to know. This one doesn't contain that, so you're fine.", "zh": "了解，這款不含那個成分，可以放心使用。"}, {"who": "you", "en": "How many times a day should I take it?", "zh": "這個一天要吃幾次？"}, {"who": "npc", "en": "Take one tablespoon every six hours, up to four times a day.", "zh": "每六小時吃一湯匙，一天最多四次。"}, {"who": "you", "en": "Should I take it before or after meals?", "zh": "要飯前還是飯後吃？"}, {"who": "npc", "en": "After meals is better, to avoid an upset stomach.", "zh": "飯後吃比較好，避免胃不舒服。"}, {"who": "you", "en": "Got it. How much is this?", "zh": "了解。這個多少錢？"}, {"who": "npc", "en": "That'll be twelve dollars. Feel better soon!", "zh": "一共十二美元。祝你早日康復！"}]}}, {"id": "phone-plan", "icon": "📱", "title": "辦手機門號", "titleEn": "Phone & SIM", "desc": "辦SIM卡、選網路方案、儲值、問資費", "country": "US", "words": [{"en": "SIM card", "zh": "SIM卡", "ico": "📶"}, {"en": "plan", "zh": "資費方案", "ico": "📱"}, {"en": "data", "zh": "網路流量", "ico": "📊"}, {"en": "top up", "zh": "儲值", "ico": "💰"}, {"en": "monthly fee", "zh": "月租費", "ico": "💵"}, {"en": "contract", "zh": "合約", "ico": "📄"}, {"en": "prepaid", "zh": "預付卡", "ico": "🎫"}, {"en": "carrier", "zh": "電信商", "ico": "📡"}], "patterns": [{"en": "I'd like to ___.", "zh": "我想要___。", "slots": ["get a new SIM card", "sign up for a prepaid plan", "top up my phone"]}, {"en": "How much ___ does this plan come with?", "zh": "這個方案有多少___？", "slots": ["data", "talk time", "text messages"]}, {"en": "Is there a ___?", "zh": "有___嗎？", "slots": ["contract", "monthly fee", "activation fee"]}], "phrases": [{"en": "Hi, I'd like to get a new SIM card, please.", "zh": "嗨，我想辦一張新的SIM卡。", "tag": "開場", "level": 1, "survival": true, "homophone": "嗨 愛的 賴克 兔 給特 阿 紐 心 卡的 普利斯", "tip": "開場最常用的一句，店員一聽就知道你要辦門號"}, {"en": "What plans do you have?", "zh": "你們有什麼方案？", "tag": "問方案", "level": 1, "survival": true, "homophone": "華特 普藍斯 賭 尤 黑夫"}, {"en": "Is this prepaid or a monthly plan?", "zh": "這是預付卡還是月租型方案？", "tag": "預付月租", "level": 2, "survival": false, "homophone": "意斯 帝斯 普利配得 歐兒 阿 曼斯利 普藍"}, {"en": "How much is the monthly fee?", "zh": "月租費多少錢？", "tag": "問資費", "level": 1, "survival": true, "homophone": "好 罵取 意斯 則 曼斯利 費"}, {"en": "How much data do I get?", "zh": "有多少網路流量？", "tag": "問流量", "level": 1, "survival": true, "homophone": "好 罵取 得踏 賭 愛 給特"}, {"en": "Is the data speed fast?", "zh": "網速快嗎？", "tag": "問網速", "level": 2, "survival": false, "homophone": "意斯 則 得踏 斯批得 費斯特"}, {"en": "Can I top up here?", "zh": "我可以在這裡儲值嗎？", "tag": "儲值", "level": 1, "survival": false, "homophone": "肯愛 拓阿普 希爾"}, {"en": "I'd like to top up 20 dollars.", "zh": "我想儲值20美元。", "tag": "儲值金額", "level": 2, "survival": false, "tip": "美國可換成 twenty dollars，台灣可說 six hundred NT dollars", "homophone": "愛的 賴克 兔 拓阿普 團提 大樂斯"}, {"en": "Do I need to sign a contract?", "zh": "我需要簽合約嗎？", "tag": "問合約", "level": 2, "survival": true, "homophone": "賭愛 尼的 兔 賽恩 阿 康崔特"}, {"en": "I want a no-contract plan.", "zh": "我要不綁約的方案。", "tag": "無合約", "level": 2, "survival": false, "homophone": "愛 忘特 阿 諾康崔特 普藍"}, {"en": "Can you switch my SIM card for me?", "zh": "可以幫我換SIM卡嗎？", "tag": "換卡", "level": 3, "survival": false}, {"en": "Can I keep my phone number?", "zh": "我可以保留原本的門號嗎？", "tag": "攜碼", "level": 3, "survival": false, "tip": "換電信商保留舊號碼叫 number porting"}, {"en": "Does this plan include international roaming?", "zh": "這個方案有包含國際漫遊嗎？", "tag": "國際漫遊", "level": 3, "survival": false}, {"en": "Where can I check my bill?", "zh": "我可以在哪裡查帳單？", "tag": "查帳單", "level": 2, "survival": false, "homophone": "灰兒 肯 愛 切克 麥 逼爾"}, {"en": "Can I pay by credit card?", "zh": "可以用信用卡付款嗎？", "tag": "付款方式", "level": 2, "survival": false, "homophone": "肯愛 配 拜 苦瑞低 卡的"}, {"en": "Thank you, that's all I need.", "zh": "謝謝，這樣就可以了。", "tag": "收尾", "level": 1, "survival": true, "homophone": "山Q 賽茲 歐 愛 尼的"}], "dialogue": {"title": "在電信門市辦手機門號", "youRole": "顧客", "npcRole": "門市店員", "lines": [{"who": "you", "en": "Hi, I'd like to get a new SIM card, please.", "zh": "嗨，我想辦一張新的SIM卡。"}, {"who": "npc", "en": "Sure! Is this for a prepaid or a monthly plan?", "zh": "沒問題！你要辦預付卡還是月租型方案呢？"}, {"who": "you", "en": "What plans do you have?", "zh": "你們有什麼方案？"}, {"who": "npc", "en": "We have a $30 plan with 5GB of data, and a $50 plan with unlimited data.", "zh": "我們有30美元含5GB流量的方案，還有50美元的無限流量方案。"}, {"who": "you", "en": "How much data do I get with the $30 plan?", "zh": "30美元的方案有多少流量？"}, {"who": "npc", "en": "You get 5GB of high-speed data, then it slows down after that.", "zh": "有5GB高速流量，用完之後網速會變慢。"}, {"who": "you", "en": "Do I need to sign a contract?", "zh": "我需要簽合約嗎？"}, {"who": "npc", "en": "No, this plan is contract-free. You can cancel anytime.", "zh": "不用，這個方案不綁約，隨時都可以取消。"}, {"who": "you", "en": "Great, I'll take the $30 plan. Can I top up online later?", "zh": "太好了，我要30美元的方案。之後可以線上儲值嗎？"}, {"who": "npc", "en": "Yes, you can top up anytime through our app or website.", "zh": "可以，你可以隨時透過我們的App或網站儲值。"}, {"who": "you", "en": "Perfect. Can I pay by credit card?", "zh": "太好了。可以用信用卡付款嗎？"}, {"who": "npc", "en": "Of course. Here's your new SIM card — welcome aboard!", "zh": "當然可以。這是你的新SIM卡，歡迎加入！"}]}}, {"id": "utilities", "icon": "💡", "title": "水電網路帳單", "titleEn": "Utilities & Bills", "desc": "開通、繳費、帳單問題、報修", "country": "US", "words": [{"en": "electricity bill", "zh": "電費帳單", "ico": "💡"}, {"en": "water bill", "zh": "水費帳單", "ico": "🚰"}, {"en": "internet service", "zh": "網路服務", "ico": "📶"}, {"en": "set up / activate", "zh": "開通", "ico": "🔌"}, {"en": "due date", "zh": "繳費期限", "ico": "📅"}, {"en": "overcharge", "zh": "多收費", "ico": "💸"}, {"en": "outage", "zh": "斷電/斷網", "ico": "⚠️"}, {"en": "technician", "zh": "維修人員", "ico": "🛠️"}], "patterns": [{"en": "I'd like to set up ___ service at my new address.", "zh": "我想在我的新地址開通___服務。", "slots": ["electricity", "water", "internet"]}, {"en": "There's a problem with my ___ this month.", "zh": "我這個月的___有問題。", "slots": ["electricity bill", "water bill", "internet bill"]}, {"en": "My ___ has been out since ___.", "zh": "我的___從___開始就沒了。", "slots": ["internet / this morning", "power / last night", "hot water / yesterday"]}], "phrases": [{"en": "Excuse me, I'd like to set up electricity service.", "zh": "不好意思，我想開通電力服務。", "tag": "開場", "level": 1, "survival": true, "homophone": "依克斯Q密 愛的 賴克 兔 塞特阿普 伊勒克垂西替 社維斯"}, {"en": "I just moved in and need to activate my internet.", "zh": "我剛搬進來，需要開通網路。", "tag": "開通", "level": 1, "survival": true, "homophone": "愛 賈斯特 木夫得 引 恩的 尼的 兔 阿克提維特 麥 印特內特"}, {"en": "How do I pay my water bill?", "zh": "我要怎麼繳水費?", "tag": "繳費", "level": 1, "survival": true, "homophone": "好 賭 愛 配 麥 挖特 逼爾"}, {"en": "Can I pay this bill online or at a convenience store?", "zh": "這張帳單可以線上繳或去超商繳嗎?", "tag": "繳費方式", "level": 2, "survival": false, "tip": "台灣常見在7-11、全家等便利商店繳費", "homophone": "肯愛 配 帝斯 逼爾 昂賴恩 歐兒 誒特 阿 康維寧斯 私多兒"}, {"en": "When is the due date for this bill?", "zh": "這張帳單的繳費期限是什麼時候?", "tag": "期限", "level": 1, "survival": true, "homophone": "溫 意斯 則 丟爹特 佛 帝斯 逼爾"}, {"en": "I think there's a mistake on my bill this month.", "zh": "我覺得我這個月的帳單有錯誤。", "tag": "帳單問題", "level": 2, "survival": false, "homophone": "愛 施因克 賽兒斯 阿 密斯貼克 忘 麥 逼爾 帝斯 曼斯"}, {"en": "I was overcharged for last month's usage.", "zh": "上個月的用量我被多收費了。", "tag": "多收費", "level": 3, "survival": false}, {"en": "Can you explain why this charge is so high?", "zh": "你能解釋一下為什麼這筆費用這麼高嗎?", "tag": "詢問明細", "level": 2, "survival": false, "homophone": "肯尤 一克斯普連 壞 帝斯 恰之 意斯 蘇 嗨"}, {"en": "My internet has been down since this morning.", "zh": "我的網路從今天早上就斷了。", "tag": "報修", "level": 1, "survival": true, "homophone": "麥 印特內特 哈斯 賓 道恩 辛斯 帝斯 摸寧"}, {"en": "There's no hot water in my apartment.", "zh": "我家公寓沒有熱水。", "tag": "報修", "level": 2, "survival": false, "homophone": "賽兒斯 諾 哈特 挖特 引 麥 阿趴特門特"}, {"en": "Can you send a technician to check it?", "zh": "可以派維修人員來看看嗎?", "tag": "請求維修", "level": 2, "survival": true, "tip": "打客服電話報修常用句", "homophone": "肯尤 森的 阿 特尼訓 兔 切克 一特"}, {"en": "When can the technician come to my place?", "zh": "維修人員什麼時候可以到我家?", "tag": "約時間", "level": 2, "survival": false, "homophone": "溫 肯 則 特尼訓 康 兔 麥 普累斯"}, {"en": "Is there a service fee for the repair?", "zh": "維修需要收費嗎?", "tag": "費用確認", "level": 2, "survival": false, "homophone": "意斯 賽兒 阿 社維斯 費 佛 則 瑞配兒"}, {"en": "Do I need to bring my ID and lease to set up service?", "zh": "開通服務需要帶身分證和租約嗎?", "tag": "開通文件", "level": 3, "survival": false}, {"en": "Can I switch to autopay so I don't miss the due date?", "zh": "我可以改成自動扣款，這樣才不會錯過繳費期限嗎?", "tag": "自動扣款", "level": 3, "survival": false}, {"en": "Thank you for your help, I'll pay it right away.", "zh": "謝謝你的幫忙，我馬上繳。", "tag": "收尾", "level": 1, "survival": false, "homophone": "山Q 佛 幽兒 黑爾普 愛我 配 一特 瑞特 阿為"}], "dialogue": {"title": "報修網路與確認帳單", "youRole": "住戶", "npcRole": "客服人員", "lines": [{"who": "you", "en": "Hi, I'm calling because my internet has been down since this morning.", "zh": "嗨，我打來是因為我的網路從今天早上就斷了。"}, {"who": "npc", "en": "I'm sorry to hear that. Can I have your account number, please?", "zh": "很抱歉聽到這個消息。可以給我您的帳號嗎?"}, {"who": "you", "en": "Sure, it's 4487215.", "zh": "好的，是4487215。"}, {"who": "npc", "en": "Thanks. Let me check... It looks like there's an outage in your area.", "zh": "謝謝。我查一下... 看起來您那一區有斷線的情況。"}, {"who": "you", "en": "Oh, that explains it. Do you know when it will be fixed?", "zh": "喔，難怪。你知道大概什麼時候會修好嗎?"}, {"who": "npc", "en": "A technician is already on the way. It should be resolved within two hours.", "zh": "維修人員已經在路上了，應該兩小時內就能解決。"}, {"who": "you", "en": "Great, thank you. Also, I think there's a mistake on my last bill.", "zh": "太好了，謝謝。另外，我覺得上個月的帳單有錯誤。"}, {"who": "npc", "en": "Let me take a look. What seems to be the problem?", "zh": "我看一下。是什麼問題呢?"}, {"who": "you", "en": "I was overcharged — the amount is almost double last month's.", "zh": "我被多收費了，金額幾乎是上個月的兩倍。"}, {"who": "npc", "en": "I see the issue. I'll adjust it and send you a corrected bill by email.", "zh": "我看到問題了。我會幫您調整，並用電子郵件寄送更正後的帳單。"}, {"who": "you", "en": "Perfect, thank you so much for your help.", "zh": "太好了，非常謝謝你的幫忙。"}, {"who": "npc", "en": "You're welcome. Have a great day!", "zh": "不客氣，祝您有美好的一天!"}]}}, {"id": "gov-office", "icon": "🏛️", "title": "公家機關", "titleEn": "Government Office", "desc": "辦證件、填表格、問窗口、預約", "country": "US", "words": [{"en": "form", "zh": "表格", "ico": "📝"}, {"en": "ID / passport", "zh": "身分證／護照", "ico": "🪪"}, {"en": "appointment", "zh": "預約", "ico": "📅"}, {"en": "counter / window", "zh": "櫃檯／窗口", "ico": "🪟"}, {"en": "number ticket", "zh": "號碼牌", "ico": "🎫"}, {"en": "application", "zh": "申請", "ico": "📋"}, {"en": "fee", "zh": "規費", "ico": "💵"}, {"en": "stamp / seal", "zh": "印章／蓋章", "ico": "🔖"}], "patterns": [{"en": "I'd like to ___.", "zh": "我想要___。", "slots": ["apply for a new passport", "renew my ID card", "make an appointment"]}, {"en": "Where can I get ___?", "zh": "我可以在哪裡拿到___？", "slots": ["a number ticket", "this form", "more information"]}, {"en": "Do I need ___ for this?", "zh": "辦這個需要___嗎？", "slots": ["an appointment", "a photocopy of my ID", "a passport photo"]}], "phrases": [{"en": "Excuse me, where do I take a number?", "zh": "不好意思，請問要去哪裡抽號碼牌？", "tag": "開場問路", "level": 1, "survival": true, "homophone": "依克斯Q密 灰兒 賭 愛 貼克 阿 難伯"}, {"en": "I'd like to apply for a new passport.", "zh": "我想申請新護照。", "tag": "說明需求", "level": 1, "survival": true, "homophone": "愛的 賴克 兔 阿普賴 佛 阿 紐 帕斯波特"}, {"en": "Do I need an appointment?", "zh": "我需要先預約嗎？", "tag": "問預約", "level": 1, "survival": true, "homophone": "賭愛 尼的 恩 阿破因特門特"}, {"en": "I have an appointment at 10 o'clock.", "zh": "我十點有預約。", "tag": "報到", "level": 1, "survival": false, "homophone": "愛 黑夫 恩 阿破因特門特 誒特 貼恩 歐克拉克"}, {"en": "Which window should I go to?", "zh": "我應該去哪個窗口？", "tag": "問窗口", "level": 1, "survival": true, "homophone": "位取 溫斗 秀愛 溝 兔"}, {"en": "Could you help me fill out this form?", "zh": "可以幫我填這張表格嗎？", "tag": "請求協助", "level": 2, "survival": true, "homophone": "苦揪 黑爾普 密 費爾 凹特 帝斯 佛姆"}, {"en": "What documents do I need to bring?", "zh": "我需要帶什麼文件？", "tag": "問文件", "level": 2, "survival": false, "tip": "先問清楚再排隊，可省下重跑一趟", "homophone": "華特 達Q悶特斯 賭 愛 尼的 兔 布林"}, {"en": "Here is my ID and application form.", "zh": "這是我的身分證和申請表。", "tag": "遞交文件", "level": 1, "survival": false, "homophone": "希爾 意斯 麥 愛低 恩的 阿普利肯訓 佛姆"}, {"en": "How long will it take to process?", "zh": "辦理需要多久時間？", "tag": "問時間", "level": 2, "survival": false, "homophone": "好 龍 我 一特 貼克 兔 普拉塞斯"}, {"en": "How much is the fee?", "zh": "規費多少錢？", "tag": "問費用", "level": 1, "survival": true, "homophone": "好 罵取 意斯 則 費"}, {"en": "Can I pay by credit card?", "zh": "可以刷卡付款嗎？", "tag": "付款方式", "level": 2, "survival": false, "homophone": "肯愛 配 拜 苦瑞低 卡的"}, {"en": "I made a mistake on the form. Can I get a new one?", "zh": "我表格填錯了，可以再拿一張嗎？", "tag": "更正表格", "level": 2, "survival": false, "homophone": "愛 妹得 阿 密斯貼克 忘 則 佛姆 肯愛 給特 阿 紐 萬"}, {"en": "Where do I sign?", "zh": "我要簽在哪裡？", "tag": "簽名", "level": 1, "survival": false, "homophone": "灰兒 賭 愛 賽恩"}, {"en": "When can I pick it up?", "zh": "我什麼時候可以來領？", "tag": "問取件", "level": 2, "survival": false, "homophone": "溫 肯 愛 匹克 一特 阿普"}, {"en": "Will I get a text message or email notification?", "zh": "會有簡訊或email通知嗎？", "tag": "問通知", "level": 3, "survival": false}, {"en": "Thank you very much for your help.", "zh": "非常感謝您的協助。", "tag": "道謝結尾", "level": 1, "survival": false, "homophone": "山克尤 非瑞 罵取 佛 幽兒 黑爾普"}], "dialogue": {"title": "在公家機關辦理護照申請", "youRole": "民眾 (You)", "npcRole": "櫃檯人員 (Clerk)", "lines": [{"who": "you", "en": "Excuse me, where do I take a number for passport applications?", "zh": "不好意思，請問申請護照要在哪裡抽號碼牌？"}, {"who": "npc", "en": "Right over there, by the entrance. Take a 'B' ticket for passport services.", "zh": "就在那邊，入口旁。護照業務請抽B類號碼牌。"}, {"who": "you", "en": "Thank you. Do I need an appointment for this?", "zh": "謝謝。這個需要先預約嗎？"}, {"who": "npc", "en": "No, walk-ins are fine, but the wait might be about 30 minutes.", "zh": "不用，現場排隊就可以，但可能要等大約30分鐘。"}, {"who": "you", "en": "That's okay. Could you tell me what documents I need to bring?", "zh": "沒關係。可以告訴我需要帶什麼文件嗎？"}, {"who": "npc", "en": "You'll need your ID card, one passport photo, and this application form.", "zh": "你需要身分證、一張護照照片，還有這張申請表。"}, {"who": "you", "en": "I see. Could you help me fill out this form? I'm not sure about a few sections.", "zh": "了解。可以幫我填這張表格嗎？有幾個部分我不太確定。"}, {"who": "npc", "en": "Sure, just fill in your name and address here, and sign at the bottom.", "zh": "當然，姓名和地址填在這裡，然後在最下面簽名。"}, {"who": "you", "en": "Got it. How much is the fee, and how long will processing take?", "zh": "了解。規費多少錢？辦理需要多久時間？"}, {"who": "npc", "en": "The fee is 1,300 NT dollars, and it usually takes about four working days.", "zh": "規費是新台幣1300元，通常需要大約四個工作天。"}, {"who": "you", "en": "Can I pay by credit card, and when can I pick it up?", "zh": "可以刷卡付款嗎？我什麼時候可以來領？"}, {"who": "npc", "en": "Yes, credit card is fine. You can pick it up after Thursday with this receipt.", "zh": "可以，刷卡沒問題。星期四之後就可以憑這張收據來領取。"}]}}, {"id": "repair", "icon": "🔧", "title": "維修報修", "titleEn": "Repairs", "desc": "家電水管壞掉、叫師傅、預約到府", "country": "US", "words": [{"en": "leak", "zh": "漏水", "ico": "💧"}, {"en": "repairman / technician", "zh": "維修師傅", "ico": "🧑‍🔧"}, {"en": "appliance", "zh": "家電", "ico": "🔌"}, {"en": "pipe", "zh": "水管", "ico": "🚰"}, {"en": "broken / not working", "zh": "壞掉／不能用", "ico": "❌"}, {"en": "estimate / quote", "zh": "估價", "ico": "💰"}, {"en": "appointment", "zh": "預約", "ico": "📅"}, {"en": "warranty", "zh": "保固", "ico": "📄"}], "patterns": [{"en": "My ___ is broken / leaking.", "zh": "我的___壞了／漏水了。", "slots": ["washing machine 洗衣機", "air conditioner 冷氣", "kitchen faucet 廚房水龍頭"]}, {"en": "Can you come check it ___?", "zh": "你可以___來看嗎？", "slots": ["today 今天", "tomorrow morning 明天早上", "this weekend 這個週末"]}, {"en": "How much will it cost to ___?", "zh": "___要多少錢？", "slots": ["fix the pipe 修水管", "replace the part 換零件", "repair the unit 維修這台機器"]}], "phrases": [{"en": "Hi, I need to report a repair problem.", "zh": "你好，我要報修一個問題。", "tag": "開場", "level": 1, "survival": true, "homophone": "嗨 愛 尼的 兔 瑞剖特 阿 瑞配兒 撲拉本"}, {"en": "My kitchen faucet is leaking.", "zh": "我的廚房水龍頭在漏水。", "tag": "漏水", "level": 1, "survival": true, "homophone": "麥 客親 發賽特 意斯 力肯"}, {"en": "The air conditioner isn't working.", "zh": "冷氣不能用了。", "tag": "故障", "level": 1, "survival": true, "homophone": "則 誒兒 肯滴訓兒 意任特 沃金"}, {"en": "Can you send someone over today?", "zh": "你們今天可以派人過來嗎？", "tag": "派人", "level": 1, "survival": true, "homophone": "肯尤 森的 桑萬 歐佛 特爹"}, {"en": "How much do you charge for a home visit?", "zh": "到府服務要收多少錢？", "tag": "到府費", "level": 2, "survival": false, "homophone": "好 罵取 賭 尤 恰之 佛 阿 后姆 非資特"}, {"en": "Is there an extra fee for coming after hours?", "zh": "下班時間叫修有加收費用嗎？", "tag": "加班費", "level": 2, "survival": false, "homophone": "意斯 賽兒 恩 誒克斯特拉 費 佛 康敏 阿夫特 阿兒斯"}, {"en": "Could you give me a rough estimate first?", "zh": "可以先給我大概的估價嗎？", "tag": "估價", "level": 2, "survival": true, "homophone": "苦揪 哥一夫 密 阿 拉夫 誒斯特妹特 福斯特", "tip": "修理前先問估價，避免被亂收費"}, {"en": "When is the earliest available appointment?", "zh": "最早什麼時候可以預約？", "tag": "預約時間", "level": 2, "survival": false, "homophone": "溫 意斯 則 兒力誒斯特 阿為拉伯 阿破因特門特"}, {"en": "I'm available anytime after 2 pm tomorrow.", "zh": "我明天下午兩點後都有空。", "tag": "我方時間", "level": 2, "survival": false, "homophone": "愛姆 阿為拉伯 安尼太姆 阿夫特 兔 屁誒姆 特媽羅"}, {"en": "Do I need to be home when the technician comes?", "zh": "師傅來的時候我需要在家嗎？", "tag": "是否在場", "level": 2, "survival": false, "homophone": "賭 愛 尼的 兔 逼 后姆 溫 則 特尼訓 康斯"}, {"en": "The washing machine makes a strange noise during the spin cycle.", "zh": "洗衣機在脫水的時候有奇怪的聲音。", "tag": "描述症狀", "level": 3, "survival": false}, {"en": "There's a water stain on the ceiling under the bathroom.", "zh": "浴室下方的天花板有水漬。", "tag": "漏水痕跡", "level": 3, "survival": false}, {"en": "Is this still under warranty?", "zh": "這個還在保固期內嗎？", "tag": "保固", "level": 2, "survival": true, "homophone": "意斯 帝斯 私提兒 安得兒 沃嵐提", "tip": "保固內通常免收工錢"}, {"en": "How long will the repair take?", "zh": "維修大概要多久？", "tag": "時間", "level": 1, "survival": false, "homophone": "好 龍 我 則 瑞配兒 貼克"}, {"en": "Please call me before you arrive.", "zh": "到之前請先打電話給我。", "tag": "到前通知", "level": 1, "survival": true, "homophone": "普利斯 摳兒 密 逼佛 尤 阿萊夫"}, {"en": "Thank you so much, everything works fine now.", "zh": "太謝謝了，現在都正常了。", "tag": "收尾致謝", "level": 1, "survival": false, "homophone": "山Q 蘇 罵取 誒複瑞幸 沃克斯 肥恩 鬧"}], "dialogue": {"title": "叫水電師傅來修水龍頭", "youRole": "你（屋主）", "npcRole": "維修師傅／客服", "lines": [{"who": "you", "en": "Hi, I need to report a repair problem. My kitchen faucet has been leaking since yesterday.", "zh": "你好，我要報修。我廚房的水龍頭從昨天開始一直在漏水。"}, {"who": "npc", "en": "I'm sorry to hear that. Can you tell me your address, please?", "zh": "很抱歉聽到這個。可以告訴我您的地址嗎？"}, {"who": "you", "en": "Sure, it's 25 Zhongshan Road, 3rd floor.", "zh": "好的，是中山路25號三樓。"}, {"who": "npc", "en": "Got it. Can you send someone over today, or would tomorrow morning work better?", "zh": "好的。您希望今天派人過去，還是明天早上比較方便？"}, {"who": "you", "en": "Tomorrow morning would be great. How much will it cost to fix the pipe?", "zh": "明天早上比較好。修水管大概要多少錢？"}, {"who": "npc", "en": "It depends on the problem, but the home visit fee is about NT$300, plus parts if needed.", "zh": "要看實際情況，但到府服務費大概三百元，如果需要換零件會再另外算。"}, {"who": "you", "en": "That sounds fair. When exactly will the technician arrive?", "zh": "聽起來合理。師傅大概什麼時候會到？"}, {"who": "npc", "en": "Between 9 and 11 am. He'll call you before he arrives.", "zh": "早上九點到十一點之間。他到之前會先打電話給您。"}, {"who": "you", "en": "Great, thank you. Do I need to be home the whole time?", "zh": "太好了，謝謝。我需要一直待在家嗎？"}, {"who": "npc", "en": "Just when he arrives to open the door, and to confirm the repair is done.", "zh": "只要他到的時候幫忙開門，還有確認修好之後就可以了。"}, {"who": "you", "en": "Understood. Thanks so much for your help.", "zh": "了解，非常謝謝你的幫忙。"}, {"who": "npc", "en": "You're welcome. See you tomorrow morning!", "zh": "不客氣，明天早上見！"}]}}, {"id": "appointment", "icon": "📅", "title": "電話預約", "titleEn": "Appointments", "desc": "打電話預約、改期、取消、確認", "country": "US", "words": [{"en": "appointment", "zh": "預約", "ico": "📅"}, {"en": "reschedule", "zh": "改期", "ico": "🔄"}, {"en": "cancel", "zh": "取消", "ico": "❌"}, {"en": "confirm", "zh": "確認", "ico": "✅"}, {"en": "available", "zh": "有空的", "ico": "🕐"}, {"en": "receptionist", "zh": "櫃檯人員", "ico": "💁"}, {"en": "schedule", "zh": "排定時間", "ico": "🗓️"}, {"en": "waiting list", "zh": "候補名單", "ico": "📋"}], "patterns": [{"en": "I'd like to make an appointment for ___.", "zh": "我想預約___。", "slots": ["a haircut", "a check-up", "next Monday", "2 p.m."]}, {"en": "Can I reschedule my appointment to ___?", "zh": "我可以把預約改到___嗎？", "slots": ["Friday afternoon", "next week", "a later time", "tomorrow morning"]}, {"en": "Is there any availability on ___?", "zh": "___有空檔嗎？", "slots": ["Thursday", "the 15th", "this weekend", "Monday morning"]}], "phrases": [{"en": "Hello, I'd like to make an appointment.", "zh": "你好，我想預約。", "tag": "開場", "level": 1, "survival": true, "homophone": "哈囉 愛的 賴克 兔 妹克 恩 阿破因特門特"}, {"en": "Do you have any openings this week?", "zh": "這星期有空檔嗎？", "tag": "詢問時間", "level": 1, "survival": true, "homophone": "賭 尤 黑夫 安尼 歐匹寧斯 帝斯 屋克"}, {"en": "What time works best for you?", "zh": "你這邊什麼時間比較方便？", "tag": "詢問時間", "level": 2, "survival": false, "homophone": "華特 太姆 沃克斯 貝斯特 佛 尤"}, {"en": "I'm calling to confirm my appointment.", "zh": "我打來確認我的預約。", "tag": "確認", "level": 1, "survival": true, "homophone": "愛姆 摳林 兔 康分 麥 阿破因特門特"}, {"en": "I need to reschedule my appointment.", "zh": "我需要改期我的預約。", "tag": "改期", "level": 1, "survival": true, "homophone": "愛 尼的 兔 瑞斯Q朱 麥 阿破因特門特", "tip": "reschedule 是關鍵字，說不出全句時單講這個字對方也懂。"}, {"en": "Can we move it to next Tuesday instead?", "zh": "可以改到下週二嗎？", "tag": "改期", "level": 2, "survival": false, "homophone": "肯 屋 木夫 一特 兔 內克斯特 兔斯得 因斯貼得"}, {"en": "I'm sorry, but I need to cancel my appointment.", "zh": "不好意思，我需要取消預約。", "tag": "取消", "level": 1, "survival": true, "homophone": "愛姆 蘇里 霸特 愛 尼的 兔 肯蘇 麥 阿破因特門特"}, {"en": "Something came up and I can't make it.", "zh": "臨時有事，我沒辦法去了。", "tag": "取消原因", "level": 2, "survival": false, "homophone": "山姆施硬 肯 阿普 恩的 愛 肯特 妹克 一特"}, {"en": "Could you put me on the waiting list?", "zh": "可以把我排進候補名單嗎？", "tag": "候補", "level": 3, "survival": false}, {"en": "What's your name and phone number, please?", "zh": "請問您的姓名和電話？", "tag": "對方詢問", "level": 1, "survival": false, "homophone": "華資 幽兒 內姆 恩的 分 難伯 普利斯"}, {"en": "Can you spell your last name for me?", "zh": "可以拼一下你的姓氏嗎？", "tag": "確認資料", "level": 2, "survival": false, "homophone": "肯尤 私被爾 幽兒 拉斯特 內姆 佛 密"}, {"en": "Is 3 p.m. on Friday okay for you?", "zh": "星期五下午三點可以嗎？", "tag": "對方提議", "level": 2, "survival": false, "homophone": "意斯 史瑞 屁誒姆 忘 夫來得 歐虧 佛 尤"}, {"en": "I'll text you a reminder the day before.", "zh": "我會在前一天傳簡訊提醒你。", "tag": "提醒", "level": 2, "survival": false, "homophone": "愛我 貼克斯特 尤 阿 瑞麥得兒 則 爹 逼佛"}, {"en": "Please arrive 10 minutes early.", "zh": "請提早十分鐘到。", "tag": "叮嚀", "level": 2, "survival": false, "homophone": "普利斯 阿萊夫 貼恩 咪妞斯 兒力"}, {"en": "Sorry, I'm running a few minutes late.", "zh": "不好意思，我會晚幾分鐘到。", "tag": "遲到告知", "level": 1, "survival": true, "homophone": "蘇里 愛姆 拉寧 阿 福 咪妞斯 淚特"}, {"en": "Thank you, see you then!", "zh": "謝謝，到時候見！", "tag": "收尾", "level": 1, "survival": false, "homophone": "山Q 西 尤 現"}], "dialogue": {"title": "打電話改預約時間", "youRole": "顧客", "npcRole": "診所櫃檯人員", "lines": [{"who": "npc", "en": "Good morning, Sunrise Clinic. How can I help you?", "zh": "早安，日出診所您好，請問需要什麼協助？"}, {"who": "you", "en": "Hi, I have an appointment tomorrow, but I need to reschedule it.", "zh": "你好，我明天有預約，但我需要改期。"}, {"who": "npc", "en": "Sure, may I have your name, please?", "zh": "好的，請問您的姓名？"}, {"who": "you", "en": "It's Wang, W-A-N-G.", "zh": "我姓王，W-A-N-G。"}, {"who": "npc", "en": "Got it. When would you like to come in instead?", "zh": "了解了，那您想改到什麼時候呢？"}, {"who": "you", "en": "Is there anything available this Friday afternoon?", "zh": "這星期五下午有空檔嗎？"}, {"who": "npc", "en": "Let me check... Yes, we have an opening at 3 p.m.", "zh": "我查一下……有的，下午三點有空。"}, {"who": "you", "en": "That works great for me. Please book that.", "zh": "這個時間對我很方便，麻煩幫我排這個。"}, {"who": "npc", "en": "All set. We'll send you a reminder the day before.", "zh": "都排好了，我們會在前一天傳提醒訊息給您。"}, {"who": "you", "en": "Perfect, thank you so much!", "zh": "太好了，非常謝謝！"}, {"who": "npc", "en": "You're welcome. See you Friday!", "zh": "不客氣，星期五見！"}]}}, {"id": "delivery", "icon": "📦", "title": "收退包裹", "titleEn": "Deliveries & Returns", "desc": "收件、退貨、換貨、聯絡客服", "country": "US", "words": [{"en": "package", "zh": "包裹", "ico": "📦"}, {"en": "tracking number", "zh": "追蹤號碼", "ico": "🔢"}, {"en": "return", "zh": "退貨", "ico": "↩️"}, {"en": "exchange", "zh": "換貨", "ico": "🔄"}, {"en": "refund", "zh": "退款", "ico": "💵"}, {"en": "receipt", "zh": "收據", "ico": "🧾"}, {"en": "customer service", "zh": "客服", "ico": "🎧"}, {"en": "signature", "zh": "簽收", "ico": "✍️"}], "patterns": [{"en": "I'd like to return ___.", "zh": "我想要退___。", "slots": ["this item", "this jacket", "this package"]}, {"en": "Can I exchange this for ___?", "zh": "我可以把這個換成___嗎？", "slots": ["a bigger size", "a different color", "a new one"]}, {"en": "I'm calling about ___.", "zh": "我打來是關於___。", "slots": ["a missing package", "a late delivery", "my refund"]}], "phrases": [{"en": "Excuse me, I think this is my package.", "zh": "不好意思，我想這是我的包裹。", "tag": "開場", "level": 1, "survival": true, "homophone": "依克斯Q密 愛 施因克 帝斯 意斯 麥 派幾之"}, {"en": "Can you leave it at the front door, please?", "zh": "可以麻煩放在大門口嗎？", "tag": "指定放置", "level": 1, "survival": true, "homophone": "肯尤 力夫 一特 誒特 則 夫潤特 斗兒 普利斯"}, {"en": "Do I need to sign for this?", "zh": "這需要我簽收嗎？", "tag": "簽收", "level": 1, "survival": false, "homophone": "賭 愛 尼的 兔 賽恩 佛 帝斯"}, {"en": "I'd like to return this, please.", "zh": "我想要退這個，麻煩了。", "tag": "退貨", "level": 1, "survival": true, "homophone": "愛的 賴克 兔 里透恩 帝斯 普利斯"}, {"en": "Do you have the receipt?", "zh": "你有收據嗎？", "tag": "詢問收據", "level": 2, "survival": false, "tip": "店員常先問這句，記得帶收據或出示電子憑證。", "homophone": "賭 尤 黑夫 則 里西特"}, {"en": "Here's my receipt / order confirmation email.", "zh": "這是我的收據／訂單確認信。", "tag": "出示證明", "level": 2, "survival": false, "homophone": "希爾斯 麥 里西特／歐得兒 康分妹訓 伊妹爾"}, {"en": "Can I exchange this for a bigger size?", "zh": "我可以換成大一號的嗎？", "tag": "換貨", "level": 2, "survival": true, "tip": "size 也可換成 color（顏色）或 a different style（不同款式）。", "homophone": "肯愛 一克斯勸居 帝斯 佛 阿 逼格兒 塞斯"}, {"en": "I'd like a refund instead of an exchange.", "zh": "我想要退款，不想換貨。", "tag": "要求退款", "level": 2, "survival": false, "homophone": "愛的 賴克 阿 瑞放得 因斯貼得 歐夫 恩 一克斯勸居"}, {"en": "How long will the refund take?", "zh": "退款要多久才會到？", "tag": "退款時程", "level": 2, "survival": false, "homophone": "好 龍 我 則 瑞放得 貼克"}, {"en": "This item arrived damaged.", "zh": "這個東西送到的時候是壞的。", "tag": "商品損壞", "level": 2, "survival": true, "homophone": "帝斯 愛疊姆 阿萊夫得 得咪之的"}, {"en": "My package hasn't arrived yet, and it's been a week.", "zh": "我的包裹還沒到，已經一個禮拜了。", "tag": "包裹未到", "level": 2, "survival": true, "homophone": "麥 派幾之 哈任特 阿萊夫得 耶特 恩的 一此 賓 阿 屋克"}, {"en": "Can you check the tracking number for me?", "zh": "可以幫我查一下追蹤號碼嗎？", "tag": "查詢物流", "level": 2, "survival": false, "homophone": "肯尤 切克 則 除瑞金 難伯 佛 密"}, {"en": "I'm calling about a missing package.", "zh": "我打來是要問一個沒收到的包裹。", "tag": "聯絡客服", "level": 2, "survival": false, "homophone": "愛姆 摳林 阿保特 阿 密性 派幾之"}, {"en": "Is there a restocking fee for returns?", "zh": "退貨的話有補貨手續費嗎？", "tag": "退貨規定", "level": 3, "survival": false}, {"en": "Can I get store credit instead of a refund?", "zh": "我可以換成商店點數而不是退現金嗎？", "tag": "換點數", "level": 3, "survival": false}, {"en": "Could you send someone to redeliver it tomorrow?", "zh": "可以請人明天再送一次嗎？", "tag": "重新配送", "level": 3, "survival": false}], "dialogue": {"title": "退貨換貨對話", "youRole": "顧客", "npcRole": "客服人員", "lines": [{"who": "you", "en": "Hi, I'd like to return this jacket, please.", "zh": "嗨，我想要退這件外套，麻煩了。"}, {"who": "npc", "en": "Sure, do you have the receipt or order number?", "zh": "好的，請問您有收據或訂單編號嗎？"}, {"who": "you", "en": "Yes, here's my order confirmation email.", "zh": "有的，這是我的訂單確認信。"}, {"who": "npc", "en": "Great. What's the reason for the return?", "zh": "太好了。請問退貨的原因是？"}, {"who": "you", "en": "It's the wrong size. Can I exchange it for a bigger one instead?", "zh": "尺寸不對。我可以換成大一號的嗎？"}, {"who": "npc", "en": "Of course. Let me check if we have that size in stock.", "zh": "當然可以。我先確認一下有沒有那個尺寸的庫存。"}, {"who": "npc", "en": "Yes, we do. I'll process the exchange for you now.", "zh": "有的，我現在幫您處理換貨。"}, {"who": "you", "en": "Great, thank you. How long will it take to receive the new one?", "zh": "太好了，謝謝。新的大概多久會到？"}, {"who": "npc", "en": "It should arrive within 3 to 5 business days.", "zh": "應該會在3到5個工作天內送達。"}, {"who": "you", "en": "Perfect, that works for me. Thanks for your help!", "zh": "太好了，這樣可以。謝謝你的幫忙！"}, {"who": "npc", "en": "You're welcome. Is there anything else I can help you with?", "zh": "不客氣。還有其他需要協助的嗎？"}, {"who": "you", "en": "No, that's all. Have a good day!", "zh": "沒有了，就這樣。祝你有美好的一天！"}]}}, {"id": "haircut", "icon": "💇", "title": "剪髮設計", "titleEn": "Haircut", "desc": "溝通髮型、長度、顏色、需求", "country": "US", "words": [{"en": "haircut", "zh": "剪髮", "ico": "💇"}, {"en": "trim", "zh": "修剪(小修)", "ico": "✂️"}, {"en": "layers", "zh": "打層次", "ico": "📐"}, {"en": "bangs", "zh": "瀏海", "ico": "👧"}, {"en": "length", "zh": "長度", "ico": "📏"}, {"en": "color/dye", "zh": "染髮", "ico": "🎨"}, {"en": "blow-dry", "zh": "吹整", "ico": "💨"}, {"en": "stylist", "zh": "設計師", "ico": "🧑‍🎨"}], "patterns": [{"en": "I want to ___.", "zh": "我想要___。", "slots": ["get a trim", "cut it shoulder-length", "add some layers", "dye it light brown"]}, {"en": "Can you make it ___?", "zh": "可以幫我弄___嗎？", "slots": ["shorter", "a little shorter", "not too short", "more natural-looking"]}, {"en": "Just ___, please.", "zh": "麻煩就___就好。", "slots": ["a trim", "an inch off", "the split ends", "a wash and blow-dry"]}], "phrases": [{"en": "I'd like a haircut, please.", "zh": "我想剪頭髮。", "tag": "開場", "level": 1, "survival": true, "homophone": "愛的 賴克 阿 嘿兒卡特 普利斯"}, {"en": "Just a trim, please.", "zh": "只要修剪一下就好。", "tag": "開場", "level": 1, "survival": true, "homophone": "賈斯特 阿 崔母 普利斯"}, {"en": "Not too short, please.", "zh": "不要剪太短。", "tag": "長度", "level": 1, "survival": true, "homophone": "納特 兔 秀特 普利斯"}, {"en": "About an inch off the length.", "zh": "長度剪掉大約一吋。", "tag": "長度", "level": 2, "survival": false, "homophone": "阿保特 恩 因取 歐夫 則 藍克斯"}, {"en": "Can you cut it to shoulder length?", "zh": "可以剪到及肩的長度嗎？", "tag": "長度", "level": 2, "survival": false, "homophone": "肯尤 卡特 一特 兔 秀爾得兒 藍克斯"}, {"en": "I want to keep the length but add some layers.", "zh": "長度不變，但想打一點層次。", "tag": "層次", "level": 3, "survival": false, "tip": "layers 指剪出高低層次感"}, {"en": "Can you trim my bangs a little?", "zh": "可以幫我修一下瀏海嗎？", "tag": "瀏海", "level": 2, "survival": false, "homophone": "肯尤 崔母 麥 邦斯 阿 力頭"}, {"en": "I don't want bangs, thanks.", "zh": "我不要剪瀏海，謝謝。", "tag": "瀏海", "level": 2, "survival": false, "homophone": "愛 動特 忘特 邦斯 山克斯"}, {"en": "Can I see a picture? I want it to look like this.", "zh": "我可以給你看照片嗎？我想剪成這樣。", "tag": "參考", "level": 2, "survival": true, "tip": "直接秀圖片最保險，避免溝通落差", "homophone": "肯愛 西 阿 匹克恰兒 愛 忘特 一特 兔 路克 賴克 帝斯"}, {"en": "I'm not sure, what do you suggest?", "zh": "我不太確定，你有什麼建議嗎？", "tag": "詢問建議", "level": 2, "survival": false, "homophone": "愛姆 納特 秀兒 華特 賭 尤 塞覺斯特"}, {"en": "I'd like to dye my hair a light brown color.", "zh": "我想把頭髮染成淺棕色。", "tag": "染髮", "level": 3, "survival": false}, {"en": "How much would it cost to get my hair colored?", "zh": "染髮大概要多少錢？", "tag": "詢價", "level": 2, "survival": true, "tip": "進門先問價格避免價格誤會", "homophone": "好 罵取 屋的 一特 卡斯特 兔 給特 麥 黑兒 卡樂得"}, {"en": "Just a wash and blow-dry, please.", "zh": "麻煩洗頭加吹整就好。", "tag": "服務", "level": 1, "survival": false, "homophone": "賈斯特 阿 挖許 恩 布洛拽 普利斯"}, {"en": "Please don't use a razor.", "zh": "請不要用剃刀。", "tag": "技法", "level": 3, "survival": false}, {"en": "That looks great, thank you!", "zh": "看起來很棒，謝謝你！", "tag": "收尾", "level": 1, "survival": true, "homophone": "賽特 路克斯 桂特 山Q"}, {"en": "How much do I owe you?", "zh": "總共多少錢？", "tag": "收尾", "level": 2, "survival": false, "homophone": "好 罵取 賭 愛 歐 尤"}], "dialogue": {"title": "在美髮沙龍剪髮", "youRole": "顧客", "npcRole": "設計師", "lines": [{"who": "npc", "en": "Hi there! What can I do for you today?", "zh": "嗨！今天想剪什麼樣的髮型呢？"}, {"who": "you", "en": "Hi, I'd like a haircut, please. Just a trim.", "zh": "嗨，我想剪頭髮，只要修剪一下就好。"}, {"who": "npc", "en": "Sure. How much length would you like off?", "zh": "好的，大概想剪掉多少長度呢？"}, {"who": "you", "en": "About an inch off, and not too short.", "zh": "大約一吋，不要剪太短。"}, {"who": "npc", "en": "Got it. Would you like any layers or just an even trim?", "zh": "了解。要打層次還是均勻修剪就好？"}, {"who": "you", "en": "I want to keep the length but add some layers, if that's okay.", "zh": "長度不變，但想打一點層次，可以嗎？"}, {"who": "npc", "en": "No problem. What about your bangs? Trim them too?", "zh": "沒問題。瀏海呢？也要修一下嗎？"}, {"who": "you", "en": "Yes, just a little trim on the bangs, thanks.", "zh": "對，瀏海也稍微修一下，謝謝。"}, {"who": "npc", "en": "Great, I'll wash your hair first and then we'll get started.", "zh": "好的，我先幫你洗頭，然後就開始剪。"}, {"who": "you", "en": "Sounds good, thank you.", "zh": "好的，謝謝。"}, {"who": "npc", "en": "All done! What do you think?", "zh": "剪好了！你覺得怎麼樣？"}, {"who": "you", "en": "That looks great, thank you! How much do I owe you?", "zh": "看起來很棒，謝謝你！總共多少錢？"}]}}, {"id": "rent-house", "icon": "🏠", "title": "租屋看房", "titleEn": "Renting a Home", "desc": "看房、問租金押金、簽約、報修", "country": "US", "words": [{"en": "apartment", "zh": "公寓", "ico": "🏢"}, {"en": "rent", "zh": "租金", "ico": "💵"}, {"en": "deposit", "zh": "押金", "ico": "🔒"}, {"en": "lease", "zh": "租約", "ico": "📄"}, {"en": "landlord", "zh": "房東", "ico": "🧑‍💼"}, {"en": "tenant", "zh": "房客", "ico": "🙋"}, {"en": "utilities", "zh": "水電瓦斯費", "ico": "💡"}, {"en": "repair", "zh": "維修", "ico": "🔧"}], "patterns": [{"en": "Is ___ included in the rent?", "zh": "租金有包含___嗎？", "slots": ["utilities", "water", "internet"]}, {"en": "Could you please fix the ___?", "zh": "可以請你修理___嗎？", "slots": ["leaky faucet", "heater", "air conditioner"]}, {"en": "How much is the ___?", "zh": "___多少錢？", "slots": ["deposit", "monthly rent", "application fee"]}], "phrases": [{"en": "Hi, I'm here to see the apartment.", "zh": "嗨，我是來看公寓的。", "tag": "開場看房", "level": 1, "survival": true, "homophone": "嗨 愛姆 希爾 兔 西 則 阿趴特門特", "tip": "見面第一句，直接說明來意"}, {"en": "How much is the rent per month?", "zh": "每個月租金多少？", "tag": "問租金", "level": 1, "survival": true, "homophone": "好 罵取 意斯 則 潤特 波 曼斯"}, {"en": "How much is the deposit?", "zh": "押金要多少？", "tag": "問押金", "level": 1, "survival": true, "homophone": "好 罵取 意斯 則 低撲日特"}, {"en": "Is the deposit refundable?", "zh": "押金退租時會退嗎？", "tag": "押金退還", "level": 2, "survival": false, "homophone": "意斯 則 低撲日特 瑞放得伯", "tip": "很重要，退租爭議常在此"}, {"en": "Are utilities included in the rent?", "zh": "租金有含水電瓦斯費嗎？", "tag": "水電費", "level": 1, "survival": true, "homophone": "阿 優提利提斯 因克路低得 引 則 潤特"}, {"en": "Is the internet included?", "zh": "有包含網路嗎？", "tag": "網路", "level": 2, "survival": false, "homophone": "意斯 則 印特內特 因克路低得"}, {"en": "How long is the lease?", "zh": "租約是簽多久？", "tag": "租期", "level": 2, "survival": false, "homophone": "好 龍 意斯 則 利斯"}, {"en": "Can I sign a month-to-month lease?", "zh": "可以簽月租、不綁長約嗎？", "tag": "彈性租約", "level": 3, "survival": false, "homophone": ""}, {"en": "Is furniture included?", "zh": "有含家具嗎？", "tag": "家具", "level": 2, "survival": false, "homophone": "意斯 佛你恰兒 因克路低得"}, {"en": "Are pets allowed?", "zh": "可以養寵物嗎？", "tag": "寵物", "level": 1, "survival": false, "homophone": "阿 佩茲 阿勞得"}, {"en": "When can I move in?", "zh": "什麼時候可以搬進來？", "tag": "入住時間", "level": 2, "survival": false, "homophone": "溫 肯 愛 木夫 引"}, {"en": "I'd like to sign the lease.", "zh": "我想簽這份租約。", "tag": "決定簽約", "level": 2, "survival": true, "homophone": "愛的 賴克 兔 賽恩 則 利斯"}, {"en": "The heater isn't working. Could you send someone to fix it?", "zh": "暖氣壞了，可以派人來修嗎？", "tag": "報修", "level": 2, "survival": true, "homophone": "則 喝特兒 意任特 沃金 苦揪 森的 桑萬 兔 費克斯 一特", "tip": "生活中最常用到的報修句"}, {"en": "There's a leak in the bathroom.", "zh": "浴室在漏水。", "tag": "漏水", "level": 1, "survival": false, "homophone": "賽兒斯 阿 力克 引 則 貝斯潤"}, {"en": "Who should I contact for repairs?", "zh": "維修要聯絡誰？", "tag": "聯絡窗口", "level": 2, "survival": false, "homophone": "乎 秀的 愛 康貼克特 佛 瑞配兒斯"}, {"en": "Thank you, I'll think it over and let you know.", "zh": "謝謝，我考慮一下再回覆你。", "tag": "收尾", "level": 1, "survival": false, "homophone": "山Q 愛我 施因克 一特 歐佛 恩的 勒特 尤 諾"}], "dialogue": {"title": "看房詢問租屋", "youRole": "看房房客", "npcRole": "房東", "lines": [{"who": "you", "en": "Hi, I'm here to see the apartment for rent.", "zh": "嗨，我是來看這間出租公寓的。"}, {"who": "npc", "en": "Sure, come on in. This is the living room, and the bedroom is right there.", "zh": "當然，請進。這是客廳，臥室就在那邊。"}, {"who": "you", "en": "It looks nice. How much is the rent per month?", "zh": "看起來不錯。每個月租金多少？"}, {"who": "npc", "en": "It's $1,200 a month, plus a $1,200 deposit.", "zh": "每個月1200美元，加上1200美元押金。"}, {"who": "you", "en": "Is the deposit refundable when I move out?", "zh": "搬走時押金會退還嗎？"}, {"who": "npc", "en": "Yes, as long as there's no damage to the unit.", "zh": "會的，只要房子沒有損壞就會退。"}, {"who": "you", "en": "Are utilities included in the rent?", "zh": "租金有包含水電瓦斯費嗎？"}, {"who": "npc", "en": "Water is included, but electricity and internet are separate.", "zh": "水費有含，但電費和網路要另外付。"}, {"who": "you", "en": "Got it. How long is the lease, and when can I move in?", "zh": "了解。租約是簽多久？什麼時候可以搬進來？"}, {"who": "npc", "en": "It's a one-year lease, and you can move in next week.", "zh": "簽一年租約，下週就可以搬進來。"}, {"who": "you", "en": "Sounds good. I'd like to sign the lease today.", "zh": "聽起來不錯，我今天想簽這份租約。"}, {"who": "npc", "en": "Great, and don't hesitate to call me if anything needs repair later.", "zh": "太好了，之後如果有東西需要維修，隨時打給我。"}]}}, {"id": "complaint", "icon": "😤", "title": "客訴退換", "titleEn": "Complaints", "desc": "退貨、客訴、要求處理、要收據", "country": "US", "words": [{"en": "receipt", "zh": "收據", "ico": "🧾"}, {"en": "refund", "zh": "退款", "ico": "💵"}, {"en": "exchange", "zh": "換貨", "ico": "🔄"}, {"en": "broken", "zh": "壞掉的", "ico": "💔"}, {"en": "defective", "zh": "有瑕疵的", "ico": "⚠️"}, {"en": "manager", "zh": "經理", "ico": "🧑‍💼"}, {"en": "complaint", "zh": "客訴/抱怨", "ico": "😤"}, {"en": "warranty", "zh": "保固", "ico": "📄"}], "patterns": [{"en": "I'd like to return ___.", "zh": "我想要退___。", "slots": ["this jacket", "these shoes", "this blender"]}, {"en": "This ___ doesn't work.", "zh": "這個___不能用。", "slots": ["phone", "charger", "fan"]}, {"en": "Can I get ___?", "zh": "我可以___嗎？", "slots": ["a refund", "a replacement", "a copy of the receipt"]}], "phrases": [{"en": "Excuse me, I have a problem with this item.", "zh": "不好意思，這個商品有問題。", "tag": "開場", "level": 1, "survival": true, "homophone": "依克斯Q密 愛 黑夫 阿 撲拉本 位斯 帝斯 愛疊姆"}, {"en": "I'd like to return this, please.", "zh": "我想要退貨。", "tag": "退貨", "level": 1, "survival": true, "homophone": "愛的 賴克 兔 里透恩 帝斯 普利斯"}, {"en": "Here's my receipt.", "zh": "這是我的收據。", "tag": "收據", "level": 1, "survival": true, "homophone": "希爾斯 麥 里西特"}, {"en": "Can I get a refund?", "zh": "我可以退款嗎？", "tag": "退款", "level": 1, "survival": true, "homophone": "肯愛 給特 阿 瑞放得"}, {"en": "This is broken / doesn't work.", "zh": "這個壞掉了／不能用。", "tag": "損壞", "level": 1, "survival": true, "homophone": "帝斯 意斯 布羅肯／得任特 沃克"}, {"en": "I bought this yesterday and it's already defective.", "zh": "我昨天買的，已經有瑕疵了。", "tag": "瑕疵", "level": 2, "survival": false, "homophone": "愛 抱特 帝斯 耶斯特得 恩的 一此 歐瑞底 迪費克提夫"}, {"en": "Can I exchange this for a different size?", "zh": "我可以換不同尺寸嗎？", "tag": "換貨", "level": 2, "survival": false, "homophone": "肯愛 一克斯勸居 帝斯 佛 阿 帝佛潤特 塞斯"}, {"en": "Is this still under warranty?", "zh": "這個還在保固期內嗎？", "tag": "保固", "level": 2, "survival": false, "homophone": "意斯 帝斯 私提兒 安得兒 沃嵐提"}, {"en": "I'd like to speak to the manager, please.", "zh": "我想跟經理談談。", "tag": "找經理", "level": 2, "survival": false, "tip": "客訴升級時很好用的一句", "homophone": "愛的 賴克 兔 私批克 兔 則 麥尼舉兒 普利斯"}, {"en": "Do you offer a full refund or store credit?", "zh": "你們是全額退款還是給購物金？", "tag": "退款方式", "level": 2, "survival": false, "homophone": "賭 尤 歐佛兒 阿 佛 瑞放得 歐兒 私多兒 苦瑞低"}, {"en": "I never opened the package.", "zh": "我從沒拆封過。", "tag": "未拆封", "level": 2, "survival": false, "homophone": "愛 內佛兒 歐盆得 則 派幾之"}, {"en": "How long will the repair take?", "zh": "維修要多久？", "tag": "維修", "level": 2, "survival": false, "homophone": "好 龍 我 則 瑞配兒 貼克"}, {"en": "I'm not satisfied with this product's quality.", "zh": "我對這產品的品質不滿意。", "tag": "抱怨", "level": 3, "survival": false}, {"en": "Could you file a complaint on my behalf?", "zh": "可以幫我登記客訴嗎？", "tag": "登記客訴", "level": 3, "survival": false}, {"en": "I'd appreciate it if you could resolve this as soon as possible.", "zh": "希望能盡快處理這個問題。", "tag": "催辦", "level": 3, "survival": false}, {"en": "Could I have a copy of this transaction for my records?", "zh": "可以給我一份交易紀錄留存嗎？", "tag": "留存紀錄", "level": 3, "survival": false}], "dialogue": {"title": "退貨客訴", "youRole": "顧客", "npcRole": "店員", "lines": [{"who": "you", "en": "Excuse me, I have a problem with this blender.", "zh": "不好意思，這台果汁機有問題。"}, {"who": "npc", "en": "I'm sorry to hear that. What seems to be the issue?", "zh": "很抱歉聽到這個消息。是什麼問題呢？"}, {"who": "you", "en": "It doesn't turn on at all. It's broken.", "zh": "它完全無法開機，壞掉了。"}, {"who": "npc", "en": "I see. Do you have your receipt with you?", "zh": "我了解了。您有帶收據嗎？"}, {"who": "you", "en": "Yes, here it is. I bought it three days ago.", "zh": "有，在這裡。我三天前買的。"}, {"who": "npc", "en": "Thank you. Would you like a refund or an exchange?", "zh": "謝謝您。請問您要退款還是換貨？"}, {"who": "you", "en": "Can I get a full refund, please?", "zh": "我可以要求全額退款嗎？"}, {"who": "npc", "en": "Sure, since it's still under warranty. Let me process that for you.", "zh": "沒問題，因為還在保固期內。我馬上幫您處理。"}, {"who": "you", "en": "Thank you. Also, could I get a copy of the refund receipt?", "zh": "謝謝。另外，可以給我一份退款收據嗎？"}, {"who": "npc", "en": "Of course, here you go. The refund will appear on your card in 3-5 business days.", "zh": "當然，這是給您的。退款會在3到5個工作天內入帳。"}, {"who": "you", "en": "Great, I appreciate your help.", "zh": "太好了，謝謝您的協助。"}, {"who": "npc", "en": "You're welcome. Sorry again for the inconvenience.", "zh": "不客氣。很抱歉造成您的不便。"}]}}];
+const SCENARIOS = window.__SCENARIOS__;
+const REF = window.__REF__;
+const $ = s=>document.querySelector(s);
+const fmt=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+const todayStr=()=>fmt(new Date());
+
+const BANDS={
+  all:{name:"一般",emoji:"🙂",desc:"全部關卡與難度",levels:[1,2,3],hide:[],big:false,homo:false},
+  senior:{name:"長輩",emoji:"👵",desc:"只留最基礎救命句、大字、諧音發音",levels:[1],hide:["gov-office","rent-house","complaint","utilities"],big:true,homo:true},
+  kid:{name:"兒童",emoji:"🧒",desc:"藏大人關卡、大字＋諧音，只練簡單句",levels:[1,2],hide:["gov-office","rent-house","complaint","utilities"],big:true,homo:true},
+  adult:{name:"成人",emoji:"💼",desc:"全部關卡與進階句，高效實用",levels:[1,2,3],hide:[],big:false,homo:false}
+};
+function band(){return BANDS[S.band]||BANDS.all}
+function scenList(){return SCENARIOS.filter(sc=>!band().hide.includes(sc.id))}
+function phraseOK(p){return band().levels.includes(p.level||2)||p.survival}
+function visPhrases(sc){return sc.phrases.map((p,i)=>({p,i})).filter(o=>phraseOK(o.p))}
+
+const G = JSON.parse(localStorage.getItem('life_en_global')||'null') || {
+  profiles:[{id:'p1',name:'我',emoji:'🙂'}], current:'p1', dark:false
+};
+function saveG(){localStorage.setItem('life_en_global',JSON.stringify(G))}
+
+let S;
+function pKey(id){return 'life_en_'+id}
+function loadProfile(id){
+  S = JSON.parse(localStorage.getItem(pKey(id))||'null') || {};
+  S.cards=S.cards||{}; S.favs=S.favs||[]; S.streakDates=S.streakDates||[]; S.dailyCount=S.dailyCount||{};
+  S.goal=S.goal||20; S.rate=S.rate||1.0; S.showZh=S.showZh!==false; S.band=S.band||'all'; S.big=!!S.big; S.badges=S.badges||[];
+  S.wrong=S.wrong||{}; S.finals=S.finals||{};
+}
+function saveS(){localStorage.setItem(pKey(G.current),JSON.stringify(S))}
+
+function cardKey(sid,i){return sid+'#'+i}
+function getCard(sid,i){const k=cardKey(sid,i);return S.cards[k]||(S.cards[k]={lvl:0,due:0,seen:0})}
+const SRS_DAYS=[0,1,2,4,8,16,30];
+function grade(sid,i,ok){
+  const c=getCard(sid,i);c.seen++;
+  if(ok){c.lvl=Math.min(6,c.lvl+1);c.due=Date.now()+SRS_DAYS[c.lvl]*864e5;}
+  else{c.lvl=Math.max(0,c.lvl-1);c.due=Date.now()+6e5;}
+  markWrong(sid,i,ok);
+  countStudy();saveS();
+}
+
+/* ===== 📝 錯題本（比照 [[國中2000]] 的做法）=====
+   原本答錯只是把 SRS 降一級、10 分鐘後再到期 —— 等於「錯過」這件事沒被單獨記住，
+   孩子也看不到自己到底哪些句子一直卡住。
+   2000 的兩條原則照抄：
+   ① 錯題複習「不能用選的」——用選的會蒙混過去 → 先翻卡看提示，再動手拼一次才算
+   ② 連對 2 次、而且要跨輪（有間隔）才畢業，不是當場連對兩次就算會
+   WBOX 用分鐘：答錯後 10 分鐘可再練，之後 1 天、3 天。 */
+const WBOX_MIN=[10,1440,4320];
+function markWrong(sid,i,ok){
+  const k=cardKey(sid,i),w=S.wrong[k];
+  if(!ok){
+    const e=w||{n:0,streak:0,first:Date.now()};
+    e.n++;e.streak=0;e.box=0;e.due=Date.now()+WBOX_MIN[0]*6e4;e.ts=Date.now();
+    S.wrong[k]=e;return;
+  }
+  if(!w)return;                                  // 沒錯過就不用畢業
+  // 跨輪才算數：同一輪內連對兩次不算（due 還沒到就不推進 streak）
+  if(Date.now()<(w.due||0))return;
+  w.streak=(w.streak||0)+1;w.ts=Date.now();
+  if(w.streak>=2){delete S.wrong[k];return}       // 連對 2 次且跨輪 → 畢業
+  w.box=Math.min((w.box||0)+1,WBOX_MIN.length-1);
+  w.due=Date.now()+WBOX_MIN[w.box]*6e4;
+}
+function wrongList(){
+  const out=[];
+  scenList().forEach(sc=>visPhrases(sc).forEach(o=>{
+    const w=S.wrong[cardKey(sc.id,o.i)];if(w)out.push({sc,p:o.p,i:o.i,w});
+  }));
+  return out;
+}
+function wrongDue(){const n=Date.now();return wrongList().filter(x=>(x.w.due||0)<=n)}
+/* 錯題複習：一律 scramble（拼句）＝唯一真的要產出的模式。
+   ⚠️ listen 與 translate 都是四選一，用選的會蒙混過去（2000 就是為此把錯題本改掉的）。
+   peek＝先翻卡看提示再拼，比照 2000 的「先翻卡 → 動手拼一次才算」。 */
+function startWrongReview(){
+  const act=wrongList();
+  if(!act.length){toast('沒有錯題，很棒 🎉');return}
+  const due=wrongDue(),pool=due.length?due:act;
+  const items=shuffle(pool.map(o=>Object.assign({},o,{mode:'scramble',peek:true})));
+  Q={mode:'scramble',items,idx:0,correct:0,sid:null,wrongbook:true};
+  renderCard();
+}
+function countStudy(){const t=todayStr();S.dailyCount[t]=(S.dailyCount[t]||0)+1;if(!S.streakDates.includes(t))S.streakDates.push(t);}
+function freezeAvailable(){return !S.lastFreeze || (Date.now()-S.lastFreeze)>=7*864e5;}
+function canRescueStreak(){return streakRaw()===0 && (S.streakDates||[]).length>0 && freezeAvailable();}
+function useFreeze(){
+  if(!freezeAvailable()){toast('補打卡每週只能用一次 🛡️');return;}
+  S.frozenDates=S.frozenDates||[];
+  const d=new Date();d.setDate(d.getDate()-1);const y=fmt(d);
+  if(!S.streakDates.includes(y)&&!S.frozenDates.includes(y))S.frozenDates.push(y);
+  S.lastFreeze=Date.now();saveS();renderHome();toast('🛡️ 已補回昨天，連續紀錄保住了！');
+}
+function streakRaw(){
+  const set=new Set(S.streakDates);let n=0;const d=new Date();let key=todayStr();
+  if(!set.has(key)){d.setDate(d.getDate()-1);key=fmt(d);if(!set.has(key))return 0;}
+  while(set.has(key)){n++;d.setDate(d.getDate()-1);key=fmt(d);}
+  return n;
+}
+function streak(){
+  const set=new Set([...(S.streakDates||[]),...(S.frozenDates||[])]);let n=0;const d=new Date();let key=todayStr();
+  if(!set.has(key)){d.setDate(d.getDate()-1);key=fmt(d);if(!set.has(key))return 0;}
+  while(set.has(key)){n++;d.setDate(d.getDate()-1);key=fmt(d);}
+  return n;
+}
+function totalStars(){let s=0;for(const k in S.cards)s+=S.cards[k].lvl;return s}
+function dueCards(){
+  const now=Date.now();const out=[];
+  scenList().forEach(sc=>visPhrases(sc).forEach(o=>{const c=S.cards[cardKey(sc.id,o.i)];if(c&&c.seen>0&&c.due<=now)out.push({sc,p:o.p,i:o.i});}));
+  return out;
+}
+function scenarioPct(sc){
+  const vis=visPhrases(sc);if(!vis.length)return 0;
+  let done=0;vis.forEach(o=>{const c=S.cards[cardKey(sc.id,o.i)];if(c&&c.lvl>=3)done++;});
+  return Math.round(done/vis.length*100);
+}
+
+let voice=null;
+function pickVoice(){const vs=speechSynthesis.getVoices();
+  voice=vs.find(v=>/en[-_]US/i.test(v.lang)&&/female|samantha|zira|aria|jenny/i.test(v.name))||vs.find(v=>/en[-_]US/i.test(v.lang))||vs.find(v=>/^en/i.test(v.lang))||null;}
+if('speechSynthesis'in window){pickVoice();speechSynthesis.onvoiceschanged=pickVoice;}
+function say(text,rate){
+  if(!('speechSynthesis'in window))return;
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(text);u.lang='en-US';u.rate=rate||S.rate||1;if(voice)u.voice=voice;
+  speechSynthesis.speak(u);
+}
+
+let view='home';
+const VIEWS=['home','detail','sos','search','fav','profile'];
+function setNav(active){['home','review','sos','search','profile'].forEach(x=>{const b=$('#nav-'+x);if(b)b.classList.toggle('on',x===active)});}
+function go(v){
+  view=v;VIEWS.forEach(x=>$('#view-'+x).classList.toggle('hidden',x!==v));
+  setNav(v==='fav'?'':v);
+  if(v==='home')renderHome();
+  if(v==='sos')renderSOS();
+  if(v==='fav')renderFav();
+  if(v==='profile')renderProfile();
+  if(v==='search'){$('#searchInput').value='';$('#searchRes').innerHTML='';setTimeout(()=>$('#searchInput').focus(),100)}
+  window.scrollTo(0,0);
+}
+
+function renderTopStats(){
+  const p=G.profiles.find(x=>x.id===G.current);
+  $('#profChip').textContent=(p?p.emoji+' '+p.name:'👤')+' · '+band().name;
+  $('#stStreak').textContent=streak();$('#stStars').textContent=totalStars();
+  $('#stToday').textContent=S.dailyCount[todayStr()]||0;$('#stGoal').textContent=S.goal;
+  $('#stDue').textContent=dueCards().length;
+}
+function renderHome(){
+  renderTopStats();
+  const due=dueCards().length,done=S.dailyCount[todayStr()]||0;
+  let b='';
+  if(G.trip&&G.trip.date){
+    const d=tripDays();
+    const todo=tripScenarios().filter(sc=>scenarioPct(sc)<100).slice(0,3).map(sc=>sc.icon+sc.title).join('、')||'重點都練完了 🎉';
+    b+=`<div class="banner trip"><div class="big">✈️</div><div class="t"><b>${d>0?`距離出發還有 ${d} 天`:d===0?'今天出發！':'旅程進行中'}${G.trip.dest?' · '+G.trip.dest:''}</b><small>今天先練：${todo}</small></div><button class="go" onclick="openCheatSheet()">速記卡</button></div>`;
+  }else{
+    b+=`<div class="banner trip"><div class="big">✈️</div><div class="t"><b>設定這趟旅程</b><small>選出發日＋旅遊型態，我幫你排練習順序＋做行前速記卡</small></div><button class="go" onclick="openTripWizard()">開始</button></div>`;
+  }
+  if(canRescueStreak())b+=`<div class="banner sos"><div class="big">🛡️</div><div class="t"><b>連續紀錄快斷了！</b><small>昨天沒練？用補打卡救回來（每週 1 次）</small></div><button class="go" onclick="useFreeze()">補打卡</button></div>`;
+  if(due>0)b+=`<div class="banner rev"><div class="big">🔁</div><div class="t"><b>今天有 ${due} 張卡該複習</b><small>趁記憶還在時複習最有效</small></div><button class="go" onclick="startReview()">開始</button></div>`;
+  // 錯題本：拼錯過的句子單獨收著，要「連對 2 次且跨輪」才畢業（比照國中2000）
+  const wN=wrongList().length,wD=wrongDue().length;
+  if(wN>0)b+=`<div class="banner sos"><div class="big">📝</div><div class="t"><b>錯題本 ${wN} 句${wD?`　今日到期 ${wD}`:''}</b>
+    <small>拼錯過的句子。先翻卡看清楚，再自己拼一次；連對 2 次（跨天）才畢業</small></div>
+    <button class="go" onclick="startWrongReview()">${wD?'複習到期':'全部複習'}</button></div>`;
+  if(done<S.goal)b+=`<div class="banner"><div class="big">🎯</div><div class="t"><b>今日進度 ${done}/${S.goal}</b><small>再練 ${S.goal-done} 張就達標，維持連續打卡 🔥</small></div><button class="go" onclick="startDaily()">今日練習</button></div>`;
+  else b+=`<div class="banner"><div class="big">🎉</div><div class="t"><b>今日目標達成！${streak()} 天連續</b><small>還想練可繼續挑戰任一關卡</small></div></div>`;
+  b+=`<div class="banner sos"><div class="big">🆘</div><div class="t"><b>救命短句・出國隨身</b><small>報案電話、過敏發作、被扒、迷路…一頁搞定</small></div><button class="go" onclick="go('sos')">打開</button></div>`;
+  // 總複習：練過的句子夠多才顯示（一句都沒練就叫他總複習，只會被電到不想再來）
+  const seenN=Object.keys(S.cards||{}).filter(k=>S.cards[k].seen>0).length;
+  if(seenN>=15){
+    const fin=S.finals||{},allPassed=fScopes().every(s=>(fin[s.k]||{}).passed);
+    b+=`<div class="banner rev" id="finalBox" style="flex-wrap:wrap">
+      <div class="big">${allPassed?'🏆':'📚'}</div>
+      <div class="t"><b>總複習${allPassed?'　全部過關了':''}</b>
+        <small>${allPassed?'想維持手感隨時可以再考一次':'跨情境混合抽題，🎧聽力／🧩拼句／✍️中翻英交錯——驗收你是不是真的會用'}</small></div>
+      <div class="modes" style="flex-basis:100%;margin-top:8px">${fScopeCard()}</div></div>`;
+  }
+  $('#dailyBanner').innerHTML=b;
+  const list=scenList();
+  $('#gridTitle').textContent=`🗺️ 情境關卡（${band().emoji} ${band().name}模式 · ${list.length} 關）`;
+  $('#grid').innerHTML=list.map(sc=>{
+    const pct=scenarioPct(sc);
+    return `<button class="scard" onclick="openScenario('${sc.id}')">
+      <div class="ico">${sc.icon}</div>
+      ${pct>=100?'<div class="done-badge">🏅</div>':pct>0?`<div class="pct">${pct}%</div>`:''}
+      <div class="nm">${sc.title}</div><div class="en">${sc.titleEn}</div>
+      <div class="desc">${sc.desc||''}</div>
+      <div class="pbar"><i style="width:${pct}%"></i></div></button>`;
+  }).join('');
+}
+
+/* ===== 行前倒數精靈 ===== */
+const TRIP_TYPES=[
+  {k:'family',emoji:'👨‍👩‍👧',label:'帶小孩/長輩',sc:['hotel-checkin','room-service','pharmacy','attractions','cafe-fastfood']},
+  {k:'drive',emoji:'🚗',label:'自駕租車',sc:['car-rental','driving-gas','transport']},
+  {k:'transit',emoji:'🚆',label:'大眾運輸',sc:['transport','taxi']},
+  {k:'backpack',emoji:'🎒',label:'背包自助',sc:['transport','taxi','shopping','baggage']},
+  {k:'business',emoji:'💼',label:'商務出差',sc:['taxi','hotel-checkin','cafe-fastfood','flight-trouble']},
+  {k:'medical',emoji:'🏥',label:'醫療備援',sc:['pharmacy','doctor']}
+];
+const TRIP_CORE=['airport-checkin','immigration','restaurant','directions','money','sim-internet','emergency','safety'];
+function tripDays(){if(!G.trip||!G.trip.date)return null;const d=new Date(G.trip.date+'T00:00:00');const now=new Date();now.setHours(0,0,0,0);return Math.round((d-now)/864e5);}
+function tripScenarios(){
+  if(!G.trip)return [];
+  const set=new Set(TRIP_CORE);
+  (G.trip.types||[]).forEach(k=>{const t=TRIP_TYPES.find(x=>x.k===k);if(t)t.sc.forEach(s=>set.add(s));});
+  return SCENARIOS.filter(sc=>set.has(sc.id));
+}
+function openTripWizard(){
+  const t=G.trip||{dest:'',date:'',types:[]};
+  const inner=`<div style="padding:4px 4px 20px">
+    <div class="wzq">✈️ 這趟去哪裡？<small>（可留白）</small></div>
+    <input id="wzDest" class="wzin" placeholder="例：日本東京、義大利、美國" value="${(t.dest||'').replace(/"/g,'&quot;')}">
+    <div class="wzq">📅 哪天出發？</div>
+    <input id="wzDate" class="wzin" type="date" value="${t.date||''}">
+    <div class="wzq">🧳 這趟會遇到哪些狀況？<small>（可複選，機場/海關/點餐/問路/緊急已自動含）</small></div>
+    <div class="wzchips">${TRIP_TYPES.map(x=>`<button type="button" class="wzchip ${(t.types||[]).includes(x.k)?'on':''}" data-k="${x.k}" onclick="this.classList.toggle('on')">${x.emoji} ${x.label}</button>`).join('')}</div>
+    ${G.trip?`<div style="text-align:center;margin-top:22px"><button class="back" style="color:var(--bad);justify-content:center" onclick="clearTrip()">🗑️ 清除這趟旅程</button></div>`:''}
+  </div>`;
+  const foot=`<button class="pbtn ghost" onclick="closeOverlay()">取消</button><button class="pbtn" onclick="saveTrip()">產生行前清單 ›</button>`;
+  $('#overlayMount').innerHTML=`<div class="overlay"><div class="ovhead"><button class="x" onclick="closeOverlay()">✕</button><div class="cnt" style="flex:1;text-align:center">✈️ 行前規劃</div></div><div class="ovbody" style="display:block;overflow:auto">${inner}</div><div class="ovfoot">${foot}</div></div>`;
+}
+function saveTrip(){
+  const dest=$('#wzDest').value.trim();
+  const date=$('#wzDate').value;
+  const types=[...document.querySelectorAll('.wzchip.on')].map(b=>b.dataset.k);
+  if(!date){toast('請先選出發日期 📅');return;}
+  G.trip={dest,date,types};saveG();closeOverlay();renderHome();openCheatSheet();
+}
+function clearTrip(){G.trip=null;saveG();closeOverlay();renderHome();toast('已清除旅程規劃');}
+function cheatRow(en,zh,homo){return `<div class="cheatrow"><div style="flex:1;min-width:0"><div class="cen">${en}</div><div class="czh">${zh}${homo?' ・ '+homo:''}</div></div><button class="rbtn" onclick="say(${esc(en)})">🔊</button></div>`;}
+function openCheatSheet(){
+  if(!G.trip){openTripWizard();return;}
+  const scs=tripScenarios();const days=tripDays();
+  let body=`<div style="padding:0 2px 24px">
+    <div class="section-title" style="margin-top:8px">🪧 行前速記卡${G.trip.dest?' · '+G.trip.dest:''}${days!=null?` · 剩 ${days} 天`:''}</div>
+    <p style="color:var(--sub);font-size:.8rem;margin:0 4px 10px">截圖存到相簿，臨場翻最快；每句點 🔊 播放或把螢幕轉給對方看。<button class="back" style="display:inline-flex;color:var(--sky)" onclick="openTripWizard()">✏️ 改行程</button></p>`;
+  body+=`<div class="cheatsc">🗣️ 卡住時救急</div>`+REPAIR.slice(0,6).map(o=>cheatRow(o.en,o.zh,o.homophone)).join('');
+  scs.forEach(sc=>{
+    const surv=sc.phrases.filter(p=>p.survival);
+    const rows=surv.length?surv:sc.phrases.slice(0,4);
+    body+=`<div class="cheatsc">${sc.icon} ${sc.title}</div>`+rows.map(p=>cheatRow(p.en,p.zh,p.homophone)).join('');
+  });
+  body+='</div>';
+  $('#overlayMount').innerHTML=`<div class="overlay"><div class="ovhead"><button class="x" onclick="closeOverlay()">✕</button><div class="cnt" style="flex:1;text-align:center">🪧 行前速記卡</div></div><div class="ovbody" style="display:block;overflow:auto">${body}</div></div>`;
+}
+
+/* ===== 兒童遊戲層：聽聲點圖 + 貼紙 + 走失卡 ===== */
+const STICKER_POOL=['🐶','🐱','🦄','🐼','🦁','🐸','🐙','🦖','🌈','⭐','🍦','🎈','🚀','🐧','🦉','🐢','🌸','🍩','🐳','🦋'];
+let KG=null;
+function allKidWords(){const a=[];SCENARIOS.forEach(sc=>(sc.words||[]).forEach(w=>{if(w.ico)a.push(w)}));return a;}
+function scHasKidGame(sc){return (sc.words||[]).filter(w=>w.ico).length>=1;}
+function startKidGame(){
+  const pool=(curScenario.words||[]).filter(w=>w.ico);
+  if(!pool.length){toast('這關暫無圖卡遊戲');return;}
+  KG={sc:curScenario,items:shuffle(pool.slice()),idx:0,correct:0,rounds:Math.min(pool.length,8)};
+  drawKidGame();
+}
+function drawKidGame(){
+  if(KG.idx>=KG.rounds){finishKidGame();return;}
+  const target=KG.items[KG.idx];
+  const others=shuffle(allKidWords().filter(w=>w.ico!==target.ico&&w.en!==target.en)).slice(0,3);
+  const opts=shuffle([target,...others]);
+  const pct=Math.round(KG.idx/KG.rounds*100);
+  const grid=opts.map(o=>`<button class="kgopt" onclick="kidPick(this,${o.en===target.en?1:0})"><div class="kgico">${o.ico}</div><div class="kgzh">${o.zh}</div></button>`).join('');
+  const inner=`<div style="text-align:center;margin:8px 0 4px"><button class="mic" style="width:76px;height:76px;font-size:32px;margin:0 auto" onclick="say(${esc(target.en)})">🔊</button><div class="qsub" style="margin-top:10px;font-size:1rem">聽聲音，點出對的圖！</div></div><div class="kggrid">${grid}</div>`;
+  $('#overlayMount').innerHTML=`<div class="overlay"><div class="ovhead"><button class="x" onclick="KG=null;closeOverlay()">✕</button><div class="ovprog"><i style="width:${pct}%"></i></div><div class="cnt">🎮 ${KG.idx+1}/${KG.rounds}</div></div><div class="ovbody">${inner}</div><div class="ovfoot"></div></div>`;
+  setTimeout(()=>say(target.en),250);
+}
+function kidPick(el,correct){
+  if(el.disabled||el.parentElement.dataset.done)return;
+  if(correct){el.classList.add('kgok');el.parentElement.dataset.done=1;KG.correct++;confetti();heart(el);countStudy();saveS();
+    setTimeout(()=>{KG.idx++;drawKidGame();},650);
+  }else{el.classList.add('kgbad');el.disabled=true;el.style.opacity=.4;}
+}
+function awardSticker(){
+  S.stickers=S.stickers||[];
+  const st=STICKER_POOL[Math.floor(Math.random()*STICKER_POOL.length)];
+  S.stickers.push(st);saveS();return st;
+}
+function finishKidGame(){
+  const st=awardSticker();confetti();
+  const inner=`<div class="flash"><div style="font-size:76px">${st}</div><div class="big-en">太棒了！</div>
+    <div class="card3d" style="min-height:auto;gap:6px"><div style="font-size:.95rem;color:var(--sub)">你得到一張新貼紙 ${st}</div>
+    <div style="font-size:.9rem;color:var(--sub)">貼紙簿現在有 <b style="color:var(--sky);font-size:1.3rem">${(S.stickers||[]).length}</b> 張！</div></div></div>`;
+  $('#overlayMount').innerHTML=ovShell(inner,`<button class="pbtn ghost" onclick="openStickerBook()">看貼紙簿</button><button class="pbtn" onclick="startKidGame()">再玩一次</button>`);
+  KG=null;awardBadges();
+}
+function openStickerBook(){
+  const st=S.stickers||[];
+  const inner=`<div style="padding:6px 4px 24px"><div class="section-title" style="margin-top:8px">🎉 我的貼紙簿（${st.length} 張）</div>${st.length?`<div class="stickerbook">${st.map(s=>`<div class="stik">${s}</div>`).join('')}</div>`:'<p class="qsub" style="text-align:center;margin-top:36px">玩「🎮 單字遊戲」就能收集貼紙喔！</p>'}</div>`;
+  $('#overlayMount').innerHTML=`<div class="overlay"><div class="ovhead"><button class="x" onclick="closeOverlay()">✕</button><div class="cnt" style="flex:1;text-align:center">🎉 貼紙簿</div></div><div class="ovbody" style="display:block;overflow:auto">${inner}</div></div>`;
+}
+function setParentPhone(){
+  const v=prompt('輸入爸爸／媽媽的電話（走失時給人看、可直接撥）：',G.parentPhone||'');
+  if(v!==null){G.parentPhone=v.trim();saveG();openLostCard();}
+}
+function openLostCard(){
+  const phone=G.parentPhone||'';
+  const en=phone?`I'm lost. Please help me. Please call my mom or dad at ${phone}.`:`I'm lost. Please help me. Please call my mom or dad.`;
+  const zh='我迷路了，請幫我打電話給我爸爸媽媽。';
+  const inner=`<div class="lostcard"><div class="lem">🧒🆘</div>
+    <div class="len">${en}</div><div class="lzh">${zh}</div>
+    ${phone?`<div class="lphone">📞 ${phone}</div>`:'<div class="lzh" style="color:var(--sos)">尚未設定爸媽電話</div>'}
+    <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:8px">
+      <button class="speak" onclick="say(${esc(en)})">🔊 播放</button>
+      ${phone?`<a class="speak" style="text-decoration:none;background:var(--sos)" href="tel:${phone.replace(/[^0-9+]/g,'')}">📞 撥打</a>`:''}
+      <button class="pbtn ghost" style="width:auto;padding:12px 18px" onclick="setParentPhone()">✏️ 設定電話</button>
+    </div>
+    <div class="tello" style="margin-top:6px">迷路時把這頁轉給大人看，或按📞直接打給爸媽</div></div>`;
+  $('#overlayMount').innerHTML=`<div class="overlay"><div class="ovhead"><button class="x" onclick="closeOverlay()">✕</button><div class="cnt" style="flex:1;text-align:center">🧒 走失自保卡</div></div><div class="ovbody">${inner}</div></div>`;
+}
+
+/* ===== 個人化救命資料卡 ===== */
+function meLines(){
+  const m=G.me||{};const L=[];
+  if(m.name)L.push({en:`My name is ${m.name}.`,zh:`我叫 ${m.name}。`});
+  if(m.family)L.push({en:`There are ${m.family} of us.`,zh:`我們一共 ${m.family} 位。`});
+  if(m.allergy)L.push({en:`I'm allergic to ${m.allergy}. Please make sure my food has none.`,zh:`我對 ${m.allergy} 過敏，請確認食物裡沒有。`,sos:true});
+  if(m.blood)L.push({en:`My blood type is ${m.blood}.`,zh:`我的血型是 ${m.blood}。`,sos:true});
+  if(m.hotel)L.push({en:`I'm staying at ${m.hotel}.`,zh:`我住在 ${m.hotel}。`});
+  if(G.parentPhone)L.push({en:`Please call this number: ${G.parentPhone}.`,zh:`請打這個電話：${G.parentPhone}。`,sos:true});
+  return L;
+}
+function openMeSetup(){
+  const m=G.me||{};const v=s=>(s||'').replace(/"/g,'&quot;');
+  const f=(id,lab,ph,val)=>`<div class="wzq">${lab}</div><input id="${id}" class="wzin" placeholder="${ph}" value="${v(val)}">`;
+  const inner=`<div style="padding:4px 4px 20px">
+    ${f('meName','🙋 姓名（拼音）','例：Wang Xiaoming',m.name)}
+    ${f('meFamily','👨‍👩‍👧 同行人數','例：4',m.family)}
+    ${f('meAllergy','⚠️ 過敏原（最重要）','例：peanuts, seafood',m.allergy)}
+    ${f('meBlood','🩸 血型','例：O, A, B, AB',m.blood)}
+    ${f('meHotel','🏨 這趟住哪（飯店名/地址）','例：Grand Hotel Tokyo',m.hotel)}
+    ${f('mePhone','📞 緊急聯絡電話','例：0912345678',G.parentPhone)}
+  </div>`;
+  const foot=`<button class="pbtn ghost" onclick="closeOverlay()">取消</button><button class="pbtn" onclick="saveMe()">儲存 ›</button>`;
+  $('#overlayMount').innerHTML=`<div class="overlay"><div class="ovhead"><button class="x" onclick="closeOverlay()">✕</button><div class="cnt" style="flex:1;text-align:center">🪪 我的旅遊資料</div></div><div class="ovbody" style="display:block;overflow:auto">${inner}</div><div class="ovfoot">${foot}</div></div>`;
+}
+function saveMe(){
+  G.me={name:$('#meName').value.trim(),family:$('#meFamily').value.trim(),allergy:$('#meAllergy').value.trim(),blood:$('#meBlood').value.trim(),hotel:$('#meHotel').value.trim()};
+  const ph=$('#mePhone').value.trim();if(ph)G.parentPhone=ph;
+  saveG();closeOverlay();openMeCard();
+}
+function openMeCard(){
+  const L=meLines();
+  let body=`<div style="padding:0 2px 24px"><div class="section-title" style="margin-top:8px">🪪 我的旅遊資料卡</div>
+    <p style="color:var(--sub);font-size:.8rem;margin:0 4px 10px">填自己的真實資訊，緊急時把螢幕轉給對方看最快。<button class="back" style="display:inline-flex;color:var(--sky)" onclick="openMeSetup()">✏️ 編輯</button></p>`;
+  if(!L.length){body+=`<p class="qsub" style="text-align:center;margin-top:30px">還沒填資料，點上面「✏️ 編輯」開始（過敏原、血型最救命）</p>`;}
+  else body+=L.map(o=>`<div class="cheatrow"${o.sos?' style="border-left:4px solid var(--sos)"':''}><div style="flex:1;min-width:0"><div class="cen">${o.en}</div><div class="czh">${o.zh}</div></div><button class="rbtn" onclick="say(${esc(o.en)})">🔊</button></div>`).join('');
+  body+='</div>';
+  $('#overlayMount').innerHTML=`<div class="overlay"><div class="ovhead"><button class="x" onclick="closeOverlay()">✕</button><div class="cnt" style="flex:1;text-align:center">🪪 我的資料卡</div></div><div class="ovbody" style="display:block;overflow:auto">${body}</div></div>`;
+}
+
+const REPAIR=[
+  {en:"Sorry? Could you say that again?",zh:"抱歉？可以再說一次嗎？",homophone:"搜瑞 庫揪 誰 類特 阿乾"},
+  {en:"Could you speak more slowly, please?",zh:"可以請你說慢一點嗎？",homophone:"庫揪 斯必克 摩爾 斯樓利 普利司"},
+  {en:"I don't understand.",zh:"我聽不懂。",homophone:"愛 動特 安得斯天"},
+  {en:"My English isn't very good.",zh:"我英文不太好。",homophone:"麥 英格利許 伊怎 崴瑞 估的"},
+  {en:"Could you write it down here?",zh:"可以幫我寫在這裡嗎？",homophone:"庫揪 瑞特 一特 黨 希爾"},
+  {en:"How do you spell that?",zh:"那個怎麼拼？",homophone:"好 賭 优 斯貝爾 類特"},
+  {en:"Let me show you on my phone.",zh:"我用手機給你看。",homophone:"賴特 密 秀 优 昂 麥 佛恩"},
+  {en:"Do you speak Chinese?",zh:"你會說中文嗎？",homophone:"賭 优 斯必克 拆尼斯"},
+  {en:"Just a moment, please.",zh:"請稍等一下。",homophone:"賈斯特 阿 摩門特 普利司"},
+  {en:"Can you help me, please?",zh:"可以請你幫我嗎？",homophone:"肯 优 黑歐普 密 普利司"}
+];
+function renderSOS(){
+  renderTopStats();setNav('sos');
+  const surv=[];scenList().forEach(sc=>sc.phrases.forEach((p,i)=>{if(p.survival)surv.push({sc,p,i})}));
+  let h=`<div class="section-title">🗣️ 卡住時的救急句（聽不懂／講不出來就翻這頁）</div>
+    <p style="color:var(--sub);font-size:.82rem;margin:0 4px 10px">不管在哪個情境，一卡住就用這幾句。點 🔊 播放，或把螢幕轉給對方看。</p>`;
+  h+=REPAIR.map(o=>`<div class="pitem"><div class="body"><div class="en">${o.en}</div><div class="zh">${o.zh}</div><div class="homo">🗣️ ${o.homophone}</div></div><div class="acts"><button class="rbtn" onclick="say(${esc(o.en)})">🔊</button></div></div>`).join('');
+  h+=`<div class="pitem sos-item"><div class="body"><div class="en">🪪 我的旅遊資料卡</div><div class="zh">填過敏原、血型、住宿、緊急電話，緊急時給對方看</div></div><div class="acts"><button class="rbtn" onclick="openMeCard()">開</button></div></div>`;
+  h+=`<div class="pitem sos-item"><div class="body"><div class="en">🧒 兒童走失自保卡</div><div class="zh">迷路時給大人看、可一鍵撥給爸媽（先設定電話）</div></div><div class="acts"><button class="rbtn" onclick="openLostCard()">開</button></div></div>`;
+  h+=`<div class="section-title">🆘 救命 & 生存短句</div>
+    <p style="color:var(--sub);font-size:.82rem;margin:0 4px 10px">最該先學會的關鍵句，短到能背、能指著講。點 🔊 聽發音。</p>`;
+  h+=surv.map(o=>`<div class="pitem sos-item"><div class="body">
+      <div class="en">${o.p.en}</div><div class="zh">${o.p.zh}</div>
+      ${o.p.homophone?`<div class="homo">🗣️ ${o.p.homophone}</div>`:''}
+      <div class="metarow"><span style="font-size:.7rem;color:var(--sub)">${o.sc.icon} ${o.sc.title}</span></div>
+    </div><div class="acts"><button class="rbtn" onclick="say(${esc(o.p.en)})">🔊</button></div></div>`).join('');
+  $('#view-sos').innerHTML=h;
+}
+
+let curScenario=null, curTag='全部';
+function openScenario(id){
+  curScenario=SCENARIOS.find(s=>s.id===id);curTag='全部';view='detail';
+  VIEWS.forEach(x=>$('#view-'+x).classList.toggle('hidden',x!=='detail'));setNav('');
+  renderDetail();window.scrollTo(0,0);
+}
+const NUMRE=/\b(\d[\d:.,]*|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|twenty|thirty|forty|fifty|sixty|seventy|eighty|ninety|hundred|midnight|noon)\b/i;
+function hasNumbers(sc){return sc.phrases.some(p=>phraseOK(p)&&NUMRE.test(p.en))}
+function renderDetail(){
+  const sc=curScenario;
+  const vis=visPhrases(sc);
+  const tags=['全部',...new Set(vis.map(o=>o.p.tag).filter(Boolean))];
+  const surv=vis.filter(o=>o.p.survival);
+  const list=vis.filter(o=>curTag==='全部'||o.p.tag===curTag);
+  const has=k=>sc[k]&&sc[k].length;
+  let modes=`
+    ${has('words')?`<button class="mode" onclick="startWords()"><div class="mi">📇</div><div class="ml">單字暖身</div></button>`:''}
+    <button class="mode" onclick="startMode('learn')"><div class="mi">📖</div><div class="ml">學習卡</div></button>
+    <button class="mode" onclick="startMode('listen')"><div class="mi">🎧</div><div class="ml">聽力</div></button>
+    <button class="mode" onclick="startMode('scramble')"><div class="mi">🧩</div><div class="ml">拼句</div></button>
+    <button class="mode" onclick="startMode('translate')"><div class="mi">✍️</div><div class="ml">中翻英</div></button>
+    <button class="mode" onclick="startMode('shadow')"><div class="mi">🎤</div><div class="ml">跟讀</div></button>
+    ${hasNumbers(sc)?`<button class="mode" onclick="startMode('dictation')"><div class="mi">🔢</div><div class="ml">聽數字</div></button>`:''}
+    ${has('patterns')?`<button class="mode" onclick="startPatterns()"><div class="mi">🔑</div><div class="ml">句型</div></button>`:''}
+    ${sc.dialogue&&sc.dialogue.lines&&sc.dialogue.lines.length?`<button class="mode" onclick="startRoleplay()"><div class="mi">🎭</div><div class="ml">角色扮演</div></button>`:''}
+    ${sc.dialogue&&sc.dialogue.lines&&sc.dialogue.lines.length?`<button class="mode" onclick="startRespond()"><div class="mi">💬</div><div class="ml">開放應答</div></button>`:''}`;
+  $('#view-detail').innerHTML=`
+    <button class="back" onclick="go('home')">‹ 返回</button>
+    <div class="detail-head"><div class="ico">${sc.icon}</div><h2>${sc.title}</h2><div class="en">${sc.titleEn} · ${vis.length} 句</div></div>
+    <div class="primcta">
+      ${S.band==='kid'&&scHasKidGame(sc)?`<button class="primbtn kid" onclick="startKidGame()">🎮 玩遊戲</button>`:`<button class="primbtn" onclick="startMode('shadow')">▶ 我跟著唸</button>`}
+      <button class="primbtn ghost2" onclick="startBig()">🪧 給他看</button>
+    </div>
+    ${S.band==='kid'?`<div style="text-align:center;margin:0 0 4px"><button class="back" style="display:inline-flex;color:#ec4899" onclick="openStickerBook()">🎉 我的貼紙簿</button></div>`:''}
+    <div class="modehint">👇 或挑練習模式（建議順序：暖身→學習卡→聽力→跟讀→拼句→句型→角色扮演）</div>
+    <div class="modes">${modes}</div>
+    ${surv.length?`<div class="section-title" style="margin-top:6px">🆘 這關的救命短句</div>${surv.map(o=>phraseItem(sc,o.p,o.i)).join('')}`:''}
+    <div class="section-title">📋 全部句子</div>
+    <div class="tagbar">${tags.map(t=>`<button class="tg ${t===curTag?'on':''}" onclick="setTag('${t}')">${t}</button>`).join('')}</div>
+    <div>${list.map(o=>phraseItem(sc,o.p,o.i)).join('')}</div>`;
+}
+function setTag(t){curTag=t;renderDetail()}
+let BG=null;
+function startBig(){const it=visPhrases(curScenario);if(!it.length){toast('這關暫無句子');return}BG={items:it,idx:0};drawBig();}
+function drawBig(){
+  const p=BG.items[BG.idx].p;const showHomo=(band().homo||p.survival)&&p.homophone;
+  const inner=`<div class="bigshow">
+    <div class="tello">🙂 把螢幕轉給對方看，或點下方播放給他聽</div>
+    <div class="ben">${p.en}</div><div class="bzh">${p.zh}</div>
+    ${showHomo?`<div class="bhomo">🗣️ ${p.homophone}</div>`:''}
+    <button class="speak" onclick="say(${esc(p.en)})">🔊 播放發音</button></div>`;
+  const foot=`<button class="pbtn ghost" onclick="BG.idx=(BG.idx-1+BG.items.length)%BG.items.length;drawBig()">‹ 上一句</button><button class="pbtn" onclick="BG.idx=(BG.idx+1)%BG.items.length;drawBig()">下一句 ›</button>`;
+  $('#overlayMount').innerHTML=`<div class="overlay"><div class="ovhead"><button class="x" onclick="BG=null;closeOverlay()">✕</button><div class="ovprog"><i style="width:${Math.round((BG.idx+1)/BG.items.length*100)}%"></i></div><div class="cnt">🪧 ${BG.idx+1}/${BG.items.length}</div></div><div class="ovbody">${inner}</div><div class="ovfoot">${foot}</div></div>`;
+}
+function stars(lvl){return '★'.repeat(lvl)+'☆'.repeat(Math.max(0,5-lvl))}
+function phraseItem(sc,p,i){
+  const c=S.cards[cardKey(sc.id,i)];const lvl=c?Math.min(5,c.lvl):0;
+  const fav=S.favs.includes(cardKey(sc.id,i));
+  const showHomo=(band().homo||p.survival)&&p.homophone;
+  return `<div class="pitem ${p.survival?'sos-item':''}">
+    <div class="body">
+      <div class="en">${p.en}</div><div class="zh">${p.zh}</div>
+      ${showHomo?`<div class="homo">🗣️ ${p.homophone}</div>`:''}
+      ${p.tip?`<div class="tip">💡 ${p.tip}</div>`:''}
+      <div class="metarow"><span class="lv lv${p.level||2}">${['','A1','A2','B1+'][p.level||2]}</span>${p.survival?'<span style="font-size:.62rem;color:var(--sos);font-weight:800">🆘 救命</span>':''}<span class="stars">${stars(lvl)}</span></div>
+    </div>
+    <div class="acts">
+      <button class="rbtn" onclick="say(${esc(p.en)})">🔊</button>
+      <button class="rbtn fav ${fav?'on':''}" onclick="toggleFav('${sc.id}',${i},this)">${fav?'★':'☆'}</button>
+    </div></div>`;
+}
+function toggleFav(sid,i,el){
+  const k=cardKey(sid,i);const idx=S.favs.indexOf(k);
+  if(idx>=0){S.favs.splice(idx,1);el.classList.remove('on');el.textContent='☆';}
+  else{S.favs.push(k);el.classList.add('on');el.textContent='★';heart(el);}
+  saveS();
+}
+
+function renderFav(){
+  renderTopStats();setNav('');
+  if(!S.favs.length){$('#favList').innerHTML=`<div class="emptybox"><div class="e">⭐</div>還沒有收藏<br>在句子右邊點 ☆ 就能收藏常用句</div>`;return}
+  $('#favList').innerHTML=S.favs.map(k=>{const[sid,i]=k.split('#');const sc=SCENARIOS.find(s=>s.id===sid);if(!sc||!sc.phrases[+i])return'';return phraseItem(sc,sc.phrases[+i],+i);}).join('');
+}
+
+function doSearch(q){
+  q=q.trim().toLowerCase();if(!q){$('#searchRes').innerHTML='';return}
+  const hits=[];
+  SCENARIOS.forEach(sc=>sc.phrases.forEach((p,i)=>{if(p.en.toLowerCase().includes(q)||p.zh.includes(q)||(p.tip||'').toLowerCase().includes(q))hits.push({sc,p,i});}));
+  if(!hits.length){$('#searchRes').innerHTML=`<div class="emptybox"><div class="e">🔍</div>找不到「${q}」</div>`;return}
+  $('#searchRes').innerHTML=`<div class="section-title" style="margin-top:4px">找到 ${hits.length} 句</div>`+
+    hits.slice(0,60).map(o=>`<div style="font-size:.7rem;color:var(--sub);margin:8px 2px 2px">${o.sc.icon} ${o.sc.title}</div>`+phraseItem(o.sc,o.p,o.i)).join('');
+}
+
+let Q=null;
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function scenItems(sc,filter){let it=visPhrases(sc).map(o=>({sc,p:o.p,i:o.i}));if(filter)it=it.filter(filter);return shuffle(it);}
+function buildQueue(mode,sc,filter){return{mode,items:scenItems(sc,filter),idx:0,correct:0,sid:sc.id};}
+
+function startMode(mode){
+  let filter=null;
+  if(mode==='dictation')filter=o=>NUMRE.test(o.p.en);
+  Q=buildQueue(mode,curScenario,filter);
+  if(!Q.items.length){toast('這個模式在此關沒有適合的句子');return}
+  renderCard();
+}
+function startDaily(){
+  const pool=[];const now=Date.now();
+  scenList().forEach(sc=>visPhrases(sc).forEach(o=>{const c=S.cards[cardKey(sc.id,o.i)];const pr=(!c)?1:(c.due<=now?0:2);pool.push({sc,p:o.p,i:o.i,pr,due:c?c.due:0});}));
+  pool.sort((a,b)=>a.pr-b.pr||a.due-b.due);
+  Q={mode:'learn',items:shuffle(pool.slice(0,Math.max(S.goal,10))),idx:0,correct:0,sid:null,daily:true};renderCard();
+}
+function startReview(){
+  const due=dueCards();if(!due.length){toast('太棒了！目前沒有待複習的卡 🎉');return}
+  Q={mode:'listen',items:shuffle(due),idx:0,correct:0,sid:null,review:true};renderCard();
+}
+
+/* ===== 📚 總複習：跨情境混合驗收 =====
+   上面那個「複習」只出「到期的卡」而且只考 listen ＝ 只考認得出來。
+   跨情境加權抽題（越不熟越常出），80% 才算過關。
+
+   ⚠️ 模式怎麼挑，這裡有個坑：這支 App 的「✍️ 中翻英」(cardTranslate) 掛著寫字的圖示，
+      骨子裡卻是 makeOptions 四選一 —— 跟 listen 一樣可以用猜的。
+      真正要產出的只有 scramble（拼句）。
+   比照國中2000 的複習原則（那邊克漏字＋拼字全是產出、錯題「用選的會蒙混過去」）：
+   這裡以 scramble 為主（2/3），只留 1/3 listen —— 因為「聽得懂」是會話 App 真正要的能力，
+   沒辦法用產出去測。translate 不放：它跟 listen 同樣是選擇題，多放只是多開一條摸魚路。
+   shadow(跟讀) 也不放——要麥克風，裝置不給權限就整場卡死。 */
+const F_MODES=['scramble','listen','scramble'];
+const F_PASS=80;
+function fPool(){const out=[];scenList().forEach(sc=>visPhrases(sc).forEach(o=>out.push({sc,p:o.p,i:o.i})));return out}
+function fScopes(){
+  const all=fPool(),surv=all.filter(o=>o.p.survival),out=[];
+  if(surv.length>=8)out.push({k:'surv',name:'🆘 救命句總複習',sub:'最該脫口而出的那些',pool:surv,n:Math.min(20,surv.length)});
+  out.push({k:'all',name:'📚 全情境總複習',sub:scenList().length+' 個情境混合',pool:all,n:Math.min(30,all.length)});
+  return out;
+}
+function fWeight(o){                       // 越不熟越常出
+  const c=S.cards[cardKey(o.sc.id,o.i)];let w=1;
+  if(!c||!c.seen)w+=1.5;                   // 還沒練過
+  else{if(c.lvl<3)w+=1.0;if(c.lvl>=5)w-=0.5;if(c.due<=Date.now())w+=0.8;}
+  if(o.p.survival)w+=0.3;                  // 救命句多練一點
+  return Math.max(0.3,w);
+}
+function fSample(pool,n){                  // 加權、不重複
+  const src=pool.slice(),out=[];
+  while(out.length<n&&src.length){
+    let tot=0;src.forEach(o=>tot+=fWeight(o));
+    let r=Math.random()*tot,k=0;
+    for(;k<src.length;k++){r-=fWeight(src[k]);if(r<=0)break}
+    out.push(src.splice(Math.min(k,src.length-1),1)[0]);
+  }
+  return out;
+}
+function fScopeCard(){
+  const done=S.finals||{};
+  return fScopes().map(s=>{const r=done[s.k]||{};
+    return `<button class="mode" onclick="startFinalReview('${s.k}')" style="text-align:left">
+      <div class="mi">${r.passed?'🏆':'📚'}</div>
+      <div class="ml">${s.name.replace(/^\S+\s/,'')}<small style="display:block;opacity:.7">${s.sub} · ${s.n} 題${r.best?' · 最佳 '+r.best+'%':''}</small></div>
+    </button>`}).join('');
+}
+function startFinalReview(k){
+  const sc=fScopes().find(s=>s.k===k);if(!sc)return;
+  const picked=fSample(sc.pool,sc.n);
+  if(picked.length<5){toast('先去情境裡練幾句，總複習才有東西考 📚');return}
+  // 三種模式輪流分配後再洗牌 → 交錯，不讓他靠「這頁都是聽力」猜
+  const items=shuffle(picked.map((o,idx)=>Object.assign({},o,{mode:F_MODES[idx%F_MODES.length]})));
+  Q={mode:'listen',items,idx:0,correct:0,sid:null,final:sc};
+  renderCard();
+}
+function closeOverlay(){$('#overlayMount').innerHTML='';Q=null;awardBadges();
+  if(view==='detail')renderDetail();else if(view==='fav')renderFav();else if(view==='sos')renderSOS();else renderHome();renderTopStats();}
+
+function ovShell(inner,foot){
+  const pct=Q&&Q.items.length?Math.round(Q.idx/Q.items.length*100):0;
+  const cnt=Q?`${Math.min(Q.idx+1,Q.items.length)}/${Q.items.length}`:'';
+  return `<div class="overlay"><div class="ovhead"><button class="x" onclick="closeOverlay()">✕</button><div class="ovprog"><i style="width:${pct}%"></i></div><div class="cnt">${cnt}</div></div><div class="ovbody" id="ovbody">${inner}</div><div class="ovfoot" id="ovfoot">${foot||''}</div></div>`;
+}
+function renderCard(){
+  if(!Q)return;if(Q.idx>=Q.items.length)return finishSession();
+  // 逐題可以有自己的 mode（總複習要交錯 🎧聽力/🧩拼句/✍️中翻英）；沒指定就用整場的 mode
+  const m=(Q.items[Q.idx]&&Q.items[Q.idx].mode)||Q.mode;
+  ({learn:cardLearn,listen:cardListen,scramble:cardScramble,translate:cardTranslate,shadow:cardShadow,dictation:cardDictation}[m])();
+}
+
+function cardLearn(){
+  const{sc,p}=Q.items[Q.idx];
+  const showHomo=(band().homo||p.survival)&&p.homophone;
+  const inner=`<div class="flash"><div class="card3d">
+      <div class="big-en">${p.en}</div>
+      <div id="zhpart" class="${S.showZh?'':'hidden'}"><div class="big-zh">${p.zh}</div>${showHomo?`<div class="homo2">🗣️ ${p.homophone}</div>`:''}${p.tip?`<div class="tip2" style="margin-top:10px">💡 ${p.tip}</div>`:''}</div>
+    </div>
+    <button class="speak" onclick="say(${esc(p.en)})">🔊 播放發音</button>
+    <div class="tapkuce">${sc.icon} ${sc.title}${p.tag?' · '+p.tag:''} · <span class="lv lv${p.level||2}">${['','A1','A2','B1+'][p.level||2]}</span></div></div>`;
+  $('#overlayMount').innerHTML=ovShell(inner,`<button class="pbtn bad" onclick="learnNext(false)">🔁 再練</button><button class="pbtn good" onclick="learnNext(true)">✓ 我會了</button>`);
+  say(p.en);
+}
+function learnNext(ok){const it=Q.items[Q.idx];grade(it.sc.id,it.i,ok);if(ok)Q.correct++;Q.idx++;renderCard();}
+
+function cardListen(){
+  const{p}=Q.items[Q.idx];const opts=makeOptions(p,'zh');
+  const inner=`<div style="text-align:center;margin:20px 0"><button class="mic" style="width:78px;height:78px;font-size:32px;margin:0 auto" onclick="say(${esc(p.en)})">🔊</button><div class="qsub" style="margin-top:16px">聽英文，選出正確的中文意思</div></div><div id="opts">${opts.map(o=>`<button class="opt" onclick="pickOpt(this,${o.correct})">${o.text}</button>`).join('')}</div>`;
+  $('#overlayMount').innerHTML=ovShell(inner,'');say(p.en);
+}
+function cardTranslate(){
+  const{p}=Q.items[Q.idx];const opts=makeOptions(p,'en');
+  const inner=`<div class="qword">${p.zh}</div><div class="qsub">選出正確的英文說法</div><div id="opts">${opts.map(o=>`<button class="opt" onclick="pickOpt(this,${o.correct})">${o.text}</button>`).join('')}</div>`;
+  $('#overlayMount').innerHTML=ovShell(inner,'');
+}
+function makeOptions(p,field){
+  // 優先用「同一情境」的句子當誘答，比較像、比較難猜；不足再用全體補
+  const same=shuffle((curScenario?curScenario.phrases:[]).filter(x=>x[field]&&x[field]!==p[field]));
+  const wrong=same.slice(0,3);
+  if(wrong.length<3){
+    const all=[];SCENARIOS.forEach(sc=>sc.phrases.forEach(x=>all.push(x)));
+    const extra=shuffle(all.filter(x=>x[field]&&x[field]!==p[field]&&!wrong.includes(x))).slice(0,3-wrong.length);
+    wrong.push(...extra);
+  }
+  return shuffle([{text:p[field],correct:true},...wrong.map(w=>({text:w[field],correct:false}))]);
+}
+function pickOpt(el,correct){
+  if(el.parentElement.dataset.done)return;el.parentElement.dataset.done=1;
+  const cur=Q.items[Q.idx];const field=Q.mode==='listen'?'zh':'en';
+  [...el.parentElement.children].forEach(b=>b.style.pointerEvents='none');
+  if(correct){el.classList.add('ok');Q.correct++;grade(cur.sc.id,cur.i,true);say(cur.p.en);
+    setTimeout(()=>{Q.idx++;renderCard()},750);
+  }else{
+    el.classList.add('no');grade(cur.sc.id,cur.i,false);
+    const target=Q.mode==='dictation'?el.parentElement.querySelector('.opt'):null;
+    [...el.parentElement.children].forEach(b=>{if(b.textContent===cur.p[field])b.classList.add('ok')});
+    showTeach(cur,el.textContent);say(cur.p.en);
+  }
+}
+function showTeach(cur,youAnswer){
+  const p=cur.p;
+  $('#ovbody').insertAdjacentHTML('beforeend',`<div class="teach">
+    <div class="r wrong">✗ 你選：${youAnswer}</div>
+    <div class="r right">✓ 正解：${Q.mode==='listen'?p.zh:p.en}</div>
+    <div style="font-size:.85rem;color:var(--sub);margin-top:4px">${p.en} — ${p.zh}</div>
+    ${p.tip?`<div class="tipbox">💡 ${p.tip}</div>`:''}</div>`);
+  $('#ovfoot').innerHTML=`<button class="pbtn ghost" onclick="say(${esc(p.en)})">🔊 再聽</button><button class="pbtn" onclick="Q.idx++;renderCard()">下一題 ›</button>`;
+  $('#ovbody').scrollTop=$('#ovbody').scrollHeight;
+}
+
+function extractNum(en){const m=en.match(NUMRE);return m?m[0]:null;}
+function cardDictation(){
+  const{p}=Q.items[Q.idx];const num=extractNum(p.en)||'';
+  const masked=p.en.replace(num,'＿＿＿');
+  const distract=shuffle(['2','5','10','12','20','30','50','100','half past ten','four','noon','midnight'].filter(x=>x.toLowerCase()!==num.toLowerCase())).slice(0,3);
+  const opts=shuffle([{text:num,correct:true},...distract.map(d=>({text:d,correct:false}))]);
+  const inner=`<div style="text-align:center;margin:14px 0"><button class="mic" style="width:70px;height:70px;font-size:28px;margin:0 auto" onclick="say(${esc(p.en)})">🔊</button><div class="qsub" style="margin-top:14px">聽句子，選出你聽到的數字/時間</div></div>
+    <div class="qword" style="font-size:1.15rem;color:var(--sub)">${masked}</div>
+    <div id="opts" style="margin-top:10px">${opts.map(o=>`<button class="opt" style="text-align:center" onclick="pickOpt(this,${o.correct})">${o.text}</button>`).join('')}</div>`;
+  $('#overlayMount').innerHTML=ovShell(inner,'');say(p.en);
+}
+
+let scz={};
+function cardScramble(){
+  const it=Q.items[Q.idx],p=it.p;
+  // 錯題本：先翻卡看提示（他本來就答錯過，直接叫他拼是刁難），看完再動手拼一次才算。
+  // 比照國中2000 的錯題本做法。看提示不影響判分——拼不出來一樣是錯。
+  if(it.peek&&!it._peeked)return drawPeek(it,p);
+  const words=p.en.replace(/([.,!?;])/g,' $1').split(/\s+/).filter(Boolean);
+  scz={words,target:[],pool:shuffle(words.map((w,idx)=>({w,idx})))};drawScramble(p);
+}
+function drawPeek(it,p){
+  const showHomo=(band().homo||p.survival)&&p.homophone;
+  const inner=`<div class="flash"><div class="card3d">
+      <div class="qsub" style="margin-bottom:8px">📝 這句你之前拼錯過 —— 先看清楚，等一下要自己拼一次</div>
+      <div class="big-en">${p.en}</div>
+      <div class="big-zh">${p.zh}</div>
+      ${showHomo?`<div class="homo">${p.homophone}</div>`:''}
+      <div class="tapkuce" style="margin-top:6px">${it.sc.icon} ${it.sc.title}</div>
+    </div>
+    <button class="speak" onclick="say(${esc(p.en)})">🔊 播放發音</button></div>`;
+  $('#overlayMount').innerHTML=ovShell(inner,`<button class="pbtn" onclick="peekDone()">看好了，開始拼 🧩</button>`);
+  say(p.en);
+}
+function peekDone(){Q.items[Q.idx]._peeked=1;renderCard();}
+function drawScramble(p){
+  const inner=`<div class="qsub" style="margin-top:6px">把單字排成正確的英文句子</div>
+    <div class="qword" style="font-size:1.15rem;color:var(--sub);margin:4px 0 14px">${p.zh}</div>
+    <div class="scz-target" id="sczT">${scz.target.map((t,k)=>`<button class="tok" onclick="sczBack(${k})">${t.w}</button>`).join('')||'<span style="color:var(--sub);align-self:center">👇 從下方點選單字</span>'}</div>
+    <div class="scz-pool" id="sczP">${scz.pool.map((t,k)=>`<button class="tok inpool" onclick="sczPick(${k})">${t.w}</button>`).join('')}</div>`;
+  $('#overlayMount').innerHTML=ovShell(inner,`<button class="pbtn ghost" onclick="say(${esc(p.en)})">🔊 提示</button><button class="pbtn" onclick="sczCheck()" ${scz.pool.length?'disabled':''}>檢查</button>`);
+}
+function sczPick(k){scz.target.push(scz.pool.splice(k,1)[0]);drawScramble(Q.items[Q.idx].p);}
+function sczBack(k){scz.pool.push(scz.target.splice(k,1)[0]);drawScramble(Q.items[Q.idx].p);}
+function sczCheck(){
+  const cur=Q.items[Q.idx];const correct=scz.target.map(t=>t.w).join(' ')===scz.words.join(' ');const T=$('#sczT');
+  if(correct){T.classList.add('ok');Q.correct++;grade(cur.sc.id,cur.i,true);say(cur.p.en);setTimeout(()=>{Q.idx++;renderCard()},900);}
+  else{T.classList.add('err');grade(cur.sc.id,cur.i,false);setTimeout(()=>T.classList.remove('err'),400);
+    setTimeout(()=>{$('#ovbody').insertAdjacentHTML('beforeend',`<div class="teach"><div class="r right">✓ 正解：${cur.p.en}</div><div style="font-size:.85rem;color:var(--sub);margin-top:3px">${cur.p.zh}</div>${cur.p.tip?`<div class="tipbox">💡 ${cur.p.tip}</div>`:''}</div>`);$('#ovfoot').innerHTML=`<button class="pbtn ghost" onclick="say(${esc(cur.p.en)})">🔊 聽</button><button class="pbtn" onclick="Q.idx++;renderCard()">下一題 ›</button>`;$('#ovbody').scrollTop=9e9;},450);}
+}
+
+let recog=null,recSupported=('webkitSpeechRecognition'in window)||('SpeechRecognition'in window);
+function cardShadow(){
+  const{p}=Q.items[Q.idx];
+  const inner=`<div class="mic-wrap">
+    <div class="big-en" style="font-size:1.5rem;font-weight:800">${p.en}</div>
+    <div class="big-zh" style="color:var(--sub)">${p.zh}</div>
+    <button class="mic" id="micBtn" onclick="toggleRec()">${recSupported?'🎤':'🚫'}</button>
+    <div class="heard" id="heard">${recSupported?'點麥克風，唸出上面的句子':'此裝置不支援語音辨識，改用聽發音跟著唸'}</div>
+    <div id="scoreArea"></div></div>`;
+  const foot=recSupported?`<button class="pbtn ghost" onclick="say(${esc(p.en)})">🔊 聽範例</button><button class="pbtn" onclick="Q.idx++;renderCard()">跳過 ›</button>`
+    :`<button class="pbtn ghost" onclick="say(${esc(p.en)})">🔊 聽範例</button><button class="pbtn good" onclick="learnNext(true)">✓ 我唸了</button>`;
+  $('#overlayMount').innerHTML=ovShell(inner,foot);setTimeout(()=>say(p.en),200);
+}
+function toggleRec(){
+  if(!recSupported)return;const R=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(recog){recog.stop();return;}
+  recog=new R();recog.lang='en-US';recog.interimResults=false;recog.maxAlternatives=1;
+  $('#micBtn').classList.add('rec');$('#heard').textContent='🔴 聽你說…請開口';
+  recog.onresult=e=>scoreShadow(e.results[0][0].transcript);
+  recog.onerror=()=>{$('#heard').textContent='沒聽清楚，再試一次';};
+  recog.onend=()=>{const m=$('#micBtn');if(m)m.classList.remove('rec');recog=null;};
+  try{recog.start();}catch(e){}
+}
+function normalize(s){return s.toLowerCase().replace(/[^a-z0-9 ]/g,'').replace(/\s+/g,' ').trim()}
+function scoreShadow(said){
+  const cur=Q.items[Q.idx];const tw=normalize(cur.p.en).split(' '),hw=new Set(normalize(said).split(' '));
+  let hit=0;tw.forEach(w=>{if(hw.has(w))hit++});const score=Math.round(hit/tw.length*100);
+  // 逐字標記：綠＝機器聽到了、紅波浪＝沒聽到（可點聽慢速）
+  const marked=cur.p.en.split(/(\s+)/).map(tok=>{const w=normalize(tok);if(!w)return tok;return hw.has(w)?`<span class="wok">${tok}</span>`:`<span class="wmiss">${tok}</span>`;}).join('');
+  const missed=tw.filter(w=>!hw.has(w));
+  $('#heard').innerHTML=`辨識到：<b>${said}</b>`;
+  const cls=score>=80?'w-good':score>=50?'w-mid':'w-bad';
+  const msg=score>=80?'這句大部分字都聽清楚了 🎉':'紅字是機器沒聽到的，點一下聽慢速、再唸一次：';
+  const chips=(score<80&&missed.length)?missed.map(w=>`<button class="misschip" onclick="say('${w}')">🔊 ${w}</button>`).join(''):'';
+  $('#scoreArea').innerHTML=`<div class="shadowline">${marked}</div>`+
+    `<div class="scorebig ${cls}">${score}<span style="font-size:1.05rem"> % 字被聽到</span></div>`+
+    `<div class="qsub">${msg}${chips}</div>`+
+    `<div class="fbnote">※ 這是「單字有沒有被聽到」的比例，不是發音準不準的評分。想聽真人示範可點下方「範例」。</div>`;
+  const ok=score>=60;grade(cur.sc.id,cur.i,ok);if(ok)Q.correct++;if(score>=80)heart($('#micBtn'));
+  $('#ovfoot').innerHTML=`<button class="pbtn ghost" onclick="say(${esc(cur.p.en)})">🔊 範例</button><button class="pbtn" onclick="Q.idx++;renderCard()">下一題 ›</button>`;
+}
+
+let WQ=null;
+function startWords(){WQ={words:shuffle(curScenario.words.slice()),idx:0,sc:curScenario};drawWord();}
+function drawWord(){
+  if(WQ.idx>=WQ.words.length){WQ=null;$('#overlayMount').innerHTML='';renderDetail();toast('單字暖身完成！開始練句子吧 💪');return;}
+  const w=WQ.words[WQ.idx];const pct=Math.round(WQ.idx/WQ.words.length*100);
+  const inner=`<div class="flash"><div class="wico">${w.ico||'🔤'}</div><div class="card3d" style="min-height:150px"><div class="big-en">${w.en}</div><div class="big-zh">${w.zh}</div></div><button class="speak" onclick="say(${esc(w.en)})">🔊 播放</button></div>`;
+  $('#overlayMount').innerHTML=`<div class="overlay"><div class="ovhead"><button class="x" onclick="WQ=null;closeOverlay()">✕</button><div class="ovprog"><i style="width:${pct}%"></i></div><div class="cnt">📇 ${WQ.idx+1}/${WQ.words.length}</div></div><div class="ovbody">${inner}</div><div class="ovfoot"><button class="pbtn" onclick="WQ.idx++;drawWord()">下一個 ›</button></div></div>`;
+  say(w.en);
+}
+
+let PQ=null;
+function startPatterns(){PQ={pats:curScenario.patterns.slice(),idx:0,sc:curScenario,pick:0};drawPattern();}
+function drawPattern(){
+  if(PQ.idx>=PQ.pats.length){PQ=null;$('#overlayMount').innerHTML='';renderDetail();toast('句型練習完成！一個框架能講很多句 🔑');return;}
+  const pat=PQ.pats[PQ.idx];const slot=pat.slots[PQ.pick]||pat.slots[0];
+  const full=pat.en.replace('___',slot);
+  const inner=`<div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:16px">
+    <div class="patcard"><div class="frame">${pat.en.replace('___',`<span class="slot">${slot}</span>`)}</div><div style="color:var(--sub)">${pat.zh}</div>
+      <button class="speak" style="margin-top:14px" onclick="say(${esc(full)})">🔊 ${full}</button></div>
+    <div style="text-align:center;color:var(--sub);font-size:.85rem">👇 換不同的字，同一句型變出很多句</div>
+    <div class="slotbtns">${pat.slots.map((s,k)=>`<button class="slotbtn ${k===PQ.pick?'on':''}" onclick="PQ.pick=${k};drawPattern()">${s}</button>`).join('')}</div></div>`;
+  $('#overlayMount').innerHTML=`<div class="overlay"><div class="ovhead"><button class="x" onclick="PQ=null;closeOverlay()">✕</button><div class="ovprog"><i style="width:${Math.round(PQ.idx/PQ.pats.length*100)}%"></i></div><div class="cnt">🔑 ${PQ.idx+1}/${PQ.pats.length}</div></div><div class="ovbody">${inner}</div><div class="ovfoot"><button class="pbtn" onclick="PQ.idx++;PQ.pick=0;drawPattern()">下一個句型 ›</button></div></div>`;
+  say(full);
+}
+
+let RP=null;
+function pickLine(l){if(l.who==='npc'&&l.alt&&l.alt.length&&Math.random()<0.5){const a=l.alt[Math.floor(Math.random()*l.alt.length)];return{who:'npc',en:a.en,zh:a.zh};}return l;}
+function startRoleplay(){
+  const d=curScenario.dialogue;if(!d||!d.lines||!d.lines.length){toast('這關暫無對話');return}
+  RP={d,step:0,resolved:d.lines.map(pickLine)};drawRoleplay();
+}
+function drawRoleplay(){
+  const{d,resolved}=RP;const shown=resolved.slice(0,RP.step);
+  const chat=shown.map(l=>`<div class="bubble ${l.who}">${l.en}<div class="z">${l.zh}</div></div>`).join('');
+  let foot='',bottom='';
+  if(RP.step>=resolved.length){foot=`<button class="pbtn ghost" onclick="closeOverlay()">完成</button><button class="pbtn" onclick="RP.step=0;RP.resolved=RP.d.lines.map(pickLine);drawRoleplay()">再玩一次</button>`;}
+  else{const nxt=resolved[RP.step];
+    if(nxt.who==='you'){bottom=`<div class="roleask">👉 換你了（你扮演：${d.youRole}）— ${recSupported?'先點麥克風把這句「說出來」，再看解答':'先自己念出來，再看解答'}</div>${recSupported?`<div style="text-align:center;margin-top:10px"><button class="mic" style="width:66px;height:66px;font-size:27px;margin:0 auto" id="rpMic" onclick="rpSpeak()">🎤</button><div class="heard" id="rpHeard">點麥克風開口說</div><div id="rpFb"></div></div>`:''}`;foot=`<button class="pbtn ghost" onclick="say(${esc(nxt.en)})">🔊 提示</button><button class="pbtn" onclick="rpAdvance()">看解答 ›</button>`;}
+    else{bottom=`<div class="roleask">🗣️ ${d.npcRole} 說話中…</div>`;foot=`<button class="pbtn" onclick="rpAdvance()">繼續 ›</button>`;}}
+  const inner=`<div style="text-align:center;margin-bottom:6px"><b>${d.title}</b><div class="qsub">你：${d.youRole} ｜ 對方：${d.npcRole}</div></div><div class="chat">${chat||'<div class="qsub">點「繼續」展開對話</div>'}</div>${bottom}`;
+  $('#overlayMount').innerHTML=`<div class="overlay"><div class="ovhead"><button class="x" onclick="closeOverlay()">✕</button><div class="ovprog"><i style="width:${Math.round(RP.step/resolved.length*100)}%"></i></div><div class="cnt">🎭</div></div><div class="ovbody">${inner}</div><div class="ovfoot">${foot}</div></div>`;
+  const last=shown[shown.length-1];if(last&&last.who==='npc')say(last.en);
+  const body=$('.chat');if(body)body.scrollTop=body.scrollHeight;
+}
+function rpAdvance(){const l=RP.resolved[RP.step];RP.step++;if(l.who==='you'){countStudy();saveS();}drawRoleplay();}
+function rpSpeak(){
+  if(!recSupported)return;const R=window.SpeechRecognition||window.webkitSpeechRecognition;
+  const rr=new R();rr.lang='en-US';rr.interimResults=false;
+  const mic=$('#rpMic');if(mic)mic.classList.add('rec');
+  const hb=$('#rpHeard');if(hb)hb.textContent='🔴 聽你說…請開口';
+  rr.onresult=e=>{
+    const said=e.results[0][0].transcript;const nxt=RP.resolved[RP.step];
+    const tw=normalize(nxt.en).split(' '),hw=new Set(normalize(said).split(' '));
+    let hit=0;tw.forEach(w=>{if(hw.has(w))hit++});const pct=Math.round(hit/tw.length*100);
+    const marked=nxt.en.split(/(\s+)/).map(t=>{const w=normalize(t);if(!w)return t;return hw.has(w)?`<span class="wok">${t}</span>`:`<span class="wmiss">${t}</span>`;}).join('');
+    if($('#rpHeard'))$('#rpHeard').innerHTML=`你說：<b>${said}</b>`;
+    if($('#rpFb'))$('#rpFb').innerHTML=`<div class="shadowline" style="font-size:1.05rem">${marked}</div><div class="qsub">${pct>=70?'很完整！點「看解答」繼續 👍':'紅字沒講到，可再說一次，或看解答'}</div>`;
+    if(pct>=70&&$('#rpMic'))heart($('#rpMic'));
+  };
+  rr.onerror=()=>{if($('#rpHeard'))$('#rpHeard').textContent='沒聽清楚，再試一次';};
+  rr.onend=()=>{const m=$('#rpMic');if(m)m.classList.remove('rec');};
+  try{rr.start();}catch(e){}
+}
+
+let RS=null;
+function startRespond(){
+  const d=curScenario.dialogue;if(!d||!d.lines)return;
+  const pairs=[];for(let i=0;i<d.lines.length-1;i++){if(d.lines[i].who==='npc'&&d.lines[i+1].who==='you')pairs.push({npc:d.lines[i],you:d.lines[i+1]});}
+  if(!pairs.length){toast('這關暫無適合的應答練習');return}
+  RS={pairs:shuffle(pairs),idx:0};drawRespond(false);
+}
+function drawRespond(revealed){
+  if(RS.idx>=RS.pairs.length){RS=null;$('#overlayMount').innerHTML='';renderDetail();toast('應答練習完成！臨場反應更快了 💬');return;}
+  const pr=RS.pairs[RS.idx];const pct=Math.round(RS.idx/RS.pairs.length*100);
+  let body=`<div style="flex:1;display:flex;flex-direction:column;gap:14px;justify-content:center">
+    <div class="qsub">🗣️ 對方對你說（點播放來聽）：</div>
+    <div class="bubble npc" style="max-width:100%">${pr.npc.en}<div class="z">${pr.npc.zh}</div></div>
+    <div style="text-align:center"><button class="speak" onclick="say(${esc(pr.npc.en)})">🔊 再聽一次</button></div>`;
+  if(!revealed){body+=`<div class="roleask">👉 換你回答！${recSupported?'點麥克風說說看':'想好你會怎麼回，再看參考'}</div>
+    ${recSupported?`<div style="text-align:center"><button class="mic" style="width:74px;height:74px;font-size:30px;margin:0 auto" id="rsMic" onclick="rsRec()">🎤</button><div class="heard" id="rsHeard"></div></div>`:''}`;}
+  else{body+=`<div class="roleask">✅ 參考回答：</div><div class="bubble you" style="max-width:100%;align-self:flex-end">${pr.you.en}<div class="z">${pr.you.zh}</div></div>`;}
+  body+='</div>';
+  const foot=revealed?`<button class="pbtn ghost" onclick="say(${esc(pr.you.en)})">🔊 聽參考</button><button class="pbtn" onclick="RS.idx++;countStudy();saveS();drawRespond(false)">下一題 ›</button>`
+    :`<button class="pbtn" onclick="drawRespond(true)">看參考回答 ›</button>`;
+  $('#overlayMount').innerHTML=`<div class="overlay"><div class="ovhead"><button class="x" onclick="RS=null;closeOverlay()">✕</button><div class="ovprog"><i style="width:${pct}%"></i></div><div class="cnt">💬 ${RS.idx+1}/${RS.pairs.length}</div></div><div class="ovbody">${body}</div><div class="ovfoot">${foot}</div></div>`;
+  say(pr.npc.en);
+}
+const RS_STOP=new Set('a an the to of for and or i you we it is are am was were be been do does did can could would will shall may my your our me us at in on this that these those with please yes no ok oh so'.split(' '));
+function rsRec(){
+  if(!recSupported)return;const R=window.SpeechRecognition||window.webkitSpeechRecognition;
+  const rr=new R();rr.lang='en-US';rr.interimResults=false;
+  $('#rsMic').classList.add('rec');$('#rsHeard').textContent='🔴 聽你說…';
+  rr.onresult=e=>{
+    const said=e.results[0][0].transcript;const pr=RS.pairs[RS.idx];
+    const heard=new Set(normalize(said).split(' '));
+    const key=[...new Set(normalize(pr.you.en).split(' '))].filter(w=>w&&!RS_STOP.has(w));
+    const covered=key.filter(w=>heard.has(w)),missed=key.filter(w=>!heard.has(w));
+    const pct=key.length?Math.round(covered.length/key.length*100):100;
+    let fb=`辨識到：<b>${said}</b>`;
+    if(key.length){
+      if(pct>=60)fb+=`<br><span class="keyok">👍 重點都講到了（關鍵字 ${covered.length}/${key.length}）</span>`;
+      else fb+=`<br>還差關鍵字：${missed.map(w=>`<span class="wmiss">${w}</span>`).join(' ')}<br><span class="qsub">參考說法：${pr.you.en}</span>`;
+    }
+    fb+=`<div class="fbnote">※ 只檢查你有沒有講到重點字，不評發音；旅遊講得通最重要，說法不用跟參考一模一樣。</div>`;
+    $('#rsHeard').innerHTML=fb;
+  };
+  rr.onerror=()=>{$('#rsHeard').textContent='沒聽清楚，再試一次';};
+  rr.onend=()=>{const m=$('#rsMic');if(m)m.classList.remove('rec');};
+  try{rr.start();}catch(e){}
+}
+
+function finishSession(){
+  const total=Q.items.length,correct=Q.correct,pct=total?Math.round(correct/total*100):0;
+  if(Q.final)return finishFinal(pct,correct,total);
+  const star=pct>=90?'🏆':pct>=70?'🌟':'👍';confetti();
+  const inner=`<div class="flash"><div style="font-size:64px">${star}</div><div class="big-en">完成！</div>
+    <div class="card3d" style="min-height:auto;gap:8px"><div style="font-size:.95rem;color:var(--sub)">答對 <b style="color:var(--good);font-size:1.4rem">${correct}</b> / ${total} 題</div>
+    <div style="font-size:.95rem;color:var(--sub)">今日累積 <b style="color:var(--sky)">${S.dailyCount[todayStr()]||0}</b> 張 · 連續 <b style="color:var(--gold)">${streak()}</b> 天 🔥</div></div></div>`;
+  $('#overlayMount').innerHTML=ovShell(inner,`<button class="pbtn ghost" onclick="closeOverlay()">完成</button>${Q.sid?`<button class="pbtn" onclick="restartSame()">再練一次</button>`:''}`);
+  saveS();awardBadges();
+}
+function restartSame(){const sc=SCENARIOS.find(s=>s.id===Q.sid);const m=Q.mode;Q=buildQueue(m,sc);renderCard();}
+
+/* 總複習的結算：過關要 80%，並誠實告訴他哪個情境最弱（分數低不是罵他，是指路） */
+function finishFinal(pct,correct,total){
+  const sc=Q.final,pass=pct>=F_PASS;
+  S.finals=S.finals||{};const pr=S.finals[sc.k]||{};
+  S.finals[sc.k]={passed:pr.passed||pass,best:Math.max(pr.best||0,pct),last:pct,ts:Date.now()};saveS();
+  // 答錯的集中在哪個情境
+  const miss={};Q.items.forEach(o=>{const c=S.cards[cardKey(o.sc.id,o.i)];if(c&&c.lvl<3)miss[o.sc.id]=(miss[o.sc.id]||0)+1});
+  const worst=Object.keys(miss).sort((a,b)=>miss[b]-miss[a])[0];
+  const ws=worst?SCENARIOS.find(s=>s.id===worst):null;
+  const msg=pass?'過關！這些句子你是真的會用了 🎉'
+    :pct>=60?'就差一點——把最弱的情境再練一輪就過了。'
+    :'總複習是驗收，不是拿來練的。先回情境把句子練熟再來考。';
+  if(pass)confetti();
+  const inner=`<div class="flash"><div style="font-size:64px">${pass?'🏆':'💪'}</div>
+    <div class="big-en">${sc.name}</div>
+    <div class="card3d" style="min-height:auto;gap:8px">
+      <div style="font-size:.95rem;color:var(--sub)">答對 <b style="color:var(--ok,#2e7d32)">${correct}</b> / ${total}（${pct}%）</div>
+      <div style="font-size:.9rem;color:var(--sub)">${msg}</div>
+      ${pr.last!==undefined?`<div style="font-size:.85rem;color:var(--sub)">上次 ${pr.last}% → 這次 ${pct}%${pct>pr.last?'　📈 進步 '+(pct-pr.last):''}</div>`:''}
+      ${ws?`<div style="font-size:.85rem;color:var(--sub)">最該回頭練的：${ws.icon} ${ws.title}</div>`:''}
+    </div></div>`;
+  $('#overlayMount').innerHTML=ovShell(inner,
+    `<button class="pbtn ghost" onclick="closeOverlay()">完成</button>`+
+    (ws?`<button class="pbtn" onclick="closeOverlay();openScenario('${ws.id}')">去練 ${ws.icon} ${ws.title}</button>`:'')+
+    `<button class="pbtn ghost" onclick="startFinalReview('${sc.k}')">再考一次</button>`);
+  saveS();awardBadges();
+}
+
+const MILESTONES=[{id:'streak3',emoji:'🔥',name:'連續3天',test:()=>streak()>=3},{id:'streak7',emoji:'⚡',name:'連續7天',test:()=>streak()>=7},{id:'streak30',emoji:'👑',name:'連續30天',test:()=>streak()>=30},{id:'star50',emoji:'⭐',name:'50顆星',test:()=>totalStars()>=50},{id:'star200',emoji:'🌟',name:'200顆星',test:()=>totalStars()>=200},{id:'sos',emoji:'🆘',name:'救命達人',test:()=>{let n=0;SCENARIOS.forEach(sc=>sc.phrases.forEach((p,i)=>{if(p.survival){const c=S.cards[cardKey(sc.id,i)];if(c&&c.lvl>=3)n++}}));return n>=15}}];
+function earnedBadges(){
+  const got=new Set(S.badges);
+  SCENARIOS.forEach(sc=>{if(scenarioPct(sc)>=100)got.add('sc_'+sc.id);});
+  MILESTONES.forEach(m=>{if(m.test())got.add(m.id);});
+  return got;
+}
+function awardBadges(){
+  const got=earnedBadges();const fresh=[...got].filter(b=>!S.badges.includes(b));
+  if(fresh.length){S.badges=[...got];saveS();
+    const b=fresh[0];const sc=SCENARIOS.find(s=>'sc_'+s.id===b);const m=MILESTONES.find(x=>x.id===b);
+    toast('🏅 獲得徽章：'+(sc?sc.icon+' '+sc.title+'達人':(m?m.emoji+' '+m.name:'新成就')));confetti();
+  }
+}
+function renderBadges(){
+  const got=earnedBadges();
+  const scB=SCENARIOS.map(sc=>({emoji:sc.icon,name:sc.title,got:got.has('sc_'+sc.id)}));
+  const msB=MILESTONES.map(m=>({emoji:m.emoji,name:m.name,got:got.has(m.id)}));
+  const all=[...msB,...scB];
+  $('#badges').innerHTML=all.map(b=>`<div class="badge ${b.got?'got':''}"><div class="bi">${b.emoji}</div><div class="bn">${b.name}</div></div>`).join('');
+}
+
+function esc(s){return "'"+String(s).replace(/\\/g,'\\\\').replace(/'/g,"\\'")+"'"}
+function toast(msg){const t=document.createElement('div');t.className='toast';t.textContent=msg;document.body.appendChild(t);setTimeout(()=>t.remove(),1800)}
+function heart(el){if(!el)return;const r=el.getBoundingClientRect();const h=document.createElement('div');h.className='pop-heart';h.textContent='❤️';h.style.left=r.left+r.width/2-15+'px';h.style.top=r.top+'px';document.body.appendChild(h);setTimeout(()=>h.remove(),1000)}
+function confetti(){for(let i=0;i<24;i++){const c=document.createElement('div');c.className='pop-heart';c.textContent=['🎉','⭐','✨','🎊','💙'][i%5];c.style.left=Math.random()*100+'vw';c.style.top=Math.random()*40+10+'vh';c.style.animationDelay=Math.random()*.3+'s';document.body.appendChild(c);setTimeout(()=>c.remove(),1200)}}
+
+function renderProfile(){
+  renderTopStats();setNav('profile');
+  $('#profList').innerHTML=G.profiles.map(p=>`<button class="pill ${p.id===G.current?'on':''}" onclick="switchProfile('${p.id}')" ondblclick="renameProfile('${p.id}')">${p.emoji} ${p.name}${G.profiles.length>1?` <span onclick="event.stopPropagation();delProfile('${p.id}')" style="color:var(--bad);margin-left:4px">✕</span>`:''}</button>`).join('');
+  $('#bandSel').innerHTML=Object.keys(BANDS).map(k=>`<button class="bandopt ${S.band===k?'on':''}" onclick="setBand('${k}')"><b>${BANDS[k].emoji} ${BANDS[k].name}</b><small>${BANDS[k].desc}</small></button>`).join('');
+  renderBadges();
+  $('#goalView').textContent=S.goal;$('#rateView').textContent=S.rate.toFixed(1)+'×';
+  $('#swBig').classList.toggle('on',S.big);$('#swDark').classList.toggle('on',G.dark);$('#swZh').classList.toggle('on',S.showZh);
+  let seen=0,mastered=0,tot=0;
+  scenList().forEach(sc=>visPhrases(sc).forEach(o=>{tot++;const c=S.cards[cardKey(sc.id,o.i)];if(c&&c.seen)seen++;if(c&&c.lvl>=5)mastered++;}));
+  $('#progSummary').innerHTML=`
+    <div class="setrow"><div class="lab"><b>已學過</b><small>目前模式可見的句子</small></div><b style="color:var(--sky)">${seen} / ${tot}</b></div>
+    <div class="setrow"><div class="lab"><b>已精熟 ★★★★★</b></div><b style="color:var(--gold)">${mastered}</b></div>
+    <div class="setrow" onclick="go('fav')" style="cursor:pointer"><div class="lab"><b>⭐ 我的收藏</b></div><b>${S.favs.length} ›</b></div>
+    <div class="setrow"><div class="lab"><b>連續打卡</b></div><b style="color:var(--bad)">${streak()} 天 🔥</b></div>`;
+}
+function setBand(k){S.band=k;S.big=BANDS[k].big;saveS();applyBig();renderProfile();toast(BANDS[k].emoji+' 已切換到「'+BANDS[k].name+'」模式');}
+function switchProfile(id){G.current=id;saveG();loadProfile(id);applyBig();renderProfile();}
+function addProfile(){const name=prompt('成員名字？（例：爸爸、小明、阿嬤）');if(!name)return;const emojis=['🙂','😎','🧑','👦','👧','👨','👩','👵','👴','🐣'];const id='p'+Date.now();G.profiles.push({id,name:name.trim().slice(0,6),emoji:emojis[G.profiles.length%emojis.length]});G.current=id;saveG();loadProfile(id);applyBig();renderProfile();renderTopStats();}
+function renameProfile(id){const p=G.profiles.find(x=>x.id===id);const n=prompt('改名字：',p.name);if(n){p.name=n.trim().slice(0,6);saveG();renderProfile()}}
+function delProfile(id){if(G.profiles.length<=1)return;if(!confirm('刪除這位成員與其進度？'))return;G.profiles=G.profiles.filter(p=>p.id!==id);localStorage.removeItem(pKey(id));if(G.current===id)G.current=G.profiles[0].id;saveG();loadProfile(G.current);applyBig();renderProfile();renderTopStats();}
+function setGoal(d){S.goal=Math.max(5,Math.min(100,S.goal+d));saveS();renderProfile();}
+function setRate(d){S.rate=Math.max(.5,Math.min(1.5,+(S.rate+d).toFixed(1)));saveS();$('#rateView').textContent=S.rate.toFixed(1)+'×';say('Hello, this is the speed.');}
+function toggleBig(){S.big=!S.big;saveS();applyBig();$('#swBig').classList.toggle('on',S.big);}
+function applyBig(){document.body.classList.toggle('big',S.big);}
+function toggleDark(){G.dark=!G.dark;saveG();applyDark();$('#swDark').classList.toggle('on',G.dark);}
+function applyDark(){document.documentElement.setAttribute('data-theme',G.dark?'dark':'light');document.querySelector('meta[name=theme-color]').content=G.dark?'#141E2B':'#E9F3E0';}
+function toggleZh(){S.showZh=!S.showZh;saveS();$('#swZh').classList.toggle('on',S.showZh);}
+function resetProgress(){if(!confirm('清空此成員所有學習進度？此動作無法復原'))return;const keep={goal:S.goal,rate:S.rate,showZh:S.showZh,band:S.band,big:S.big};S={cards:{},favs:[],streakDates:[],dailyCount:{},badges:[],...keep};saveS();renderProfile();renderTopStats();}
+
+loadProfile(G.current);applyDark();applyBig();renderHome();
+
+/* ===== 離線快取 + 安裝到桌面 (PWA) ===== */
+if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').catch(function(){});}
+(function(){
+  var dp=null;
+  function iss(){return (window.matchMedia&&matchMedia('(display-mode: standalone)').matches)||navigator.standalone===true;}
+  function iios(){return /iphone|ipad|ipod/i.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);}
+  function ren(){var el=document.getElementById('installBar');if(!el)return;
+    if(iss()){el.innerHTML='';return;}
+    if(dp){el.innerHTML='<button class="ib" onclick="__inst()">📲 安裝到桌面（免開瀏覽器） ➕</button>';}
+    else if(iios()){el.innerHTML='<button class="ib sec" onclick="__instIOS()">📲 安裝到主畫面（iPad / iPhone） ›</button>';}
+    else{el.innerHTML='';}}
+  window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();dp=e;ren();});
+  window.addEventListener('appinstalled',function(){dp=null;ren();});
+  window.__inst=function(){if(!dp)return;dp.prompt();dp.userChoice.finally(function(){dp=null;ren();});};
+  window.__instIOS=function(){var el=document.getElementById('installBar');if(!el)return;el.innerHTML='<div class="tip">📲 <b>加到 iPad / iPhone 桌面：</b><br>1. 用 <b>Safari</b> 開啟本頁<br>2. 點「分享 ⬆️」<br>3. 往下找「<b>加入主畫面 ➕</b>」<br>4. 右上按「新增」完成<br><span class="x" onclick="__instClose()">知道了 ✓</span></div>';};
+  window.__instClose=function(){ren();};
+  ren();
+})();
+</script>
+
+
+
+
+<script>/*ENGREVIEW*/(function(){if(window.EngReview)return;
+var WK='engreview.wrong',VK='engreview.words',APP={"id": "errand-english", "name": "生活辦事英文"};
+function load(k){try{return JSON.parse(localStorage.getItem(k)||'{}')}catch(e){return{}}}
+function save(k,o){try{localStorage.setItem(k,JSON.stringify(o))}catch(e){}}
+function hash(s){var h=0,i;for(i=0;i<s.length;i++){h=(h*31+s.charCodeAt(i))|0}return(h>>>0).toString(36)}
+function now(){return Date.now()}
+var BOX=[0,1,3,7,16,40];
+function addWrong(r){var w=load(WK);var id=hash((r.app||APP.id)+'|'+r.stem+'|'+(r.options||[]).join('~'));var e=w[id]||{id:id,first:now(),n:0};
+ e.app=r.app||APP.id;e.appName=r.appName||APP.name;e.cat=r.cat||'其他';e.stem=r.stem;e.options=r.options;e.your=r.your;e.ans=r.ans;e.expl=r.expl||'';
+ e.box=0;e.streak=0;e.due=now();e.n=(e.n||0)+1;e.ts=now();w[id]=e;save(WK,w);}
+function graded(id,ok){var w=load(WK),e=w[id];if(!e)return;if(ok){e.streak=(e.streak||0)+1;e.box=Math.min((e.box||0)+1,BOX.length-1);if(e.streak>=2){delete w[id];save(WK,w);return;}e.due=now()+BOX[e.box]*86400000;}else{e.streak=0;e.box=0;e.due=now();}e.ts=now();w[id]=e;save(WK,w);}
+function addWord(word,zh,pos,cat){var v=load(VK),k=String(word||'').toLowerCase().trim();if(!k)return false;
+ if(!v[k]){v[k]={word:word,zh:zh||'（待查）',pos:pos||'',app:APP.id,appName:APP.name,cat:cat||'',box:0,streak:0,due:now(),ts:now()};save(VK,v);return true;}
+ else{if((!v[k].zh||v[k].zh==='（待查）')&&zh){v[k].zh=zh;save(VK,v);}return false;}}
+function setWordZh(word,zh){var v=load(VK),k=String(word).toLowerCase();if(v[k]){v[k].zh=zh;v[k].box=0;save(VK,v);}}
+function wordGraded(word,ok){var v=load(VK),k=String(word).toLowerCase(),e=v[k];if(!e)return;if(ok){e.streak=(e.streak||0)+1;e.box=Math.min((e.box||0)+1,BOX.length-1);if(e.streak>=2){e.mastered=1;}e.due=now()+BOX[e.box]*86400000;}else{e.streak=0;e.box=0;e.mastered=0;e.due=now();}save(VK,v);}
+function removeWord(word){var v=load(VK);delete v[String(word).toLowerCase()];save(VK,v);}
+function cnt(o,due){var n=0,k;for(k in o){if(!due||o[k].due<=now())n++;}return n;}
+window.EngReview={app:APP,addWrong:addWrong,graded:graded,addWord:addWord,setWordZh:setWordZh,wordGraded:wordGraded,removeWord:removeWord,
+ wrong:function(){return load(WK)},words:function(){return load(VK)},
+ wrongCount:function(d){return cnt(load(WK),d)},wordCount:function(d){return cnt(load(VK),d)}};
+})();</script>
+<script>/*ENGWC*/(function(){if(window.__engwc)return;window.__engwc=1;
+var CFG={"ns": "errand-english", "emoji": "🏦", "title": "生活辦事英文", "theme": "#ea580c", "tagline": "銀行郵局看醫生・辦事會話", "steps": [["🗣️", "選情境學整句", "挑你需要的情境，直接學實用整句。"], ["🔊", "點了就發音", "點播放鍵聽發音，跟著開口念。"], ["🆘", "救急句／搜尋", "急用時用搜尋或救急句快速找到要說的。"], ["📲", "安裝到桌面", "裝起來出門免網路也能查。"]], "hub": "https://fullmodel-star.github.io/english-apps/"};var K='engwc.'+CFG.ns+'.done';
+var css='.engwc-ov{position:fixed;inset:0;background:rgba(28,28,40,.55);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);z-index:2147483000;display:none;align-items:center;justify-content:center;padding:18px}'
++'.engwc-ov.show{display:flex}'
++'.engwc-card{background:#fff;color:#2a2a33;border-radius:22px;max-width:400px;width:100%;padding:24px 22px 20px;box-shadow:0 20px 55px rgba(0,0,0,.35);max-height:88vh;overflow:auto;font-family:-apple-system,\"PingFang TC\",\"Microsoft JhengHei\",system-ui,sans-serif;animation:engwcIn .25s ease}'
++'@keyframes engwcIn{from{opacity:0;transform:translateY(12px) scale(.98)}to{opacity:1;transform:none}}'
++'.engwc-emoji{font-size:46px;text-align:center;line-height:1}'
++'.engwc-h{text-align:center;margin:8px 0 2px;font-size:21px;font-weight:800}'
++'.engwc-sub{text-align:center;color:#7a7a86;font-size:13.5px;margin-bottom:15px;line-height:1.5}'
++'.engwc-step{display:flex;gap:11px;align-items:flex-start;background:#f7f7fa;border:1px solid #ececf0;border-radius:13px;padding:10px 12px;margin-bottom:8px}'
++'.engwc-i{font-size:21px;flex:0 0 auto;line-height:1.3}'
++'.engwc-step b{font-size:14.5px}.engwc-step>div>div{font-size:12.5px;color:#7a7a86;line-height:1.5;margin-top:1px}'
++'.engwc-start{width:100%;border:0;border-radius:14px;padding:13px;font-size:15.5px;font-weight:800;color:#fff;background:'+CFG.theme+';cursor:pointer;margin-top:8px;font-family:inherit}'
++'.engwc-help{position:fixed;left:calc(12px + env(safe-area-inset-left));bottom:calc(76px + env(safe-area-inset-bottom));z-index:2147482000;width:40px;height:40px;border-radius:50%;border:1px solid #e2e2ea;background:rgba(255,255,255,.94);color:#666;font-size:18px;cursor:pointer;box-shadow:0 3px 12px rgba(0,0,0,.18);padding:0}'
++'.engwc-home{position:fixed;left:calc(60px + env(safe-area-inset-left));bottom:calc(76px + env(safe-area-inset-bottom));z-index:2147482000;height:40px;border-radius:20px;border:1px solid #e2e2ea;background:rgba(255,255,255,.94);color:#555;font-size:13px;font-weight:700;cursor:pointer;box-shadow:0 3px 12px rgba(0,0,0,.18);padding:0 13px}';
+var st=document.createElement('style');st.textContent=css;document.head.appendChild(st);
+var steps=CFG.steps.map(function(s){return '<div class=\"engwc-step\"><span class=\"engwc-i\">'+s[0]+'</span><div><b>'+s[1]+'</b><div>'+s[2]+'</div></div></div>';}).join('');
+var ov=document.createElement('div');ov.className='engwc-ov';
+ov.innerHTML='<div class=\"engwc-card\"><div class=\"engwc-emoji\">'+CFG.emoji+'</div><div class=\"engwc-h\">歡迎使用 '+CFG.title+'</div><div class=\"engwc-sub\">'+CFG.tagline+'</div>'+steps+'<button class=\"engwc-start\">開始使用 ▶</button></div>';
+document.body.appendChild(ov);
+var hb=document.createElement('button');hb.className='engwc-help';hb.setAttribute('aria-label','使用說明');hb.textContent='❓';document.body.appendChild(hb);
+if(CFG.hub){var hm=document.createElement('button');hm.className='engwc-home';hm.setAttribute('aria-label','回入口');hm.innerHTML='⬅ 入口';hm.addEventListener('click',function(){window.__engHubDefault=CFG.hub;if(window.__engGoHub)window.__engGoHub();else location.href=CFG.hub;});document.body.appendChild(hm);}
+function show(){ov.classList.add('show');}function close(){ov.classList.remove('show');try{localStorage.setItem(K,'1');}catch(e){}}
+ov.querySelector('.engwc-start').addEventListener('click',close);
+ov.addEventListener('click',close);
+hb.addEventListener('click',show);
+try{if(!localStorage.getItem(K)){var __t=setTimeout(show,0);var __cancel=function(){clearTimeout(__t);document.removeEventListener('pointerdown',__cancel,true);};document.addEventListener('pointerdown',__cancel,{capture:true,once:true});}}catch(e){setTimeout(show,0);}
+})();</script>
+<script>/*REVIEWUI*/(function(){if(window.__rvc)return;window.__rvc=1;
+var R=window.EngReview;if(!R){return;}
+var MYID=R.app.id, ISHUB=(MYID==='english-hub');
+var NSMAP={"english1200": {"name": "國小1200單字", "url": "https://fullmodel-star.github.io/english1200/"}, "english2000": {"name": "國中2000單字", "url": "https://fullmodel-star.github.io/english2000/"}, "english6000": {"name": "高中6000單字", "url": "https://fullmodel-star.github.io/english6000/"}, "gsat-core": {"name": "學測必考單字", "url": "https://fullmodel-star.github.io/gsat-core/"}, "toeic-vocab": {"name": "多益單字", "url": "https://fullmodel-star.github.io/toeic-vocab/"}, "toefl-vocab": {"name": "托福單字", "url": "https://fullmodel-star.github.io/toefl-vocab/"}, "englishS": {"name": "國中英語句型", "url": "https://fullmodel-star.github.io/englishS/"}, "enghs": {"name": "高中英語文法", "url": "https://fullmodel-star.github.io/hs-grammar/"}, "english-phrases": {"name": "英語片語", "url": "https://fullmodel-star.github.io/english-phrases/"}, "cap-english": {"name": "國中會考複習", "url": "https://fullmodel-star.github.io/cap-english/"}, "gsat-english": {"name": "學測複習", "url": "https://fullmodel-star.github.io/gsat-english/"}, "cap-qbank": {"name": "會考英語題庫", "url": "https://fullmodel-star.github.io/cap-qbank/"}, "gsat-qbank": {"name": "學測英語題庫", "url": "https://fullmodel-star.github.io/gsat-qbank/"}, "travel-english": {"name": "旅遊英文", "url": "https://fullmodel-star.github.io/travel-english/"}, "family-english": {"name": "家庭生活英語", "url": "https://fullmodel-star.github.io/family-english/"}, "campus-english": {"name": "校園生活英語", "url": "https://fullmodel-star.github.io/campus-english/"}, "errand-english": {"name": "生活辦事英文", "url": "https://fullmodel-star.github.io/errand-english/"}, "social-english": {"name": "社交英文", "url": "https://fullmodel-star.github.io/social-english/"}};
+function esc(s){return (s==null?'':String(s)).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function speak(t){try{var u=new SpeechSynthesisUtterance(t);u.lang='en-US';u.rate=.9;speechSynthesis.cancel();speechSynthesis.speak(u);}catch(e){}}
+var L=['A','B','C','D','E','F'],NOW=Date.now();
+var css=''
++'.rvc-fab{position:fixed;left:calc(12px + env(safe-area-inset-left));bottom:calc(124px + env(safe-area-inset-bottom));z-index:2147482500;height:40px;border-radius:20px;border:0;background:#6d28d9;color:#fff;font-size:13.5px;font-weight:800;cursor:pointer;box-shadow:0 4px 14px rgba(109,40,217,.4);padding:0 14px;font-family:inherit;display:none}'
++'.rvc-fab .bdg{background:#fff;color:#6d28d9;border-radius:10px;padding:0 6px;margin-left:6px;font-size:12px}'
++'.rvc-card{background:linear-gradient(135deg,#6d28d9,#9333ea);color:#fff;border-radius:20px;padding:16px 18px;margin:18px 0 6px;box-shadow:0 10px 26px rgba(109,40,217,.28)}'
++'.rvc-card h3{margin:0 0 3px;font-size:16px}.rvc-card .rvc-sub{font-size:12.5px;opacity:.92;margin-bottom:12px}'
++'.rvc-approw{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.15);border-radius:12px;padding:10px 12px;margin-bottom:8px;text-decoration:none;color:#fff}'
++'.rvc-approw .an{font-weight:800;font-size:14px}.rvc-approw .am{font-size:11.5px;opacity:.9}.rvc-approw .ag{margin-left:auto;font-weight:800;font-size:12.5px}'
++'.rvc-none{font-size:13px;opacity:.9;line-height:1.8}'
++'.rvc-ov{position:fixed;inset:0;background:rgba(20,20,32,.6);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);z-index:2147483600;display:flex;align-items:flex-end;justify-content:center}'
++'.rvc-sheet{background:#f5f7fb;color:#1e2a48;width:100%;max-width:600px;max-height:92vh;border-radius:22px 22px 0 0;overflow:auto;padding:16px 16px calc(24px + env(safe-area-inset-bottom));font-family:-apple-system,\"PingFang TC\",\"Microsoft JhengHei\",sans-serif}'
++'.rvc-hd{display:flex;align-items:center;gap:10px;position:sticky;top:0;background:#f5f7fb;padding:4px 0 10px;z-index:2}'
++'.rvc-hd h2{font-size:18px;margin:0;flex:1}.rvc-x{border:0;background:rgba(0,0,0,.06);border-radius:50%;width:34px;height:34px;font-size:17px;cursor:pointer}'
++'.rvc-tab{display:flex;gap:8px;margin-bottom:10px}.rvc-tab button{flex:1;border:1.5px solid #e6ebf7;background:#fff;border-radius:11px;padding:9px;font-weight:800;font-size:13.5px;cursor:pointer;font-family:inherit}.rvc-tab button.on{background:#6d28d9;color:#fff;border-color:transparent}'
++'.rvc-grp{font-weight:800;font-size:13px;color:#666;margin:12px 2px 6px}'
++'.rvc-item{background:#fff;border:1px solid #e6ebf7;border-radius:13px;padding:11px 13px;margin-bottom:9px}'
++'.rvc-q{font-weight:600;font-size:14.5px;line-height:1.5}'
++'.rvc-opt{border:1.5px solid #e6ebf7;border-radius:11px;padding:9px 12px;margin-top:7px;cursor:pointer;font-size:14.5px;display:flex;gap:8px;background:#fff}'
++'.rvc-opt .lb{font-weight:800;color:#888}.rvc-opt.ok{background:#e7f8ee;border-color:#37b36b}.rvc-opt.no{background:#fdecec;border-color:#e15656}'
++'.rvc-exp{background:#f0f5ff;border-left:3px solid #4f6ef7;border-radius:8px;padding:9px 11px;margin-top:8px;font-size:13px;line-height:1.6}'
++'.rvc-word{display:flex;align-items:center;gap:10px;background:#fff;border:1px solid #e6ebf7;border-radius:12px;padding:10px 12px;margin-bottom:8px}'
++'.rvc-word .w{font-weight:800;font-size:15.5px}.rvc-word .z{font-size:13.5px;color:#666}.rvc-word .src{font-size:10.5px;color:#9aa;margin-left:auto;white-space:nowrap}'
++'.rvc-ic{border:0;background:#eef2ff;border-radius:9px;width:34px;height:34px;font-size:16px;cursor:pointer;flex:0 0 auto}'
++'.rvc-primary{width:100%;border:0;border-radius:14px;padding:14px;font-size:15.5px;font-weight:800;color:#fff;background:#6d28d9;cursor:pointer;margin:8px 0;font-family:inherit}'
++'.rvc-flash{background:#fff;border:1px solid #e6ebf7;border-radius:18px;padding:34px 18px;text-align:center;margin:10px 0;cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,.06)}'
++'.rvc-flash .fw{font-size:30px;font-weight:800}.rvc-flash .fz{font-size:20px;margin-top:12px;color:#6d28d9}'
++'.rvc-grade{display:grid;grid-template-columns:1fr 1fr;gap:10px}.rvc-grade button{border:0;border-radius:13px;padding:13px;font-size:15px;font-weight:800;cursor:pointer;font-family:inherit}'
++'.rvc-bad{background:#fdecec;color:#c0392b}.rvc-good{background:#e7f8ee;color:#1e8e4e}'
++'.rvc-empty{text-align:center;color:#888;padding:26px;font-size:14px;line-height:1.9}';
+var st=document.createElement('style');st.textContent=css;document.head.appendChild(st);
+
+function ownWrong(){var w=R.wrong(),o=[];for(var k in w){if(w[k].app===MYID)o.push(w[k]);}return o;}
+function ownWords(){var v=R.words(),o=[];for(var k in v){if(v[k].app===MYID)o.push(v[k]);}return o;}
+function due(a){return a.filter(function(x){return x.due<=NOW;});}
+
+function ov(title,inner){var o=document.createElement('div');o.className='rvc-ov';
+  o.innerHTML='<div class=\"rvc-sheet\"><div class=\"rvc-hd\"><h2>'+title+'</h2><button class=\"rvc-x\">✕</button></div><div class=\"rvc-body\">'+inner+'</div></div>';
+  o.addEventListener('click',function(e){if(e.target===o)o.remove();});
+  o.querySelector('.rvc-x').addEventListener('click',function(){o.remove();refreshFab();});
+  document.body.appendChild(o);return o;}
+
+/* ===== 一般 App：只複習自己的 ===== */
+function refreshFab(){var fab=document.getElementById('rvcFab');if(!fab)return;
+  var dw=due(ownWrong()).length, dv=due(ownWords()).length, tot=dw+dv;
+  if(tot>0){fab.style.display='inline-flex';fab.innerHTML='📝 複習<span class=\"bdg\">'+tot+'</span>';}else{fab.style.display='none';}}
+function openSelf(){
+  var W=ownWrong(),V=ownWords();
+  var h='<div class=\"rvc-tab\"><button class=\"on\" data-t=\"w\">📕 錯題 '+W.length+'</button><button data-t=\"v\">📘 生字 '+V.length+'</button></div><div id=\"rvcPane\"></div>';
+  var o=ov('📝 我的複習',h);
+  var pane=o.querySelector('#rvcPane');
+  o.querySelectorAll('.rvc-tab button').forEach(function(b){b.addEventListener('click',function(){o.querySelectorAll('.rvc-tab button').forEach(function(x){x.classList.remove('on');});b.classList.add('on');paint(b.dataset.t);});});
+  function paint(t){if(t==='v')paintWords(pane,V,o);else paintWrong(pane,W,o);}
+  paint('w');
+}
+function paintWrong(pane,W,o){
+  if(!W.length){pane.innerHTML='<div class=\"rvc-empty\">目前沒有錯題 🎉<br>練習答錯的題目會自動收進這裡。</div>';return;}
+  var d=due(W);
+  var grp={};W.forEach(function(e){(grp[e.cat||'其他']=grp[e.cat||'其他']||[]).push(e);});
+  var h='<button class=\"rvc-primary\" '+(d.length?'':'disabled style=opacity:.5')+' id=\"rvcQz\">▶ 重考待複習錯題（'+d.length+'）</button>';
+  Object.keys(grp).forEach(function(g){h+='<div class=\"rvc-grp\">'+esc(g)+'（'+grp[g].length+'）</div>';
+    grp[g].forEach(function(e){h+='<div class=\"rvc-item\"><div class=\"rvc-q\">'+esc(e.stem)+'</div><div class=\"rvc-exp\"><b>✅ 正解 '+L[e.ans]+'：</b>'+esc((e.options||[])[e.ans]||'')+'　'+esc(e.expl||'')+'</div></div>';});});
+  pane.innerHTML=h;
+  var qz=pane.querySelector('#rvcQz');if(qz&&d.length)qz.addEventListener('click',function(){startQuiz(d,o);});
+}
+function startQuiz(pool,parent){
+  parent.remove();var i=0,right=0;var o=ov('📕 重考錯題（'+pool.length+'）','<div id=\"rvcQ\"></div>');
+  function draw(){var box=o.querySelector('#rvcQ');if(i>=pool.length){box.innerHTML='<div class=\"rvc-empty\">複習完成！答對 '+right+'/'+pool.length+'<br>連對 2 次的題目會自動畢業 🎓</div><button class=\"rvc-primary\">完成</button>';box.querySelector('button').addEventListener('click',function(){o.remove();refreshFab();});return;}
+    var e=pool[i];var h='<div class=\"rvc-item\"><div class=\"rvc-q\">'+(i+1)+'. '+esc(e.stem)+'</div>';
+    (e.options||[]).forEach(function(op,oi){h+='<div class=\"rvc-opt\" data-i=\"'+oi+'\"><span class=\"lb\">'+L[oi]+'</span><span>'+esc(op)+'</span></div>';});
+    h+='<div id=\"rvcFb\"></div></div>';box.innerHTML=h;
+    box.querySelectorAll('.rvc-opt').forEach(function(el){el.addEventListener('click',function(){
+      if(box.dataset.done)return;box.dataset.done='1';var pick=+el.dataset.i,ok=pick===e.ans;
+      box.querySelectorAll('.rvc-opt').forEach(function(x){var xi=+x.dataset.i;if(xi===e.ans)x.classList.add('ok');else if(xi===pick)x.classList.add('no');});
+      R.graded(e.id,ok);if(ok)right++;
+      box.querySelector('#rvcFb').innerHTML='<div class=\"rvc-exp\"><b>'+(ok?'✅ 答對':'❌ 答錯')+'・正解 '+L[e.ans]+'：</b>'+esc(e.expl||'')+'</div><button class=\"rvc-primary\">下一題 ▶</button>';
+      box.querySelector('#rvcFb button').addEventListener('click',function(){i++;delete box.dataset.done;draw();});
+    });});}
+  draw();
+}
+function paintWords(pane,V,o){
+  if(!V.length){pane.innerHTML='<div class=\"rvc-empty\">還沒有生字 📖<br>閱讀或做題時點不會的單字，就會收進這裡。</div>';return;}
+  var h='<button class=\"rvc-primary\" id=\"rvcFl\">🃏 翻卡複習（'+V.length+'）</button>';
+  V.forEach(function(e,idx){h+='<div class=\"rvc-word\"><div><div class=\"w\">'+esc(e.word)+' <span style=\"font-size:11px;color:#9aa\">'+esc(e.pos||'')+'</span></div><div class=\"z\">'+esc(e.zh)+'</div></div><span class=\"src\">'+esc(e.cat||'')+'</span>'
+    +'<button class=\"rvc-ic\" data-say=\"'+esc(e.word)+'\">🔊</button>'
+    +((!e.zh||e.zh==='（待查）')?'<button class=\"rvc-ic\" data-fill=\"'+esc(e.word)+'\">✏️</button>':'')
+    +'<button class=\"rvc-ic\" data-del=\"'+esc(e.word)+'\">🗑️</button></div>';});
+  pane.innerHTML=h;
+  pane.querySelector('#rvcFl').addEventListener('click',function(){startFlash(V,o);});
+  pane.querySelectorAll('[data-say]').forEach(function(b){b.addEventListener('click',function(){speak(b.dataset.say);});});
+  pane.querySelectorAll('[data-fill]').forEach(function(b){b.addEventListener('click',function(){var w=b.dataset.fill,zh=prompt('輸入「'+w+'」的中文意思：');if(zh&&zh.trim()){R.setWordZh(w,zh.trim());o.remove();openSelf();}});});
+  pane.querySelectorAll('[data-del]').forEach(function(b){b.addEventListener('click',function(){if(confirm('移除生字「'+b.dataset.del+'」？')){R.removeWord(b.dataset.del);o.remove();openSelf();}});});
+}
+function startFlash(V,parent){
+  parent.remove();var i=0;var o=ov('🃏 生字翻卡','<div id=\"rvcF\"></div>');
+  function draw(){var box=o.querySelector('#rvcF');if(i>=V.length){box.innerHTML='<div class=\"rvc-empty\">複習完成！👏</div><button class=\"rvc-primary\">完成</button>';box.querySelector('button').addEventListener('click',function(){o.remove();refreshFab();});return;}
+    var e=V[i];box.innerHTML='<div class=\"rvc-flash\" id=\"cf\"><div class=\"fw\">'+esc(e.word)+'</div><div style=\"font-size:12px;color:#9aa;margin-top:6px\">點卡片看中文・🔊</div></div>';
+    var flip=false,cf=box.querySelector('#cf');
+    cf.addEventListener('click',function(){if(!flip){flip=true;cf.innerHTML='<div class=\"fw\">'+esc(e.word)+'</div><div class=\"fz\">'+esc(e.zh)+'</div>';speak(e.word);
+      var g=document.createElement('div');g.className='rvc-grade';g.innerHTML='<button class=\"rvc-bad\">還不熟</button><button class=\"rvc-good\">記得了</button>';box.appendChild(g);
+      g.children[0].addEventListener('click',function(){R.wordGraded(e.word,false);i++;draw();});
+      g.children[1].addEventListener('click',function(){R.wordGraded(e.word,true);i++;draw();});
+    }else speak(e.word);});}
+  draw();
+}
+function mountSelf(){var fab=document.createElement('button');fab.id='rvcFab';fab.className='rvc-fab';fab.addEventListener('click',openSelf);document.body.appendChild(fab);refreshFab();}
+
+/* ===== Hub：只總覽 ===== */
+function mountOverview(){
+  var host=document.getElementById('dash');var card=document.createElement('div');card.className='rvc-card';card.id='rvcCard';
+  if(host&&host.parentNode)host.parentNode.insertBefore(card,host.nextSibling);else document.body.insertBefore(card,document.body.firstChild);
+  var w=R.wrong(),v=R.words();var per={};
+  function acc(id,kind){if(!NSMAP[id])return;per[id]=per[id]||{w:0,v:0};per[id][kind]++;}
+  for(var k in w){if(w[k].due<=NOW)acc(w[k].app,'w');}
+  for(var k2 in v){if(v[k2].due<=NOW)acc(v[k2].app,'v');}
+  var ids=Object.keys(per);
+  var h='<h3>📝 我的複習</h3>';
+  if(!ids.length){h+='<div class=\"rvc-none\">目前沒有待複習的錯題或生字 🎉<br>去各 App 練習，答錯的題目、閱讀點的生字，會分別留在<b>那支 App</b> 裡等你複習。</div>';}
+  else{h+='<div class=\"rvc-sub\">點進該 App 複習自己的錯題與生字（各程度分開，不混在一起）</div>';
+    ids.forEach(function(id){var m=NSMAP[id],p=per[id];h+='<a class=\"rvc-approw\" href=\"'+m.url+'\"><div><div class=\"an\">'+esc(m.name)+'</div><div class=\"am\">'+(p.w?'錯題 '+p.w+' 題':'')+(p.w&&p.v?'・':'')+(p.v?'生字 '+p.v+' 個':'')+'</div></div><span class=\"ag\">去複習 ▶</span></a>';});}
+  card.innerHTML=h;
+}
+
+if(ISHUB){if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',mountOverview);else mountOverview();}
+else{if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',mountSelf);else mountSelf();}
+})();</script>
+<!-- 版本更新提示（家族共用模組 fam-update v1）-->
+<script>
+(function(){
+  if(!('serviceWorker' in navigator)||window.__famUpd)return; window.__famUpd=1;
+  var reg=null, shown=false, refreshing=false, watched=false;
+  function mkBanner(){
+    if(document.getElementById('famUpdateBanner'))return;
+    var b=document.createElement('div'); b.id='famUpdateBanner';
+    b.setAttribute('style','position:fixed;left:12px;right:12px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:2147483000;max-width:520px;margin:0 auto;background:linear-gradient(135deg,#16a34a,#0d9488);color:#fff;border-radius:14px;padding:12px 14px;box-shadow:0 8px 26px rgba(16,163,74,.45);display:flex;align-items:center;gap:10px;font:600 14px/1.4 system-ui,-apple-system,"Noto Sans TC","Microsoft JhengHei",sans-serif');
+    b.innerHTML='<div style="flex:1"><b>🎉 有新版本可用</b><br><span style="font-size:12.5px;font-weight:400;opacity:.95">點「立即更新」套用最新版</span></div><button id="famUpdGo" style="background:#fff;color:#0d9488;border:0;border-radius:10px;padding:8px 15px;font:800 13.5px system-ui,sans-serif;cursor:pointer">立即更新</button><button id="famUpdX" aria-label="close" style="background:rgba(255,255,255,.22);border:0;color:#fff;width:30px;height:30px;border-radius:8px;font-size:15px;cursor:pointer">✕</button>';
+    (document.body||document.documentElement).appendChild(b);
+    document.getElementById('famUpdX').onclick=function(){b.remove()};
+    document.getElementById('famUpdGo').onclick=function(){
+      var w=reg&&reg.waiting;
+      if(w){['SKIP_WAITING','skipWaiting',{type:'SKIP_WAITING'}].forEach(function(m){try{w.postMessage(m)}catch(e){}});b.remove();setTimeout(function(){if(!refreshing){refreshing=true;location.reload();}},1800);}
+      else location.reload();
+    };
+  }
+  function show(){if(shown)return;shown=true;mkBanner();}
+  function watch(r){
+    if(!r||watched)return; watched=true; reg=r;
+    if(r.waiting&&navigator.serviceWorker.controller)show();
+    r.addEventListener('updatefound',function(){var nw=r.installing;if(!nw)return;
+      nw.addEventListener('statechange',function(){if(nw.state==='installed'&&navigator.serviceWorker.controller)show();});});
+    try{setInterval(function(){r.update().catch(function(){});},30*60*1000);}catch(e){}
+  }
+  navigator.serviceWorker.getRegistration().then(watch).catch(function(){});
+  navigator.serviceWorker.ready.then(watch).catch(function(){});
+  navigator.serviceWorker.addEventListener('controllerchange',function(){if(refreshing)return;refreshing=true;location.reload();});
+})();
+</script>
+<!--RIDGELINE_BRAND_START-->
+<footer class="rl-signature">
+  <div class="rl-sig-row">
+    <span class="rl-mkcol" style="display:inline-flex;flex-direction:column;align-items:center;gap:3px"><svg class="rl-sig-glyph" viewBox="0 0 64 64" width="66" height="34" fill="none"><path d="M0 54 L8 48 L14 51 L22 38 L26 42 L36 14 L46 34 L61 44" fill="none" stroke="currentColor" stroke-width="4.4" stroke-linejoin="round" stroke-linecap="round"/><path d="M31.3 27.2 L36 14 L38.7 19.4" fill="none" stroke="#DE9A45" stroke-width="4.4" stroke-linejoin="round" stroke-linecap="round"/></svg><span style="font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;letter-spacing:.5px;color:currentColor">Mt. Everest</span><span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:2px;color:#8794a3">8,849 M</span></span>
+    <span class="rl-sig-rule" style="height:88px"></span>
+    <p class="rl-sig-quote">多學一句英文，<br>世界就近一點。</p>
+  </div>
+  <p class="rl-sig-by">Ridgeline · by Lucas</p>
+</footer>
+<!--RIDGELINE_BRAND_END-->
+
+<script>/*HUBBACK*/(function(){if(window.__hubback)return;window.__hubback=1;
+var OK=["https://fullmodel-star.github.io/english-hub/","https://fullmodel-star.github.io/english-apps/"];   /* 白名單：擋開放導向 */
+var K='eng.hub.origin';
+function ok(u){for(var i=0;i<OK.length;i++)if(OK[i]===u)return u;return null;}
+function remember(){
+  try{
+    var q=new URLSearchParams(location.search).get('hub');
+    var v=q&&ok(q);
+    if(v){localStorage.setItem(K,v);return v;}
+    /* 沒帶 query 也試 referrer：使用者可能是從 hub 的舊書籤／自己打的連結進來的 */
+    if(document.referrer){var r=ok(new URL(document.referrer).origin+new URL(document.referrer).pathname);
+      if(r){localStorage.setItem(K,r);return r;}}
+    return ok(localStorage.getItem(K)||'');
+  }catch(e){return null;}
+}
+var hub=remember();
+window.__engHub=function(){
+  /* 記住的優先；沒有才退回 App 內寫死的 CFG.hub（維持拆兩層時的預設分流） */
+  try{return hub||window.__engHubDefault||null;}catch(e){return window.__engHubDefault||null;}
+};
+window.__engGoHub=function(){
+  var u=window.__engHub(); if(!u)return;
+  /* 家庭 hub 是 iframe srcdoc → 一定要跳到最上層，否則只是在鎖裡面再疊一層 */
+  try{ (window.top||window).location.href=u; }catch(e){ location.href=u; }
+};
+/* 網址列把 ?hub= 收乾淨，小朋友分享連結時不會把入口資訊帶出去，重整也不會殘留 */
+try{ if(new URLSearchParams(location.search).get('hub')&&history.replaceState){
+  var u=new URL(location.href);u.searchParams.delete('hub');
+  history.replaceState(null,'',u.pathname+(u.search==='?'?'':u.search)+u.hash);} }catch(e){}
+})();</script>
+</body>
